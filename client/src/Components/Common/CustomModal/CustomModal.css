@@ -1,0 +1,17 @@
+.custom-modal::-webkit-scrollbar-track {
+    background: #ffffff;
+    border: 0px none #fafafa;
+    border-radius: 0px 200px 200px 0px !important;
+}
+
+.custom-modal.custom-modal-open {
+    animation: fadeIn 0.3s linear;
+}
+
+.custom-modal.custom-modal-open .custom-modal-content {
+    animation: zoomIn 0.3s ease-in-out;
+}
+
+.custom-modal .custom-modal-content {
+    animation: zoomOut 0.3s linear;
+}

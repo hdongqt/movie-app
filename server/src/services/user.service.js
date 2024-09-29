@@ -1,0 +1,94 @@
+import responseHandler from "../handlers/response.handler.js";
+import { Constants } from "../helpers/constants.js";
+import _ from "lodash";
+import User from "../models/user.model.js";
+import COMMON_HELPERS from "../helpers/common.js";
+const UserService = {};
+UserService.User = User;
+UserService.findOneByEmail = async (email) => {
+  let payload = email ? email.trim() : email;
+  return await User.findOne({
+    email: { $regex: new RegExp("^" + payload + "$", "i") },
+  }).select(
+    "id email role password salt displayName status createdAt updatedAt"
+  );
+};
+
+UserService.findById = async (id) => {
+  return await User.findOne({ _id: id, status: "active" }).select(
+    "-salt -password -favorites"
+  );
+};
+
+UserService.findByIdByAdmin = async (id) => {
+  return await User.findOne({ _id: id }).select("-salt -password -favorites");
+};
+
+UserService.createUser = async (payload) => {
+  const { email, password, displayName, role = "user" } = payload;
+  const user = new User({
+    email,
+    displayName,
+    role,
+  });
+  user.setPassword(password);
+  const userSave = await user.save();
+  const infoUser = _.omit(userSave._doc, [
+    "password",
+    "salt",
+    "favorites",
+    "_id",
+  ]);
+  return {
+    ...infoUser,
+    id: userSave.id,
+  };
+};
+
+UserService.fetchAllUser = async (paginationOptions, payload) => {
+  const { status = Constants.STATUS.ACTIVE, keyword, sortBy } = payload;
+  const select = "";
+  let queryOp = {};
+  if (status) queryOp.status = status;
+  if (keyword) queryOp.name = { $regex: new RegExp(keyword, "i") };
+  return await COMMON_HELPERS.paginateData({
+    model: User,
+    queryOptions: queryOp,
+    paginationOptions: paginationOptions,
+    select: select,
+    sortBy: sortBy,
+  });
+};
+
+UserService.getUser = async (id) => {
+  const user = await User.findById(id);
+  if (!user) {
+    return null;
+  }
+  return _.omit(user.toJSON(), ["favorites"]);
+};
+
+UserService.updateUser = async (user, payload) => {
+  const { role } = payload;
+  Object.assign(user, { role });
+  const userSave = await user.save();
+  return {
+    ...userSave._doc,
+    id: userSave.id,
+  };
+};
+
+UserService.updateUserStatus = async (user, status) => {
+  Object.assign(user, {
+    status: status,
+  });
+  const userSave = await user.save();
+  return _.omit(
+    {
+      ...userSave._doc,
+      id: userSave.id,
+    },
+    ["_id"]
+  );
+};
+export default UserService;

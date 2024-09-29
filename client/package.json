@@ -1,0 +1,75 @@
+{
+    "name": "my-app",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@reduxjs/toolkit": "^2.2.2",
+        "@testing-library/jest-dom": "^5.14.1",
+        "@testing-library/react": "^13.0.0",
+        "@testing-library/user-event": "^13.2.1",
+        "@types/jest": "^27.0.1",
+        "@types/node": "^16.7.13",
+        "@types/react": "^18.0.0",
+        "@types/react-dom": "^18.0.0",
+        "axios": "^1.6.8",
+        "customize-cra": "^1.0.0",
+        "dayjs": "^1.11.10",
+        "formik": "^2.4.6",
+        "history": "^5.3.0",
+        "jwt-decode": "^4.0.0",
+        "lodash": "^4.17.21",
+        "query-string": "^9.0.0",
+        "react": "^18.2.0",
+        "react-app-rewired": "^2.2.1",
+        "react-dom": "^18.2.0",
+        "react-lazy-load-image-component": "^1.6.0",
+        "react-paginate": "^8.2.0",
+        "react-player": "^2.15.1",
+        "react-redux": "^9.1.0",
+        "react-router-dom": "6.4.4",
+        "react-scripts": "5.0.1",
+        "react-select": "^5.8.0",
+        "react-tiny-popover": "^8.0.4",
+        "react-toastify": "^10.0.5",
+        "redux-thunk": "^3.1.0",
+        "swiper": "^11.1.4",
+        "universal-cookie": "^7.1.4",
+        "web-vitals": "^2.1.0",
+        "yup": "^1.4.0"
+    },
+    "overrides": {
+        "fork-ts-checker-webpack-plugin": "^6.5.3",
+        "typescript": "^5.3.3"
+    },
+    "scripts": {
+        "start": "react-app-rewired start .env",
+        "build": "react-app-rewired build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "@types/lodash": "^4.17.0",
+        "@types/react-datepicker": "^6.2.0",
+        "@types/react-lazy-load-image-component": "^1.6.4",
+        "tailwindcss": "^3.4.1",
+        "typescript": "^5.3.3"
+    }
+}

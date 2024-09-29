@@ -1,0 +1,26 @@
+.no-data-text {
+    -webkit-text-stroke: 1px #383d52;
+    color: #252839;
+    text-transform: uppercase;
+}
+.no-data-text::before {
+    content: attr(data-text);
+    -webkit-text-stroke: 0px #383d52;
+    color: #a0bbcb;
+    @apply absolute top-0 left-0 w-0 h-full;
+    overflow: hidden;
+    border-right: 2px solid #a0bbcb;
+    animation: textAnimate 5s linear infinite;
+}
+
+@keyframes textAnimate {
+    0%,
+    10%,
+    100% {
+        width: 0;
+    }
+    60%,
+    90% {
+        width: 100%;
+    }
+}

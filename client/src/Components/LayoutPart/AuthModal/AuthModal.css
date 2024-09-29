@@ -1,0 +1,27 @@
+.modal-overlay {
+    @apply bg-[#00000059] absolute inset-0;
+    animation: showOverlay 0.3s linear;
+}
+
+@keyframes showOverlay {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.auth-modal::-webkit-scrollbar-track {
+    background: #ffffff;
+    border: 0px none #fafafa;
+    border-radius: 0px 200px 200px 0px !important;
+}
+
+.auth-modal.zoom-in {
+    animation: zoomIn 0.3s ease-in-out;
+}
+
+.auth-modal.zoom-out {
+    animation: zoomOut 0.3s forwards;
+}
