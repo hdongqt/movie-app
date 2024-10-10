@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 
 import AppStateSlice from './Features/AppState/AppStateSlice';
 import HomeSlice from './Features/Home';
-import MoviesSlice from './Features/Movies';
 import SlideMakerSlice from './Features/SlideMakerSlice';
 import SearchSlice from './Features/Search';
 import PersonSlice from './Features/Persons/PersonsSlice';
@@ -14,6 +13,10 @@ import { CrawlSlice } from './Features/Crawl';
 import { MoviesManagementSlice } from './Features/MoviesManagement';
 import { GenresManagementSlice } from './Features/GenresManagement';
 import { UsersManagementSlice } from './Features/UsersManagement';
+import { MoviesSlice } from './Features/Movies';
+import { FavoritesSlice } from './Features/Favorites';
+import { ProfileSlice } from './Features/Profile';
+
 const store = configureStore({
     reducer: {
         APP_STATE: AppStateSlice,
@@ -27,7 +30,9 @@ const store = configureStore({
         MOVIES_MANAGEMENT: MoviesManagementSlice,
         GENRES_MANAGEMENT: GenresManagementSlice,
         USERS_MANAGEMENT: UsersManagementSlice,
-        COMMENTS: CommentsSlice
+        COMMENTS: CommentsSlice,
+        FAVORITES: FavoritesSlice,
+        PROFILE: ProfileSlice
     },
     middleware: (getDefaultMiddleware) => {
         return [...getDefaultMiddleware(), thunk] as any;

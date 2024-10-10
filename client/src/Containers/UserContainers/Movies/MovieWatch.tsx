@@ -33,7 +33,9 @@ const MovieWatch: React.FC<MovieWatchProps> = ({ urlVideo }) => {
                         onLoad={() => setIsLoading(false)}
                         style={{
                             height: '100%',
-                            width: '100%'
+                            width: '100%',
+                            maxHeight: '100%',
+                            visibility: isLoading ? 'hidden' : 'visible'
                         }}
                         src={urlVideo}
                     ></iframe>

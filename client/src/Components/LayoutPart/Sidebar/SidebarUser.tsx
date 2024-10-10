@@ -201,11 +201,12 @@ const SidebarUser = () => {
                                         return (
                                             <Fragment key={`sbUser${index}`}>
                                                 {menu.value !==
-                                                    ROUTERS.GENRES && (
+                                                    ROUTERS.FILM && (
                                                     <li>
                                                         <NavLink
                                                             to={menu.value}
-                                                            className={`relative hover:bg-gray-200 flex items-center gap-8 rounded-lg py-1.5 px-4 transition duration-300 ease-in-out line-clamp-1 
+                                                            className={`relative hover:bg-gray-200 flex items-center
+                                                             gap-8 rounded-lg py-1.5 px-4 transition duration-300 ease-in-out line-clamp-1 
                                             ${
                                                 pathname === menu.value &&
                                                 'bg-red-600 text-white hover:bg-red-600'
@@ -221,11 +222,11 @@ const SidebarUser = () => {
                                                     </li>
                                                 )}
                                                 {menu.value ===
-                                                    ROUTERS.GENRES && (
+                                                    ROUTERS.FILM && (
                                                     <SidebarLinkGroup
                                                         activeCondition={
                                                             pathname ===
-                                                            ROUTERS.GENRES
+                                                            ROUTERS.FILM
                                                         }
                                                     >
                                                         {(
@@ -235,24 +236,22 @@ const SidebarUser = () => {
                                                             return (
                                                                 <Fragment>
                                                                     <NavLink
-                                                                        to="#"
-                                                                        className={`group relative flex items-center gap-8 rounded-lg py-1.5 px-4 duration-300 ease-in-out hover:bg-gray-200 ${
-                                                                            (pathname ===
-                                                                                '/forms' ||
-                                                                                pathname.includes(
-                                                                                    'forms'
-                                                                                )) &&
-                                                                            'bg-gray-400'
+                                                                        to="/film"
+                                                                        className={`group overflow-hidden relative flex items-center gap-8 rounded-lg duration-300 ease-in-out pl-4 hover:bg-gray-200 ${
+                                                                            pathname.includes(
+                                                                                menu.value
+                                                                            ) &&
+                                                                            'bg-red-600 text-white hover:bg-red-600'
                                                                         }`}
                                                                         onClick={(
                                                                             e
                                                                         ) => {
-                                                                            e.preventDefault();
-                                                                            sidebarExpanded
-                                                                                ? handleClick()
-                                                                                : setSidebarExpanded(
-                                                                                      true
-                                                                                  );
+                                                                            // e.preventDefault();
+                                                                            // sidebarExpanded
+                                                                            //     ? handleClick()
+                                                                            //     : setSidebarExpanded(
+                                                                            //           true
+                                                                            //       );
                                                                         }}
                                                                     >
                                                                         <span>
@@ -266,12 +265,30 @@ const SidebarUser = () => {
                                                                             }
                                                                         </span>
                                                                         <span
-                                                                            className={`ml-auto text-base ${
-                                                                                open &&
-                                                                                'rotate-90'
+                                                                            className={`ml-auto text-2xl px-4 py-1.5 inline-block transition ${
+                                                                                pathname.includes(
+                                                                                    '/film'
+                                                                                )
+                                                                                    ? 'text-white hover:bg-red-500'
+                                                                                    : 'text-gray-700 hover:bg-gray-600 hover:text-white'
                                                                             }`}
+                                                                            onClick={(
+                                                                                e
+                                                                            ) => {
+                                                                                e.preventDefault();
+                                                                                e.stopPropagation();
+                                                                                sidebarExpanded
+                                                                                    ? handleClick()
+                                                                                    : setSidebarExpanded(
+                                                                                          true
+                                                                                      );
+                                                                            }}
                                                                         >
-                                                                            <i className="icon-chevron-right" />
+                                                                            {!open ? (
+                                                                                <i className="icon-chevron-sign-right" />
+                                                                            ) : (
+                                                                                <i className="icon-chevron-sign-down" />
+                                                                            )}
                                                                         </span>
                                                                     </NavLink>
                                                                     <div
@@ -288,7 +305,11 @@ const SidebarUser = () => {
                                                                                     ) => (
                                                                                         <li
                                                                                             key={`sbCollapse${genre.id}`}
-                                                                                            onClick={() => {
+                                                                                            onClick={(
+                                                                                                e
+                                                                                            ) => {
+                                                                                                e.preventDefault();
+                                                                                                e.stopPropagation();
                                                                                                 dispatch(
                                                                                                     setSidebarUserOpen(
                                                                                                         !sidebarUserOpen

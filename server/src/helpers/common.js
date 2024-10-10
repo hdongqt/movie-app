@@ -70,11 +70,12 @@ const paginateData = async ({
 
 const convertDataForPaginate = async (query) => {
   let { page, limit } = query;
+
   limit = limit ? (limit > 100 ? 100 : limit) : 10;
   page = page ? page : 1;
   const searchQuery = _.omit(query, ["page", "limit"]);
   return {
-    pagination: { page, limit },
+    pagination: { page: _.parseInt(page), limit: _.parseInt(limit) },
     searchQuery,
   };
 };

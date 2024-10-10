@@ -319,13 +319,13 @@ const SearchMovies: React.FC = () => {
                 <div className="w-full lg:w-1/4 pt-4 border-l px-6 border-stone-300">
                     <>
                         <CollapseMenu heading="Tìm kiếm theo">
-                            <div className="flex lg:flex-col gap-3 my-3">
+                            <div className="flex lg:flex-col gap-3 my-3 justify-center">
                                 {options.map((op) => (
                                     <button
                                         className={`p-2 w-28 lg:w-auto outline-none border rounded-md font-medium transition ${
                                             op.value === filters.searchBy
-                                                ? 'bg-sky-700 text-white pointer-events-none'
-                                                : 'hover:bg-sky-700 hover:text-white duration-200'
+                                                ? 'bg-red-600 text-white pointer-events-none'
+                                                : 'hover:bg-red-600 hover:text-white duration-200'
                                         }`}
                                         key={`type${op.value}`}
                                         onClick={() =>

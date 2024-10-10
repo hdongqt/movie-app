@@ -9,13 +9,8 @@ const MENU_LIST = [
     {
         label: 'Phim',
         value: ROUTERS.FILM,
-        icon: <i className="icon-film text-xl" />
-    },
-    {
-        label: 'Thể loại',
-        value: ROUTERS.GENRES,
         isMultiple: true,
-        icon: <i className="icon-tasks text-xl" />
+        icon: <i className="icon-film text-xl" />
     }
 ];
 

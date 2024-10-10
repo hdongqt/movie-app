@@ -24,7 +24,8 @@ export default {
     USER: {
         ROOT: 'users',
         ACTIVATE_USER: 'users/activate',
-        DEACTIVATE_USER: 'users/deactivate'
+        DEACTIVATE_USER: 'users/deactivate',
+        FAVORITES: 'users/favorites'
     },
     CRAWL: {
         ROOT: 'crawls'

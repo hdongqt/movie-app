@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { GenreAPI, MovieAPI } from '@/API';
+import { GenreAPI, MovieAPI, UserAPI } from '@/API';
 import _ from 'lodash';
 import Utils from '@/Utils';
 import { IMoviePaginationFilter } from '@/Interfaces/Pagination.interface';
@@ -49,4 +49,18 @@ const getMovie = createAsyncThunk(
     }
 );
 
-export { fetchAllMovies, getMovie };
+const addMovieToFavorites = createAsyncThunk(
+    'Movies/addMovieToFavorites',
+    async (payload: string, thunkApi) => {
+        try {
+            await UserAPI.addMovieToFavorites(payload);
+            Utils.ToastMessage('Yêu thích phim thành công', 'success');
+            return {};
+        } catch (error: any) {
+            Utils.ToastMessage(error.message, 'error');
+            return thunkApi.rejectWithValue(error.message);
+        }
+    }
+);
+
+export { fetchAllMovies, getMovie, addMovieToFavorites };

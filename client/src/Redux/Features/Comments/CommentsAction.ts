@@ -8,6 +8,7 @@ import {
     ICommentPayload
 } from '@/Interfaces/Comment.interface';
 import { RootState } from '@/Redux/Store';
+
 interface ICommentFetchPayload extends ICommentPaginationFilter {
     isFetchNew: boolean;
 }

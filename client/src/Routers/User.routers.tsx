@@ -34,6 +34,14 @@ const UserRouters = {
         {
             path: '/search',
             element: <UserContainer.Search />
+        },
+        {
+            path: '/favorites',
+            element: <UserContainer.Favorites />
+        },
+        {
+            path: '/profile',
+            element: <UserContainer.Profile />
         }
     ]
 };

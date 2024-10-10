@@ -18,7 +18,7 @@ const UserLayout: React.FC<IUserLayout> = (props: IUserLayout) => {
             <UserHeader />
             <SidebarUser />
             <AuthModal />
-            <main>{children}</main>
+            <main className="min-h-dvh">{children}</main>
             <Footer />
             <ScrollToTop />
         </>

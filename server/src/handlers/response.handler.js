@@ -40,6 +40,7 @@ const generateError = (type, mess) => {
   const err = new Error();
   err.type = type;
   if (mess) err.message = mess;
+  console.log(err);
   return err;
 };
 

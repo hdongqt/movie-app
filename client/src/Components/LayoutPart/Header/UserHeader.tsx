@@ -66,50 +66,6 @@ const UserHeader: React.FC = () => {
             <ul className="lg:flex hidden gap-4 ml-10 dark:bg-red-600">
                 {MENU_LIST &&
                     MENU_LIST.map((setting: any) => {
-                        if (setting?.isMultiple)
-                            return (
-                                <li
-                                    key={`menu${setting?.value}`}
-                                    className={`relative px-3.5 py-1 text-center min-w-20 flex items-center justify-center gap-1
-                                    transition rounded-full cursor-pointer group ${beforeElementCl}`}
-                                >
-                                    <span className="font-medium text-lg">
-                                        {setting?.label}
-                                    </span>
-                                    {setting?.value === ROUTERS.GENRES &&
-                                        genreLists && (
-                                            <ul className="hidden z-20 border border-gray-300 absolute top-full left-0 p-1 px-3 shadow-lg bg-white rounded-md w-max group-hover:grid grid-cols-3 gap-2 mt-2">
-                                                {genreLists.map(
-                                                    (
-                                                        genre: IGenre,
-                                                        index: number
-                                                    ) => {
-                                                        return (
-                                                            <li
-                                                                key={`genreHeader${index}`}
-                                                            >
-                                                                <button
-                                                                    onClick={() => {
-                                                                        Utils.redirect(
-                                                                            '/film',
-                                                                            {
-                                                                                genreId:
-                                                                                    genre.id
-                                                                            }
-                                                                        );
-                                                                    }}
-                                                                    className="text-black inline-block py-2 hover:bg-gray-200 w-32 rounded-lg font-medium"
-                                                                >
-                                                                    {genre.name}
-                                                                </button>
-                                                            </li>
-                                                        );
-                                                    }
-                                                )}
-                                            </ul>
-                                        )}
-                                </li>
-                            );
                         return (
                             <NavLink
                                 to={setting?.value}
@@ -122,12 +78,53 @@ const UserHeader: React.FC = () => {
                                                 ? 'bg-red-600 text-white'
                                                 : 'hover:bg-red-600 hover:text-white'
                                         } 
+                                        ${
+                                            setting?.isMultiple
+                                                ? `group ${beforeElementCl}`
+                                                : ''
+                                        }
                                         `;
                                 }}
                             >
                                 <span className="font-medium text-lg">
                                     {setting?.label}
                                 </span>
+                                {setting?.value === ROUTERS.FILM &&
+                                    genreLists && (
+                                        <ul className="hidden z-20 border border-gray-300 absolute top-full left-0 p-1 px-3 shadow-lg bg-white rounded-md w-max group-hover:grid grid-cols-3 gap-2 mt-2">
+                                            {genreLists.map(
+                                                (
+                                                    genre: IGenre,
+                                                    index: number
+                                                ) => {
+                                                    return (
+                                                        <li
+                                                            key={`genreHeader${index}`}
+                                                        >
+                                                            <button
+                                                                onClick={(
+                                                                    e
+                                                                ) => {
+                                                                    e.preventDefault();
+                                                                    e.stopPropagation();
+                                                                    Utils.redirect(
+                                                                        '/film',
+                                                                        {
+                                                                            genreId:
+                                                                                genre.id
+                                                                        }
+                                                                    );
+                                                                }}
+                                                                className="text-black inline-block py-2 hover:bg-gray-200 w-32 rounded-lg font-medium"
+                                                            >
+                                                                {genre.name}
+                                                            </button>
+                                                        </li>
+                                                    );
+                                                }
+                                            )}
+                                        </ul>
+                                    )}
                             </NavLink>
                         );
                     })}

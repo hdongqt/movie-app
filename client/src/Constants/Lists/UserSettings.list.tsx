@@ -3,9 +3,14 @@ import { IMenuSettings } from '@/Interfaces/Menu.interface';
 
 const USER_SETTINGS: IMenuSettings[] = [
     {
+        label: 'Tài khoản',
+        value: ROUTERS.PROFILE,
+        icon: <i className="icon-user" />
+    },
+    {
         label: 'Yêu thích',
         value: ROUTERS.FAVORITES,
-        icon: <i className="icon-heart text-red-600" />
+        icon: <i className="icon-heart" />
     },
     {
         label: 'Đăng xuất',
@@ -18,7 +23,7 @@ const ADMIN_SETTINGS: IMenuSettings[] = [
     {
         label: 'Dashboard',
         value: ADMIN_ROUTERS.ADMIN_DASHBOARD,
-        icon: <i className="icon-heart" />
+        icon: <i className="icon-bar-chart" />
     },
     {
         label: 'Đăng xuất',

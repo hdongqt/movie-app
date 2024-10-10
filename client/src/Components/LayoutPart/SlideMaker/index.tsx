@@ -138,35 +138,16 @@ const SlideMaker: React.FC = () => {
                                                         </span>
                                                     </span>
                                                 </div>
-                                                <div className="flex gap-6 mt-4 lg:mt-10 btnGroup">
+                                                <div className="mt-4 lg:mt-10 btnGroup">
                                                     <Link
                                                         to={`/film/${item?.id}`}
-                                                        className="inline-block group h-10 md:h-12 relative"
+                                                        className="inline-flex group gap-3 bg-gradient-to-r from-red-600 to-red-900 hover:opacity-90 transition duration-300 justify-center items-center px-3.5 md:px-4 py-2 rounded-full"
                                                     >
-                                                        <span className="absolute flex items-center justify-center h-12 md:h-14 -left-1 -top-[2px] md:-top-1 z-10 text-3xl md:text-4xl w-12 md:w-14 rounded-full pl-1 bg-red-600">
+                                                        <span className="">
                                                             <i className="icon-play"></i>
                                                         </span>
-                                                        <span
-                                                            className="group-hover:bg-red-500 group-hover:text-white md:group-hover:bg-white md:group-hover:text-red-600 w-[140px] md:w-12 block md:group-hover:w-[160px] pl-12 md:pl-4 md:group-hover:pl-14 btn
-                                        h-11 md:h-12
-                                         text-red-600 bg-white font-semibold leading-[45px] overflow-hidden rounded-full"
-                                                        >
+                                                        <span className="text-lg">
                                                             Xem phim
-                                                        </span>
-                                                    </Link>
-                                                    <Link
-                                                        to={`/film/${item?.id}`}
-                                                        className="inline-block group h-10 md:h-12 relative"
-                                                    >
-                                                        <span className="absolute flex items-center justify-center h-12 md:h-14 -left-1 -top-[2px] md:-top-1 z-10 text-3xl md:text-4xl w-12 md:w-14 rounded-full bg-sky-600">
-                                                            <i className="icon-heart"></i>
-                                                        </span>
-                                                        <span
-                                                            className="group-hover:bg-sky-500 group-hover:text-white md:group-hover:bg-white md:group-hover:text-sky-600 w-[140px] md:w-12 block md:group-hover:w-[160px] pl-12 md:pl-4 md:group-hover:pl-14 btn
-                                        h-11 md:h-12
-                                         text-sky-600 bg-white font-semibold leading-[45px] overflow-hidden rounded-full"
-                                                        >
-                                                            Yêu thích
                                                         </span>
                                                     </Link>
                                                 </div>

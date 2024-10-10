@@ -4,7 +4,6 @@ import { UserAPI } from '@/API';
 import Utils from '@/Utils';
 import { IPaginationFilter } from '@/Interfaces/Pagination.interface';
 import { ENUMS, ROUTERS } from '@/Constants';
-import { IUserSave } from '@/Interfaces/Usser.interface';
 
 const fetchAllUsersManagement = createAsyncThunk(
     'usersManagement/fetchAllUsersManagement',

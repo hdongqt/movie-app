@@ -67,7 +67,6 @@ const CommentsManagementSlice = createSlice({
                 };
             })
             .addCase(createComment.fulfilled, (state, action: any) => {
-                console.log(action.payload);
                 return {
                     ...state,
                     isActionLoading: true,

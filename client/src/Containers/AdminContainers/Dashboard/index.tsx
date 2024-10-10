@@ -40,7 +40,7 @@ const AdminDashboard: React.FC = () => {
                     );
                 }
                 setData(null);
-            } catch (error) {
+            } catch {
                 Utils.ToastMessage(
                     'Không thể tìm thấy thông tin thời tiết',
                     'error'
@@ -57,11 +57,11 @@ const AdminDashboard: React.FC = () => {
 
     const __renderContent = () => {
         return (
-            <div>
+            <>
                 <h2 className="font-medium text-gray-900 text-2xl text-center py-5 mt-3 mb-5 bg-slate-200 rounded shadow-lg">
                     Welcome to Dashboard Movie App
                 </h2>
-                <div className="flex justify-center items-center">
+                <div className="flex justify-center items-center bg-sky-100 rounded">
                     <div>
                         <div className="text-lg capitalize">
                             {dayjs().format('dddd, D MMMM')}
@@ -73,7 +73,7 @@ const AdminDashboard: React.FC = () => {
                     </div>
                     <div className="">
                         <img
-                            className="w-32 mx-auto"
+                            className="w-32 mx-auto drop-shadow"
                             src={srcImage}
                             alt="weather icon"
                         />
@@ -87,7 +87,7 @@ const AdminDashboard: React.FC = () => {
                     alt="Banner"
                     className="rounded mt-5"
                 />
-            </div>
+            </>
         );
     };
     return <DefaultLayout portalFor="ADMIN" children={__renderContent()} />;

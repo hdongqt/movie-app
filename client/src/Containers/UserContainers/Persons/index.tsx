@@ -31,8 +31,8 @@ import {
     getMovieOfPerson
 } from '@/Redux/Features/Persons/PersonsAction';
 import Urls from '@/Constants/Urls';
-import { MovieSaves } from '@/Redux/Features/Movies';
-const { resetMovieState } = MovieSaves;
+import { MoviesAction } from '@/Redux/Features/Movies';
+const { resetMovieState } = MoviesAction;
 
 const Persons: React.FC = () => {
     const dispatch = useTypedDispatch();

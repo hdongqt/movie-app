@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import { CollapseMenu, NoDataFound } from '@/Components/Common';
@@ -16,14 +16,15 @@ import {
 } from '@/Interfaces/Pagination.interface';
 import _ from 'lodash';
 import { InfiniteScroll } from '@/Components/Common';
-import { MovieSaves } from '@/Redux/Features/Movies';
+import { MoviesAction } from '@/Redux/Features/Movies';
 import { Popover } from 'react-tiny-popover';
 import loadingImage from '@/Assets/Loading/loading.gif';
 import Utils from '@/Utils';
 import { ISelect } from '@/Interfaces/Select.interface';
 import { YEAR_SELECT_LIST } from '@/Constants/Lists/Select.list';
+import { ROUTERS } from '@/Constants';
 
-const { resetMovieState } = MovieSaves;
+const { resetMovieState } = MoviesAction;
 
 const options: ISelect[] = [
     { value: 'createdAt', label: 'Mới nhất' },
@@ -39,11 +40,13 @@ const optionTypeMovie: ISelect[] = [
 const Movies: React.FC = () => {
     const dispatch = useTypedDispatch();
 
-    const { pathname, state } = useLocation();
-    const genreId = state?.genreId;
+    const { state } = useLocation();
 
     const movieList: any = useSelector(
         (state: RootState) => state.MOVIES.movieLists
+    );
+    const filterSave: any = useSelector(
+        (state: RootState) => state.MOVIES.filtersSave
     );
     const pagination: IPaginationFilter = useSelector((state: RootState) =>
         _.get(state.MOVIES, 'pagination')
@@ -58,9 +61,9 @@ const Movies: React.FC = () => {
     const genreLists: IGenre[] = useSelector(
         (state: RootState) => state.APP_STATE.genreLists
     );
-
     const [filters, setFilters] = useState<IMoviePaginationFilter>(pagination);
     const [isShowMenu, setIsShowMenu] = useState(false);
+    const buttonClickedRef = useRef(false);
 
     const handleOptionSortChange = (option: ISelect | null) => {
         if (option?.value && option.value !== _.get(pagination, 'sortBy'))
@@ -73,29 +76,32 @@ const Movies: React.FC = () => {
     };
 
     useEffect(() => {
-        if (filters.isFetchNew)
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        dispatch(fetchAllMovies(filters));
+        if (!filterSave) {
+            if (filters.isFetchNew)
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            dispatch(fetchAllMovies(filters));
+        } else setFilters(filterSave);
     }, [filters]);
 
     useEffect(() => {
-        if (genreId)
-            setFilters({
-                ...filters,
-                searchBy: 'all',
-                isFetchNew: true,
-                genre: genreId ? [genreId] : []
-            });
-    }, [genreId]);
-
-    useEffect(() => {
+        const genreId = state?.genreId;
+        setFilters({
+            ...pagination,
+            page: 1,
+            searchBy: 'all',
+            isFetchNew: true,
+            genre: genreId ? [genreId] : []
+        });
         return () => {
-            dispatch(resetMovieState());
+            if (!buttonClickedRef.current) dispatch(resetMovieState());
+            buttonClickedRef.current = false;
         };
-    }, [pathname]);
+    }, [state]);
+
+    useEffect(() => {}, []);
 
     const handleGenreChange = (id: string) => {
         let genreList = filters?.genre ? [...filters.genre] : [];
@@ -127,6 +133,7 @@ const Movies: React.FC = () => {
                 year: option.value
             });
     };
+
     const __renderContent = () => {
         return (
             <div className="w-full flex lg:flex-row flex-col-reverse mt-16">
@@ -205,7 +212,7 @@ const Movies: React.FC = () => {
                             loadingComponent={
                                 <>
                                     {filters.isFetchNew && isFetchLoading ? (
-                                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10 mt-4">
+                                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-4">
                                             {Array(8)
                                                 .fill(0)
                                                 .map((_, index) => (
@@ -238,13 +245,24 @@ const Movies: React.FC = () => {
                                 <NoDataFound firstClassImg={'h-64'} />
                             )}
                             {movieList?.length > 0 && (
-                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10 mt-4">
+                                <div className="cursor-pointer grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-4">
                                     {movieList.map(
                                         (movie: IMovie, index: number) => {
                                             return (
-                                                <Link
+                                                <div
                                                     key={movie?.id + index}
-                                                    to={`/film/${movie?.id}`}
+                                                    onClick={() => {
+                                                        buttonClickedRef.current =
+                                                            true;
+                                                        Utils.redirect(
+                                                            `${ROUTERS.FILM}/${movie?.id}`,
+                                                            { filters }
+                                                        );
+                                                    }}
+                                                    // to={`/film/${movie?.id}`}
+                                                    // state={{
+                                                    //     filters: filters
+                                                    // }}
                                                     className="rounded-lg overflow-hidden relative group shadow-inner"
                                                 >
                                                     <div className="overflow-hidden h-80">
@@ -291,7 +309,7 @@ const Movies: React.FC = () => {
                                                             }
                                                         </h3>
                                                     </div>
-                                                </Link>
+                                                </div>
                                             );
                                         }
                                     )}

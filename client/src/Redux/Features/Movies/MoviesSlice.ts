@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchAllMovies, getMovie } from './MoviesAction';
+import { fetchAllMovies, getMovie, addMovieToFavorites } from './MoviesAction';
 import {
     DEFAULT_PAGINATION,
     DEFAULT_LOADING_STATES
@@ -19,7 +19,8 @@ const initialState = {
     meta: null,
     movieLists: [],
     movieDetail: null,
-    similarMovies: []
+    similarMovies: [],
+    filtersSave: null
 };
 
 export const MoviesSlice = createSlice({
@@ -34,6 +35,9 @@ export const MoviesSlice = createSlice({
         },
         resetMovieState: () => {
             return { ...initialState };
+        },
+        setFiltersSave: (state, action) => {
+            return { ...state, filtersSave: action.payload };
         }
     },
     extraReducers(builder) {
@@ -89,10 +93,43 @@ export const MoviesSlice = createSlice({
                     isGetLoading: false,
                     isError: true
                 };
+            })
+            .addCase(addMovieToFavorites.pending, (state, action) => {
+                return {
+                    ...state,
+                    isActionLoading: true,
+                    isError: false
+                };
+            })
+            .addCase(addMovieToFavorites.fulfilled, (state, action) => {
+                return {
+                    ...state,
+                    isActionLoading: false,
+                    isError: false
+                };
+            })
+            .addCase(addMovieToFavorites.rejected, (state) => {
+                return {
+                    ...state,
+                    isActionLoading: false,
+                    isError: true
+                };
             });
     }
 });
 
-export const { resetMovieState, setMoviesMeta, setMoviesPagination } =
-    MoviesSlice.actions;
+export const {
+    resetMovieState,
+    setMoviesMeta,
+    setMoviesPagination,
+    setFiltersSave
+} = MoviesSlice.actions;
+
+export const MoviesAction = {
+    fetchAllMovies,
+    getMovie,
+    addMovieToFavorites,
+    ...MoviesSlice.actions
+};
+
 export default MoviesSlice.reducer;

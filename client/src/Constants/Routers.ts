@@ -10,7 +10,8 @@ const USER_ROUTERS = {
     FILM_DETAIL: '/film/:id',
     SEARCH: '/search',
     GENRES: '/genres',
-    FAVORITES: '/favorites'
+    FAVORITES: '/favorites',
+    PROFILE: '/profile'
 };
 
 const ADMIN_ROUTERS = {

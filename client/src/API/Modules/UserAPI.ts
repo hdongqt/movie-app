@@ -1,7 +1,7 @@
 import { IPaginationFilter } from '@/Interfaces/Pagination.interface';
 import APIClient from '../Client/APIClient';
 import { API } from '@/Constants';
-import { IUserSave } from '@/Interfaces/Usser.interface';
+import { IUpdateProfile } from '@/Interfaces/User.interface';
 const { USER } = API;
 
 const fetchUsers = async (payload: IPaginationFilter) => {
@@ -12,9 +12,10 @@ const getUser = async (payload: string) => {
     return APIClient.get(`${USER.ROOT}/${payload}`);
 };
 
-const updateUser = async (id: string, payload: IUserSave) => {
-    return APIClient.put(`${USER.ROOT}/${id}`, payload);
+const updateProfile = async (payload: IUpdateProfile) => {
+    return APIClient.put(`${USER.ROOT}/update-profile`, payload);
 };
+
 const activateUser = async (payload: string) => {
     return APIClient.put(`${USER.ACTIVATE_USER}/${payload}`);
 };
@@ -23,10 +24,25 @@ const deactivateUser = async (payload: string) => {
     return APIClient.put(`${USER.DEACTIVATE_USER}/${payload}`);
 };
 
+const fetchFavorites = async (payload: IPaginationFilter) => {
+    return APIClient.get(USER.FAVORITES, { params: payload });
+};
+
+const addMovieToFavorites = async (payload: string) => {
+    return APIClient.post(USER.FAVORITES, { movieId: payload });
+};
+
+const deleteMovieFromFavorites = async (payload: string) => {
+    return APIClient.delete(`${USER.FAVORITES}/${payload}`);
+};
+
 export default {
     fetchUsers,
     getUser,
-    updateUser,
+    updateProfile,
     activateUser,
-    deactivateUser
+    deactivateUser,
+    fetchFavorites,
+    addMovieToFavorites,
+    deleteMovieFromFavorites
 };
