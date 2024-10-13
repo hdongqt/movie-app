@@ -9,8 +9,6 @@ const UserController = {};
 
 UserController.fetchAllUser = async (req, res) => {
   try {
-    const { status = STATUS.ALL } = req.query;
-
     const convertDataForPagination =
       await COMMON_HELPERS.convertDataForPaginate(req.query);
     const payload = await UserService.fetchAllUser(
@@ -103,16 +101,47 @@ UserController.deactivateUser = async (req, res) => {
 UserController.updateProfile = async (req, res) => {
   try {
     const { displayName } = req.body;
-    const user = await UserService.User.findById(req?.user?.id);
+    const user = await UserService.findById(req?.user?.id);
     if (!user) {
       return responseHandler.buildResponseFailed(res, {
-        type: RESPONSE_TYPE.BAD_REQUEST,
-        message: "Không tìm thấy người dùng",
+        type: RESPONSE_TYPE.UNAUTHORIZED,
+        message: "Vui lòng đăng nhập",
       });
     }
     const payload = await UserService.updateUser(user, { displayName });
     responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
       payload: payload,
+    });
+  } catch (error) {
+    console.log(error);
+    responseHandler.buildResponseFailed(res, error);
+  }
+};
+
+UserController.updatePassword = async (req, res) => {
+  try {
+    const user = await UserService.User.findOne({
+      _id: req?.user?.id,
+      status: "active",
+    }).select("id password salt");
+    if (!user) {
+      return responseHandler.buildResponseFailed(res, {
+        type: RESPONSE_TYPE.UNAUTHORIZED,
+        message: "Vui lòng đăng nhập",
+      });
+    }
+
+    const { password, newPassword } = req.body;
+    if (!user.validPassword(password))
+      return responseHandler.buildResponseFailed(res, {
+        type: RESPONSE_TYPE.BAD_REQUEST,
+        message: "Sai mật khẩu",
+      });
+
+    user.setPassword(newPassword);
+    await user.save();
+    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+      message: "Thay đổi mật khẩu thành công",
     });
   } catch (error) {
     console.log(error);

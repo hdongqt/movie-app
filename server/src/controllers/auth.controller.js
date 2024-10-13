@@ -2,7 +2,6 @@ import userModel from "../models/user.model.js";
 import jsonwebtoken from "jsonwebtoken";
 import responseHandler from "../handlers/response.handler.js";
 
-import MovieService from "./../services/movie.service.js";
 import { Constants } from "../helpers/constants.js";
 import COMMON_HELPERS from "../helpers/common.js";
 import _ from "lodash";

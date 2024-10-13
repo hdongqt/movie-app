@@ -1,5 +1,6 @@
 import _ from "lodash";
 import jsonwebtoken from "jsonwebtoken";
+import axios from "axios";
 
 const paginateData = async ({
   model,
@@ -34,6 +35,28 @@ const paginateData = async ({
       if (!hasAddFields)
         updatedQueryOp = [...updatedQueryOp, { $addFields: { id: "$_id" } }];
       if (!hasUnset) updatedQueryOp = [...updatedQueryOp, { $unset: ["_id"] }];
+      if (select) {
+        const keys = select.split(" ");
+        if (keys?.[0]) {
+          if (
+            keys[0].startsWith("-") &&
+            keys.find((item) => !item.startsWith("-"))
+          )
+            throw new Error(
+              `Invalid $project operation: Can only use either inclusion or exclusion
+              , not both, in the same $project stage (with the exception of the _id field) "${select}".`
+            );
+        }
+        const result = keys.reduce((acc, key) => {
+          if (key.startsWith("-")) {
+            acc[key.substring(1)] = 0;
+          } else {
+            acc[key] = 1;
+          }
+          return acc;
+        }, {});
+        updatedQueryOp = [...updatedQueryOp, { $project: result }];
+      }
       const aggregationResult = await model.aggregate([
         ...updatedQueryOp,
         {
@@ -94,9 +117,24 @@ const convertDataForPaginate = async (query) => {
 }
  **/
 
-const transformMovies = (movie) => {
+const getDataEpisodes = async (url) => {
+  try {
+    const response = await axios.get(`${process.env.OPHIM_LINK}/phim/${url}`);
+    const episodes = _.get(response, "data.episodes[0].server_data");
+    if (!episodes?.length) return null;
+    return episodes.map((episode) => ({
+      name: `Tập ${episode?.name}`,
+      path: [episode?.link_embed, episode?.link_m3u8],
+      id: `${url}-episode-${episode.slug}`,
+    }));
+  } catch {
+    return null;
+  }
+};
+
+const transformMovies = async (movie, isAdmin) => {
   if (!movie) return null;
-  return {
+  const movieHandler = {
     ...movie.toObject(),
     persons: movie.persons.map((person) => {
       const { movies, ...personValue } = person.toObject();
@@ -108,6 +146,13 @@ const transformMovies = (movie) => {
         ),
       };
     }),
+  };
+  if (isAdmin) return movieHandler;
+  return {
+    ...movieHandler,
+    episodes:
+      (movieHandler?.url && (await getDataEpisodes(movieHandler.url))) ||
+      movieHandler.episodes,
   };
 };
 

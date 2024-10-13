@@ -1,7 +1,7 @@
 import { IPaginationFilter } from '@/Interfaces/Pagination.interface';
 import APIClient from '../Client/APIClient';
 import { API } from '@/Constants';
-import { IUpdateProfile } from '@/Interfaces/User.interface';
+import { IUpdatePassword, IUpdateProfile } from '@/Interfaces/User.interface';
 const { USER } = API;
 
 const fetchUsers = async (payload: IPaginationFilter) => {
@@ -14,6 +14,10 @@ const getUser = async (payload: string) => {
 
 const updateProfile = async (payload: IUpdateProfile) => {
     return APIClient.put(`${USER.ROOT}/update-profile`, payload);
+};
+
+const updatePassword = async (payload: IUpdatePassword) => {
+    return APIClient.put(`${USER.ROOT}/update-password`, payload);
 };
 
 const activateUser = async (payload: string) => {
@@ -40,6 +44,7 @@ export default {
     fetchUsers,
     getUser,
     updateProfile,
+    updatePassword,
     activateUser,
     deactivateUser,
     fetchFavorites,

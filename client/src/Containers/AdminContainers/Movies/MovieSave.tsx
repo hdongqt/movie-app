@@ -152,7 +152,10 @@ const MovieSave: React.FC = () => {
                 formData.append('persons[]', JSON.stringify(person));
             });
             episodes.forEach((episode) => {
-                formData.append('episodes[]', JSON.stringify(episode));
+                formData.append(
+                    'episodes[]',
+                    JSON.stringify({ ...episode, path: [episode.path] })
+                );
             });
             if (!isHasChangeImage.thumbnail) formData.delete('thumbnail');
             if (!isHasChangeImage.poster) formData.delete('poster');
@@ -223,15 +226,14 @@ const MovieSave: React.FC = () => {
     };
 
     useEffect(() => {
-        if (state?.id && pathname.endsWith('update'))
+        if (state?.id || pathname.endsWith('create'))
             dispatch(
                 getMovieMetaData({
-                    isGetDetail: !!state.id,
-                    id: state.id
+                    isGetDetail: !!state?.id,
+                    id: state?.id
                 })
             );
-        else if (!pathname.includes('create'))
-            Utils.redirect(ROUTERS.MOVIES_MANAGEMENT);
+        else Utils.redirect(ROUTERS.MOVIES_MANAGEMENT);
     }, [state]);
 
     useEffect(() => {
@@ -266,7 +268,7 @@ const MovieSave: React.FC = () => {
                         movieDetail?.episodes.length > 0
                             ? movieDetail.episodes.map((episode) => ({
                                   name: episode.name,
-                                  path: episode.path
+                                  path: episode?.path?.[0] || ''
                               }))
                             : [{ name: '', path: '' }],
                     thumbnail: thumbnailHandle,

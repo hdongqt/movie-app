@@ -12,7 +12,7 @@ export interface IPersonMovie {
 
 export interface IEpisodeMovie {
     name: string;
-    path: string;
+    path: [string];
     id: string;
 }
 

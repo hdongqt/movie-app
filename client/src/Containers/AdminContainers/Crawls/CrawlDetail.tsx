@@ -104,9 +104,9 @@ const MediaDetail: React.FC = () => {
                                 type="text"
                                 disabled
                                 value={
-                                    !!crawlDetail
+                                    crawlDetail?.finishedAt
                                         ? Utils.formatDateTime(
-                                              crawlDetail.updatedAt
+                                              crawlDetail.finishedAt
                                           )
                                         : ''
                                 }

@@ -8,8 +8,13 @@ import { ProfileAction } from '@/Redux/Features/Profile';
 import { useSelector } from 'react-redux';
 import Utils from '@/Utils';
 import { ISelfProfile } from '@/Interfaces/Auth.interface';
+import { IUpdatePassword, IUpdateProfile } from '@/Interfaces/User.interface';
 
-const { updateProfile } = ProfileAction;
+const { updateProfile, updatePassword } = ProfileAction;
+
+interface IFormUpdatePassword extends IUpdatePassword {
+    confirmPassword: string;
+}
 
 const Profile: React.FC = () => {
     const dispatch = useTypedDispatch();
@@ -24,7 +29,7 @@ const Profile: React.FC = () => {
 
     const [showForm, setShowForm] = useState(0);
 
-    const updateInfoForm = useFormik<{ displayName: string }>({
+    const updateInfoForm = useFormik<IUpdateProfile>({
         initialValues: {
             displayName: selfProfile?.displayName || 'N/A'
         },
@@ -35,8 +40,42 @@ const Profile: React.FC = () => {
                 .required('Hãy nhập tên của bạn')
         }),
         onSubmit: async (values) => {
-            console.log(values);
-            dispatch(updateProfile(values));
+            const resultAction = await dispatch(updateProfile(values));
+            if (resultAction?.meta?.requestStatus === 'fulfilled')
+                setShowForm(0);
+        }
+    });
+
+    const updatePasswordForm = useFormik<IFormUpdatePassword>({
+        initialValues: {
+            password: '',
+            confirmPassword: '',
+            newPassword: ''
+        },
+        validationSchema: Yup.object({
+            password: Yup.string()
+                .trim()
+                .min(8, 'Mật khẩu cần ít nhẩt 8 kí tự')
+                .required('Mật khẩu không hợp lệ'),
+            newPassword: Yup.string()
+                .trim()
+                .min(8, 'Mật khẩu mới cần ít nhẩt 8 kí tự')
+                .required('Mật khẩu không hợp lệ'),
+            confirmPassword: Yup.string()
+                .oneOf(
+                    [Yup.ref('newPassword')],
+                    'Xác nhận mật khẩu không trùng khớp'
+                )
+                .min(8, 'Xác nhận mật khẩu cần ít nhất 8 kí tự')
+                .required('Xác nhận mật khẩu không hợp lệ')
+        }),
+        onSubmit: async (values) => {
+            const { password, newPassword } = values;
+            const resultAction = await dispatch(
+                updatePassword({ password, newPassword })
+            );
+            if (resultAction?.meta?.requestStatus === 'fulfilled')
+                setShowForm(0);
         }
     });
 
@@ -66,16 +105,18 @@ const Profile: React.FC = () => {
                             <p className="text-center text-lg text-zinc-800 font-medium mt-10">
                                 {selfProfile?.email}
                             </p>
-                            <div>
+                            <div className="grid grid-cols-1 md:gap-2 md:grid-cols-2">
                                 <button
                                     onClick={() => setShowForm(1)}
-                                    className="font-semibold mt-8 mr-2 border-2 text-white bg-gradient-to-r from-red-600 to-pink-700 py-2.5 px-4 rounded-full hover:opacity-90 transition"
+                                    disabled={isActionLoading}
+                                    className="w-full font-semibold mt-8 mr-2 border-2 text-white bg-gradient-to-r from-red-600 to-pink-700 py-2.5 px-4 rounded-full hover:opacity-90 transition"
                                 >
                                     Thay đổi thông tin
                                 </button>
                                 <button
                                     onClick={() => setShowForm(2)}
-                                    className="font-semibold mt-8 border-2 text-white bg-gradient-to-r from-blue-700 to-pink-800 py-2.5 px-4 rounded-full hover:opacity-90 transition"
+                                    disabled={isActionLoading}
+                                    className="w-full font-semibold mt-8 border-2 text-white bg-gradient-to-r from-blue-700 to-pink-800 py-2.5 px-4 rounded-full hover:opacity-90 transition"
                                 >
                                     Thay đổi mật khẩu
                                 </button>
@@ -94,6 +135,7 @@ const Profile: React.FC = () => {
                                             <input
                                                 type="text"
                                                 name="displayName"
+                                                disabled={isActionLoading}
                                                 placeholder="Nhập tên của bạn"
                                                 className="border py-2.5 pl-6 pr-4 min-w-72 outline-none border-gray-400 rounded-full"
                                                 onChange={
@@ -132,9 +174,6 @@ const Profile: React.FC = () => {
                                             }
                                             `}
                                         >
-                                            {isActionLoading && (
-                                                <span className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"></span>
-                                            )}
                                             Huỷ bỏ
                                         </button>
                                         <button
@@ -158,19 +197,41 @@ const Profile: React.FC = () => {
                                 </form>
                             )}
                             {showForm === 2 && (
-                                <form className="mt-8 flex flex-col gap-2.5">
+                                <form
+                                    onSubmit={updatePasswordForm.handleSubmit}
+                                    autoComplete="off"
+                                    className="mt-8 flex flex-col gap-2.5"
+                                >
                                     <div className="flex items-center gap-7">
                                         <div className="flex flex-col gap-1">
                                             <label className="font-medium text-black pl-2">
-                                                Mật khẩu cũ
+                                                Mật khẩu hiện tại
                                             </label>
                                             <input
                                                 type="text"
-                                                name="email"
+                                                name="password"
                                                 placeholder="Nhập tên của bạn"
+                                                disabled={isActionLoading}
                                                 className="border py-2.5 pl-6 pr-4 min-w-72 outline-none border-gray-400 rounded-full"
-                                                value=""
+                                                onChange={
+                                                    updatePasswordForm.handleChange
+                                                }
+                                                value={
+                                                    updatePasswordForm.values
+                                                        .password
+                                                }
                                             />
+                                            {updatePasswordForm.touched
+                                                .password &&
+                                                updatePasswordForm.errors
+                                                    .password !== undefined && (
+                                                    <span className="text-sm font-semibold text-red-600 pl-2">
+                                                        {
+                                                            updatePasswordForm
+                                                                .errors.password
+                                                        }
+                                                    </span>
+                                                )}
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-7">
@@ -180,11 +241,31 @@ const Profile: React.FC = () => {
                                             </label>
                                             <input
                                                 type="text"
-                                                name="email"
-                                                placeholder="Nhập tên của bạn"
+                                                name="newPassword"
+                                                placeholder="Nhập mật khẩu mới"
+                                                disabled={isActionLoading}
                                                 className="border py-2.5 pl-6 pr-4 min-w-72 outline-none border-gray-400 rounded-full"
-                                                value=""
+                                                onChange={
+                                                    updatePasswordForm.handleChange
+                                                }
+                                                value={
+                                                    updatePasswordForm.values
+                                                        .newPassword
+                                                }
                                             />
+                                            {updatePasswordForm.touched
+                                                .newPassword &&
+                                                updatePasswordForm.errors
+                                                    .newPassword !==
+                                                    undefined && (
+                                                    <span className="text-sm font-semibold text-red-600 pl-2">
+                                                        {
+                                                            updatePasswordForm
+                                                                .errors
+                                                                .newPassword
+                                                        }
+                                                    </span>
+                                                )}
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-7">
@@ -194,26 +275,64 @@ const Profile: React.FC = () => {
                                             </label>
                                             <input
                                                 type="text"
-                                                name="email"
+                                                name="confirmPassword"
+                                                disabled={isActionLoading}
                                                 placeholder="Nhập tên của bạn"
                                                 className="border py-2.5 pl-6 pr-4 min-w-72 outline-none border-gray-400 rounded-full"
-                                                value=""
+                                                onChange={
+                                                    updatePasswordForm.handleChange
+                                                }
+                                                value={
+                                                    updatePasswordForm.values
+                                                        .confirmPassword
+                                                }
                                             />
+                                            {updatePasswordForm.touched
+                                                .confirmPassword &&
+                                                updatePasswordForm.errors
+                                                    .confirmPassword !==
+                                                    undefined && (
+                                                    <span className="text-sm font-semibold text-red-600 pl-2">
+                                                        {
+                                                            updatePasswordForm
+                                                                .errors
+                                                                .confirmPassword
+                                                        }
+                                                    </span>
+                                                )}
                                         </div>
                                     </div>
                                     <div className="flex justify-center mb-6">
                                         <button
                                             onClick={() => setShowForm(0)}
-                                            className="font-semibold mt-6 w-28 mr-2 py-2.5 border hover:bg-red-500 text-red-600 hover:text-white border-red-500 :text-white px-7 flex items-center justify-center rounded-full hover:opacity-90 transition"
+                                            type="button"
+                                            disabled={isActionLoading}
+                                            className={`font-semibold mt-6 w-28 gap-2 mr-2 py-2.5 border flex items-center justify-center rounded-full hover:opacity-90 transition
+                                            ${
+                                                isActionLoading
+                                                    ? 'bg-gray-400 text-white'
+                                                    : 'hover:bg-red-500 text-red-600 hover:text-white border-red-500'
+                                            }
+                                            `}
                                         >
                                             Huỷ bỏ
                                         </button>
-                                        <button className="mt-6 mr-2 py-2.5 border-2 text-white bg-red-600 px-7 flex items-center justify-center rounded-full hover:opacity-90 transition">
-                                            {isActionLoading ? (
+                                        <button
+                                            type="submit"
+                                            disabled={isActionLoading}
+                                            className={`font-semibold mt-6 w-28 py-2.5 border-2 text-white
+                                             flex items-center justify-center gap-2 rounded-full hover:opacity-90 transition
+                                             ${
+                                                 isActionLoading
+                                                     ? 'bg-gray-400'
+                                                     : 'bg-red-600 hover:bg-red-700'
+                                             }
+                                             `}
+                                        >
+                                            {isActionLoading && (
                                                 <span className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"></span>
-                                            ) : (
-                                                'Lưu'
                                             )}
+                                            Lưu
                                         </button>
                                     </div>
                                 </form>

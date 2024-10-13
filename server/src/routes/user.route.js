@@ -9,6 +9,11 @@ router.put(
   TokenMiddleware.auth,
   UserController.updateProfile
 );
+router.put(
+  "/update-password",
+  TokenMiddleware.auth,
+  UserController.updatePassword
+);
 router.get(
   "/favorites",
   TokenMiddleware.auth,

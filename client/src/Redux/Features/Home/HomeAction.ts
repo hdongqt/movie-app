@@ -10,19 +10,19 @@ const fetchAllMediaHome = createAsyncThunk(
             const [resRecommend, resSingleMovies, resTVSeries, resRatingMovie] =
                 await Promise.all([
                     MovieAPI.getRecommendMovies(),
-                    MovieAPI.fetchMoviesForUser({
+                    MovieAPI.fetchMovies({
                         page: 1,
                         limit: 15,
                         sortBy: 'createdAt',
                         searchBy: 'single'
                     }),
-                    MovieAPI.fetchMoviesForUser({
+                    MovieAPI.fetchMovies({
                         page: 1,
                         limit: 15,
                         sortBy: 'createdAt',
                         searchBy: 'tv'
                     }),
-                    MovieAPI.fetchMoviesForUser({
+                    MovieAPI.fetchMovies({
                         page: 1,
                         limit: 15,
                         sortBy: 'averageRating'

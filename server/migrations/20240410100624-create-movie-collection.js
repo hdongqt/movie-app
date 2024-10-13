@@ -32,7 +32,6 @@ export async function down(db, __) {
     await db.dropCollection("countries");
     await db.dropCollection("episodes");
     await db.dropCollection("genres");
-    await db.dropCollection("images");
     await db.dropCollection("people");
     await db.dropCollection("comments");
     await db.dropCollection("users");

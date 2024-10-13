@@ -7,7 +7,7 @@ export const fetchAllSlides = createAsyncThunk(
     'SliderMaker/fetchAllSlides',
     async (__, thunkApi) => {
         try {
-            const response = await MovieAPI.fetchMoviesForUser({
+            const response = await MovieAPI.fetchMovies({
                 page: 1,
                 limit: 10,
                 sortBy: 'createdAt'

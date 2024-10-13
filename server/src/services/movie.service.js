@@ -78,7 +78,7 @@ MovieService.fetchAllMovie = async (paginationOptions, params) => {
       },
     },
     {
-      $unset: ["episodes", "persons", "countries", "releaseYear"],
+      $unset: ["episodes", "persons", "countries", "genres", "releaseYear"],
     },
   ];
 
@@ -114,6 +114,7 @@ MovieService.getTrendingMovies = async (paginationOptions) => {
     model: Movie,
     queryOptions: queryOp,
     paginationOptions: paginationOptions,
+    select: "-episodes -persons -countries -genres",
   });
 };
 
@@ -134,7 +135,9 @@ MovieService.getRecommendMovie = async () => {
   if (!genres || genres.length === 0)
     return await Movie.find({
       status: "active",
-    }).limit(2);
+    })
+      .select("-episodes -persons -countries -genres")
+      .limit(2);
   const listIdGenres = genres.map(async (item) => {
     return await Movie.aggregate([
       { $match: { genres: item._id, status: "active" } },
@@ -164,7 +167,7 @@ MovieService.getRecommendMovie = async () => {
       },
       { $sort: { createdAt: -1 } },
       { $limit: 5 },
-      { $unset: ["episodes", "persons", "countries", "_id"] },
+      { $unset: ["episodes", "persons", "countries", "_id", "-genres"] },
     ]);
   });
   const result = await Promise.all(listIdGenres);
@@ -198,7 +201,7 @@ MovieService.getSimilarMovie = async (id) => {
         },
       },
       {
-        $unset: ["episodes", "persons", "countries", "_id"],
+        $unset: ["episodes", "persons", "countries", "_id", "-genres"],
       },
       { $sort: { createdAt: -1 } },
       { $limit: 30 },
@@ -208,7 +211,7 @@ MovieService.getSimilarMovie = async (id) => {
   return [];
 };
 
-MovieService.getMovie = async (idMovie) => {
+MovieService.getMovieForUser = async (idMovie) => {
   const movie = await Movie.findOne({
     _id: idMovie,
     status: { $ne: "terminated" },
@@ -228,11 +231,34 @@ MovieService.getMovie = async (idMovie) => {
       path: "episodes",
       select: "-movies",
     });
-  return COMMON_HELPERS.transformMovies(movie);
+  return await COMMON_HELPERS.transformMovies(movie, false);
+};
+
+MovieService.getMovieForAdmin = async (idMovie) => {
+  const movie = await Movie.findOne({
+    _id: idMovie,
+    status: { $ne: "terminated" },
+  })
+    .populate({
+      path: "persons",
+    })
+    .populate({
+      path: "genres",
+      select: "-movies",
+    })
+    .populate({
+      path: "countries",
+      select: "-movies",
+    })
+    .populate({
+      path: "episodes",
+      select: "-movies",
+    });
+  return await COMMON_HELPERS.transformMovies(movie, true);
 };
 
 MovieService.getMovieOfPerson = async (paginationOptions, idPerson) => {
-  const select = "-persons -episodes -countries";
+  const select = "-persons -episodes -countries -genres";
   const queryOp = {
     persons: mongoose.Types.ObjectId.createFromHexString(idPerson),
     status: "active",
@@ -268,7 +294,7 @@ MovieService.updateMovie = async (id, movie) => {
   try {
     const session = TransactionService.getSession();
     if (!session) {
-      throw new Error("No active transaction session found.");
+      throw new Error("Transaction không tồn tại");
     }
 
     const movieFind = await MovieService.Movie.findById(id);

@@ -5,7 +5,6 @@ import axios from "axios";
 import TransactionService from "../transaction.service.js";
 import MovieService from "../movie.service.js";
 import PersonService from "../person.service.js";
-import responseHandler from "../../handlers/response.handler.js";
 const { handleSpecialChars } = COMMON_HELPERS;
 
 const MovieCrawlService = {};
@@ -83,11 +82,12 @@ MovieCrawlService.getDetailMovie = async (slug) => {
       ? data.episodes[0].server_data.map((e) => {
           return {
             name: `Tập ${e.name}`,
-            path: e?.link_embed || e?.link_m3u8,
+            path: [e?.link_embed, e?.link_m3u8],
           };
         })
       : [],
     status: "active",
+    url: slug,
     persons: [...actors, ...creators],
   };
 };

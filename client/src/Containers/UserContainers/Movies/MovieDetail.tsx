@@ -27,7 +27,7 @@ const { getMovie, setFiltersSave, addMovieToFavorites } = MoviesAction;
 
 interface VideoPlayState {
     name: string;
-    path: string;
+    path: [string];
     // status: string;
 }
 
@@ -123,11 +123,13 @@ const MediaDetail: React.FC = () => {
     });
 
     const [videoPlay, setVideoPlay] = useState<VideoPlayState | null>(null);
+    const [urlPlaying, setUrlPlaying] = useState<string>('');
 
     const [commentsMovie, setCommentMovie] = useState<any>([]);
 
     const handlePlayMovie = (video: VideoPlayState) => {
         setVideoPlay(video);
+        setUrlPlaying(video?.path?.[0]);
         !isWatch && history('/film/' + movieDetail?.id + '/watch');
     };
 
@@ -154,9 +156,11 @@ const MediaDetail: React.FC = () => {
         if (isWatch && movieDetail && !videoPlay) {
             const videoFirstUrl = _.get(movieDetail, 'episodes[0]');
             setVideoPlay(videoFirstUrl);
+            setUrlPlaying(videoFirstUrl?.path?.[0] || '');
         }
         if (!isWatch && movieDetail) {
             setVideoPlay(null);
+            setUrlPlaying('');
         }
     }, [movieDetail, isWatch]);
 
@@ -348,7 +352,7 @@ const MediaDetail: React.FC = () => {
                         <>
                             {isWatch && videoPlay && (
                                 <div className="h-52 md:h-72 lg:h-96 relative">
-                                    <MovieWatch urlVideo={videoPlay?.path} />
+                                    <MovieWatch urlVideo={urlPlaying} />
                                 </div>
                             )}
                             {!isWatch && (
@@ -513,6 +517,53 @@ const MediaDetail: React.FC = () => {
                         <Tabs>
                             <Tab title="Tập phim">
                                 <div className="pt-4 px-4 pb-3">
+                                    {isWatch && (
+                                        <>
+                                            <p className="uppercase font-semibold text-lg text-gray-900 border-b border-slate-300">
+                                                Server
+                                            </p>
+                                            {!isGetLoading && (
+                                                <div className="flex gap-4 my-4 flex-wrap w-full max-h-40 overflow-y-auto">
+                                                    {videoPlay &&
+                                                        videoPlay?.path.map(
+                                                            (
+                                                                item: any,
+                                                                index: number
+                                                            ) => (
+                                                                <button
+                                                                    key={`episodeServer${index}`}
+                                                                    className={`focus:outline-none text-white text-sm py-2 md:py-2.5 px-3 md:px-5 rounded-md
+                ${
+                    item === urlPlaying
+                        ? 'opacity-90 bg-red-800 cursor-default'
+                        : 'hover:opacity-60 bg-stone-800 transition hover:shadow-lg'
+                }
+                `}
+                                                                    onClick={() =>
+                                                                        item !==
+                                                                            urlPlaying &&
+                                                                        setUrlPlaying(
+                                                                            item
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    {`Server ${
+                                                                        index +
+                                                                        1
+                                                                    }`}
+                                                                </button>
+                                                            )
+                                                        )}
+                                                </div>
+                                            )}
+                                            {isGetLoading && (
+                                                <div className="py-2">
+                                                    <Skeleton heightRow={100} />
+                                                </div>
+                                            )}
+                                        </>
+                                    )}
+
                                     <p className="uppercase font-semibold text-lg text-gray-900 border-b border-slate-300">
                                         Danh sách tập
                                     </p>
@@ -530,7 +581,7 @@ const MediaDetail: React.FC = () => {
                                                         index: number
                                                     ) => (
                                                         <button
-                                                            key={`espisodeMedia${index}`}
+                                                            key={`episodeMedia${index}`}
                                                             className={`focus:outline-none text-white text-sm py-2 md:py-2.5 px-3 md:px-5 rounded-md
                                                     ${
                                                         JSON.stringify(item) ===

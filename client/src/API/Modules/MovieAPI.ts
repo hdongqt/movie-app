@@ -8,8 +8,8 @@ const fetchMovies = async (payload: IMoviePaginationFilter) => {
     return APIClient.get(MOVIE.ROOT, { params: payload });
 };
 
-const fetchMoviesForUser = async (payload: IMoviePaginationFilter) => {
-    return APIClient.get(MOVIE.FETCH_FOR_USER, { params: payload });
+const fetchMoviesForAdmin = async (payload: IMoviePaginationFilter) => {
+    return APIClient.get(MOVIE.FETCH_FOR_ADMIN, { params: payload });
 };
 
 const getMovie = async (id: string) => {
@@ -57,7 +57,7 @@ const getMovieOfPerson = async (payload: any) => {
 
 export default {
     fetchMovies,
-    fetchMoviesForUser,
+    fetchMoviesForAdmin,
     getMovie,
     createMovie,
     updateMovie,

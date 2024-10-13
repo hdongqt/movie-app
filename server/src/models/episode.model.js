@@ -9,9 +9,11 @@ export default mongoose.model(
         type: String,
         required: true,
       },
-      path: {
-        type: String,
-      },
+      path: [
+        {
+          type: String,
+        },
+      ],
       status: { type: String, enum: ["active", "inactive"], default: "active" },
     },
     modelOptions

@@ -11,7 +11,7 @@ const fetchAllMovies = createAsyncThunk(
     async (payload: IMoviePaginationFilter, thunkApi) => {
         try {
             const { isFetchNew = true, ...restPayload } = payload;
-            const movieLists = await MovieAPI.fetchMoviesForUser(restPayload);
+            const movieLists = await MovieAPI.fetchMovies(restPayload);
             const meta = _.get(movieLists, 'payload.meta', []);
             const currentState = thunkApi.getState() as RootState;
             const result = isFetchNew

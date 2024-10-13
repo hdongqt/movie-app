@@ -9,7 +9,7 @@ const fetchAllMoviesManagement = createAsyncThunk(
     'MoviesManagement/fetchAllMoviesManagement',
     async (payload: IMoviePaginationFilter, thunkApi) => {
         try {
-            const response = await MovieAPI.fetchMovies(payload);
+            const response = await MovieAPI.fetchMoviesForAdmin(payload);
             const meta = _.get(response, 'payload.meta', []);
             const movieTable = _.get(response, 'payload.data', []);
             return {

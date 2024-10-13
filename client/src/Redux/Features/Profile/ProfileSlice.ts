@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { DEFAULT_LOADING_STATES } from '@/Constants/DefaultPagination';
-import { updateProfile } from './ProfileAction';
+import { updateProfile, updatePassword } from './ProfileAction';
 const initialState = {
     ...DEFAULT_LOADING_STATES,
     isError: false
@@ -36,12 +36,34 @@ const ProfileSlice = createSlice({
                     isActionLoading: false,
                     isError: true
                 };
+            })
+            .addCase(updatePassword.pending, (state) => {
+                return {
+                    ...state,
+                    isActionLoading: true,
+                    isError: false
+                };
+            })
+            .addCase(updatePassword.fulfilled, (state) => {
+                return {
+                    ...state,
+                    isActionLoading: false,
+                    isError: false
+                };
+            })
+            .addCase(updatePassword.rejected, (state) => {
+                return {
+                    ...state,
+                    isActionLoading: false,
+                    isError: true
+                };
             });
     }
 });
 
 export const ProfileAction = {
     updateProfile,
+    updatePassword,
     ...ProfileSlice.actions
 };
 export default ProfileSlice.reducer;

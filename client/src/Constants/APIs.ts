@@ -1,7 +1,7 @@
 export default {
     MOVIE: {
         ROOT: 'movies',
-        FETCH_FOR_USER: 'movies/getforuser',
+        FETCH_FOR_ADMIN: 'movies',
         TRENDING_MOVIE: 'movies/trending',
         RECOMMEND: 'movies/recommend',
         SIMILAR: 'movies/similar',

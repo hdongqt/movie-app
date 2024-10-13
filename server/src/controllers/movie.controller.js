@@ -10,7 +10,7 @@ const { RESPONSE_TYPE, STATUS } = Constants;
 
 const MovieController = {};
 
-MovieController.fetchAllMoviesForUser = async (req, res) => {
+MovieController.fetchAllMovies = async (req, res) => {
   try {
     const convertDataForPagination =
       await COMMON_HELPERS.convertDataForPaginate({
@@ -30,7 +30,7 @@ MovieController.fetchAllMoviesForUser = async (req, res) => {
   }
 };
 
-MovieController.fetchAllMovies = async (req, res) => {
+MovieController.fetchAllMoviesForAdmin = async (req, res) => {
   try {
     const convertDataForPagination =
       await COMMON_HELPERS.convertDataForPaginate(req.query);
@@ -79,7 +79,10 @@ MovieController.getRecommendMovie = async (__, res) => {
 MovieController.getMovie = async (req, res) => {
   try {
     const { id } = req.params;
-    const payload = await MovieService.getMovie(id);
+    const payload =
+      req?.user && req.user.role === Constants.ROLE.ADMIN
+        ? await MovieService.getMovieForAdmin(id)
+        : await MovieService.getMovieForUser(id);
     if (!payload) {
       return responseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.NOT_FOUND,
@@ -120,9 +123,11 @@ MovieController.createMovie = async (req, res) => {
       let episodesParse = [],
         personsParse = [];
       if (episodes && episodes.length) {
-        episodesParse = episodes.map(
-          (episode) => episode && JSON.parse(episode)
-        );
+        episodesParse = episodes.map((episode) => {
+          if (episode) {
+            return JSON.parse(episode);
+          } else return { name: "", path: [] };
+        });
       }
       if (persons && persons.length) {
         personsParse = persons.map((person) => person && JSON.parse(person));

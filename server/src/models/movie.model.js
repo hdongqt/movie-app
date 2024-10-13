@@ -18,7 +18,7 @@ const Movie = mongoose.Schema(
       type: String,
     },
     overview: String,
-    slug: {
+    url: {
       type: String,
       require: true,
       unique: true,
@@ -46,16 +46,5 @@ const Movie = mongoose.Schema(
   },
   modelOptions
 );
-Movie.pre("save", async function (next) {
-  if (this.isModified("vietnameseName")) {
-    let slugConvert = COMMON_HELPERS.convertToSlug(this.vietnameseName);
-    let counter = 1;
-    while (await mongoose.models.Movie.exists({ slug: slugConvert })) {
-      slugConvert = `${slugConvert}${counter}`;
-      counter += 1;
-    }
-    this.slug = slugConvert;
-  }
-  next();
-});
+
 export default mongoose.model("Movie", Movie);
