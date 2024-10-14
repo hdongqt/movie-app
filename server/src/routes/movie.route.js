@@ -8,7 +8,7 @@ const router = express.Router({ mergeParams: true });
 router.get("/recommend", MovieController.getRecommendMovie);
 router.get("/trending", MovieController.getTrendingMovies);
 router.get("/similar/:id", MovieController.getSimilarMovie);
-router.get("/get-for-user", MovieController.fetchAllMovies);
+router.get("/", MovieController.fetchAllMovies);
 router.get("/person/:id", MovieController.getMovieOfPerson);
 router.get("/create", MovieController.createMovie);
 router.put("/activate/:id", MovieController.activateMovie);

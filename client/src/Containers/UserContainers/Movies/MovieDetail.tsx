@@ -524,8 +524,8 @@ const MediaDetail: React.FC = () => {
                                             </p>
                                             {!isGetLoading && (
                                                 <div className="flex gap-4 my-4 flex-wrap w-full max-h-40 overflow-y-auto">
-                                                    {videoPlay &&
-                                                        videoPlay?.path.map(
+                                                    {videoPlay?.path &&
+                                                        videoPlay.path.map(
                                                             (
                                                                 item: any,
                                                                 index: number
