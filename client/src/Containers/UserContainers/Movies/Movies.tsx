@@ -76,14 +76,12 @@ const Movies: React.FC = () => {
     };
 
     useEffect(() => {
-        if (!filterSave) {
-            if (filters.isFetchNew)
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            dispatch(fetchAllMovies(filters));
-        } else setFilters(filterSave);
+        if (filters.isFetchNew)
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        dispatch(fetchAllMovies(filters));
     }, [filters]);
 
     useEffect(() => {
@@ -101,7 +99,9 @@ const Movies: React.FC = () => {
         };
     }, [state]);
 
-    useEffect(() => {}, []);
+    useEffect(() => {
+        if (filterSave) setFilters(filterSave);
+    }, []);
 
     const handleGenreChange = (id: string) => {
         let genreList = filters?.genre ? [...filters.genre] : [];

@@ -141,7 +141,7 @@ const SlideMaker: React.FC = () => {
                                                 <div className="mt-4 lg:mt-10 btnGroup">
                                                     <Link
                                                         to={`/film/${item?.id}`}
-                                                        className="inline-flex group gap-3 bg-gradient-to-r from-red-600 to-red-900 hover:opacity-90 transition duration-300 justify-center items-center px-3.5 md:px-4 py-2 rounded-full"
+                                                        className="inline-flex group gap-3 bg-red-600 border-2 border-transparent hover:border-white transition duration-300 justify-center items-center px-3.5 md:px-4 py-2 rounded-full"
                                                     >
                                                         <span className="">
                                                             <i className="icon-play"></i>

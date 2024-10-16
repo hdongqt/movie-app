@@ -58,9 +58,6 @@ const AdminDashboard: React.FC = () => {
     const __renderContent = () => {
         return (
             <>
-                <h2 className="font-medium text-gray-900 text-2xl text-center py-5 mt-3 mb-5 bg-slate-200 rounded shadow-lg">
-                    Welcome to Dashboard Movie App
-                </h2>
                 <div className="flex justify-center items-center bg-sky-100 rounded">
                     <div>
                         <div className="text-lg capitalize">
@@ -85,7 +82,7 @@ const AdminDashboard: React.FC = () => {
                 <img
                     src={BannerDashboard}
                     alt="Banner"
-                    className="rounded mt-5"
+                    className="rounded mt-5 h-96 object-cover w-full"
                 />
             </>
         );

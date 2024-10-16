@@ -89,9 +89,17 @@ MovieService.fetchAllMovie = async (paginationOptions, params) => {
     sortBy: sortBy,
   });
 };
+
 MovieService.findOneByIdMovie = async (id) => {
   return await Movie.findOne({
     _id: id,
+    status: { $ne: "terminated" },
+  });
+};
+
+MovieService.findByOriginName = async (originName) => {
+  return await Movie.findOne({
+    originalName: originName,
     status: { $ne: "terminated" },
   });
 };

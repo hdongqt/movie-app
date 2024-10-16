@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 
 import { UserContainer } from '@/Containers';
 import { ROUTERS } from '@/Constants';
+import ProtectedRoute from './Protected.routers';
 
 const UserRouters = {
     path: ROUTERS.HOME,
@@ -41,7 +42,11 @@ const UserRouters = {
         },
         {
             path: '/profile',
-            element: <UserContainer.Profile />
+            element: (
+                <ProtectedRoute location={ROUTERS.PROFILE}>
+                    <UserContainer.Profile />
+                </ProtectedRoute>
+            )
         }
     ]
 };

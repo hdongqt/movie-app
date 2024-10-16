@@ -92,18 +92,10 @@ const Persons: React.FC = () => {
     const __renderContent = () => {
         return (
             <div className="w-full flex mt-16">
-                <div className="w-full lg:w-3/4 px-6 mt-2 pb-5">
+                <div className="w-full lg:w-3/4 px-6 mt-3 pb-5">
                     <div className="flex items-center gap-3">
                         {!isGetLoading && (
                             <>
-                                <img
-                                    src={
-                                        personDetail?.avatar ||
-                                        Urls.IMAGE.NO_AVATAR
-                                    }
-                                    alt="person"
-                                    className="w-20 h-20 object-cover rounded-full"
-                                />
                                 <p className="flex-1 font-semibold text-lg md:text-xl border-l-4 text-gray-800 border-red-600 pl-2 line-clamp-1 w-full">
                                     Phim{' '}
                                     <span className="text-red-600">

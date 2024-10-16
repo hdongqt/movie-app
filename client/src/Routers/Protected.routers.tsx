@@ -54,14 +54,13 @@ const ProtectedRoute: React.FC<ISectionProps> = ({ children, location }) => {
             USER_ROUTERS,
             (route: string) => route === location
         );
-        // console.log(isAdminPath, userRole);
         if (userRole !== ROLES.ADMIN && isAdminPath) return false;
-        // if (userRole === ROLES.ADMIN && isUserPath) return false;
+        if (userRole === ROLES.ADMIN && isUserPath) return false;
         return true;
     };
 
     if (!isValidRoute || !checkPathPermission())
-        return <Navigate to={ROUTERS.HOME} replace />;
+        return <Navigate to={ROUTERS.NOT_FOUND} replace />;
 
     return children;
 };

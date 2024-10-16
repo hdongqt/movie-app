@@ -28,16 +28,14 @@ const handleCrawl = async (page) => {
       const result = await MovieCrawlService.createMovies(
         await Promise.all(getAllDetail)
       );
-      if (result?.length) {
-        const movieIds = result.map((item) => item.id);
-        await CrawlService.updateCrawl({
-          id: crawlItem._id,
-          status: "complete",
-          info: `Lấy thành công ${result?.length} bộ phim`,
-          finishedAt: Date.now(),
-          movieIds: movieIds,
-        });
-      }
+      const movieIds = result.map((item) => item.id);
+      await CrawlService.updateCrawl({
+        id: crawlItem._id,
+        status: "complete",
+        info: `Lấy thành công ${result?.length} bộ phim`,
+        finishedAt: Date.now(),
+        movieIds: movieIds,
+      });
       return result;
     }
   } catch (error) {

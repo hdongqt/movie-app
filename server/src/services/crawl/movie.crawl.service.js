@@ -32,8 +32,13 @@ MovieCrawlService.createMovies = async (data) => {
     let isError = false;
     for (const item of data) {
       try {
-        const result = await createMovie(item);
-        asyncResults.push(result);
+        const isExistMovie = await MovieService.findByOriginName(
+          item.originalName
+        );
+        if (!isExistMovie) {
+          const result = await createMovie(item);
+          asyncResults.push(result);
+        }
       } catch (error) {
         isError = true;
         console.error(`Error creating movie: ${item?.title}`, error);
