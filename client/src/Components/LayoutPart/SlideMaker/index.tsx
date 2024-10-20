@@ -76,7 +76,7 @@ const SlideMaker: React.FC = () => {
                                                 {
                                                     '--bg-poster': `url(${item.posterPath})`,
                                                     backgroundImage: `url(
-                                        ${item.thumbnailPath})`
+                                            ${item.thumbnailPath})`
                                                 } as CustomCSSProperties
                                             }
                                         >

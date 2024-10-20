@@ -100,7 +100,7 @@ body {
     }
 }
 
-@keyframes pulse-custom {
+@keyframes pulseCustom {
     0%,
     100% {
         opacity: 1;
@@ -112,6 +112,20 @@ body {
 }
 
 .animate-pulse-custom {
-    animation: pulse-custom 0.5s ease-in-out;
+    animation: pulseCustom 0.5s ease-in-out;
     animation-iteration-count: 1;
+}
+
+@keyframes bounceUpDown {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.animate-bounce-down {
+    animation: bounceUpDown 1.5s infinite linear;
 }

@@ -4,8 +4,6 @@ import MovieCrawlService from "../services/crawl/movie.crawl.service.js";
 import CrawlService from "../services/crawl.service.js";
 import COMMON_HELPERS from "../helpers/common.js";
 import axios from "axios";
-import mongoose from "mongoose";
-import TransactionService from "../services/transaction.service.js";
 
 const { RESPONSE_TYPE } = Constants;
 const CrawlController = {};

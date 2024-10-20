@@ -43,10 +43,10 @@ APIClient.interceptors.response.use(
     },
     async (error) => {
         const originalRequest: any = error.config;
-        if (error?.response?.status === 401 && !isRetry) {
+        const refreshTokenSaved = Utils.getSavedRefreshToken();
+        if (error?.response?.status === 401 && !isRetry && refreshTokenSaved) {
             isRetry = true;
             try {
-                const refreshTokenSaved = Utils.getSavedRefreshToken();
                 if (!refreshTokenSaved) throw error;
                 requestRefreshToken =
                     requestRefreshToken ||

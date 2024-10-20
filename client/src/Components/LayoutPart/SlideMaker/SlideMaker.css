@@ -79,7 +79,7 @@
     position: absolute;
     background: linear-gradient(
         to right,
-        rgb(0, 0, 0) 18%,
+        rgba(0, 0, 0, 0.808) 18%,
         rgba(0, 0, 0, 0.171) 80%
     );
 }
