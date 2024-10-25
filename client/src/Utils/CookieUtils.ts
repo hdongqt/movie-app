@@ -47,13 +47,12 @@ const clearAllSavedData = () => {
 };
 
 const saveGenres = (data: IGenre[]) => {
-    cookies.set(COOKIE_KEYS.GENRE_DATA, data, {
-        path: '/'
-    });
+    sessionStorage.setItem(COOKIE_KEYS.GENRE_DATA, JSON.stringify(data));
 };
 
 const getSavedGenres = () => {
-    return cookies.get(COOKIE_KEYS.GENRE_DATA) || [];
+    const savedGenres = sessionStorage.getItem(COOKIE_KEYS.GENRE_DATA);
+    return !!savedGenres ? JSON.parse(savedGenres) : [];
 };
 
 export default {

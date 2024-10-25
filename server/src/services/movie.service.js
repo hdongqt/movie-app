@@ -214,7 +214,7 @@ MovieService.getSimilarMovie = async (id) => {
       { $sort: { createdAt: -1 } },
       { $limit: 30 },
     ]);
-    return _.slice(_.shuffle(result), 0, 5);
+    return _.slice(result, 0, 5);
   }
   return [];
 };

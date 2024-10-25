@@ -4,7 +4,6 @@ import AdminRouters from './Admin.routers';
 import { useLayoutEffect, useState } from 'react';
 import ScrollToTop from '@/Components/Common/ScrollToTop';
 import history from '@/Utils/Navigation';
-import { Intro } from '@/Components/LayoutPart';
 
 const CustomRouter = ({ history, ...props }: any) => {
     const [state, setState] = useState({
@@ -26,12 +25,7 @@ const CustomRouter = ({ history, ...props }: any) => {
 
 const AppRoutes = () => {
     const routes = useRoutes([UserRouters, AdminRouters, ForbiddenRouter]);
-    return (
-        <>
-            {routes}
-            <Intro />
-        </>
-    );
+    return <>{routes}</>;
 };
 
 const RootRouters = () => {

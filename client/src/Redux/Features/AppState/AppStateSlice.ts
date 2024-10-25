@@ -12,7 +12,6 @@ export const fetchGenres = createAsyncThunk(
                 limit: 0
             });
             const result = _.get(genres, 'payload.data', []);
-            Utils.saveGenres(result);
             return result;
         } catch (error: any) {
             Utils.ToastMessage(error.message, 'error');
@@ -25,7 +24,7 @@ export const AppStateSlice = createSlice({
     name: 'AppState',
     initialState: {
         themeMode: 'dark',
-        isAppLoading: true,
+        isAppLoading: false,
         genreLists: Utils.getSavedGenres(),
         sidebarAdminOpen: false,
         sidebarUserOpen: false

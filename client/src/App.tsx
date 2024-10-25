@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
-import { RootState, useTypedDispatch } from './Redux/Store';
+import { useTypedDispatch } from './Redux/Store';
 import Utils from './Utils';
 import { getInfo } from './Redux/Features/Auth/AuthAction';
 import { AuthAction } from './Redux/Features/Auth';
@@ -20,8 +20,7 @@ const App: React.FC = () => {
             Utils.clearAllSavedData();
             dispatch(resetAuthState());
         }
-        if (!Utils.getSavedGenres() || Utils.getSavedGenres()?.length < 1)
-            dispatch(AppStateAction.fetchGenres());
+        dispatch(AppStateAction.fetchGenres());
     }, []);
 
     return (
