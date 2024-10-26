@@ -128,6 +128,7 @@ MovieService.getTrendingMovies = async (paginationOptions) => {
 
 MovieService.getRecommendMovie = async () => {
   const genres = await Movie.aggregate([
+    { $match: { status: "active" } },
     { $unwind: "$genres" },
     {
       $group: {
@@ -136,7 +137,7 @@ MovieService.getRecommendMovie = async () => {
         movies: { $addToSet: "$_id" },
       },
     },
-    { $match: { count: { $gte: 3 }, status: "active" } },
+    { $match: { count: { $gte: 3 } } },
     { $sample: { size: 10 } },
     { $unset: ["movies"] },
   ]);
@@ -179,6 +180,7 @@ MovieService.getRecommendMovie = async () => {
     ]);
   });
   const result = await Promise.all(listIdGenres);
+  console.log(result?.length);
   if (!result || result.length < 1) return [];
   const mergedResult = result.flat();
   const uniqueList = _.uniqBy(mergedResult, "id");

@@ -20,22 +20,10 @@ const { ROLES } = ENUMS;
 // const { checkRefreshToken } = AuthActions;
 
 const ProtectedRoute: React.FC<ISectionProps> = ({ children, location }) => {
-    // Constructors
-    const dispatch = useTypedDispatch();
-    const token = Utils.getSavedAccessToken();
-    const pathname = useLocation().pathname;
     const savedRefreshToken = Utils.getSavedRefreshToken();
     const userRole = Utils.getRoleUser();
 
     const [isValidRoute, setIsValidRoute] = useState(true);
-
-    const checkTokenLife = (t: string) => {
-        const decodedToken: any = jwtDecode(t);
-        const dateNow = new Date();
-        if (decodedToken.exp < Math.floor(dateNow.getTime() / 1000))
-            return false;
-        return true;
-    };
 
     useEffect(() => {
         if (!userRole || !savedRefreshToken) {

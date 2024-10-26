@@ -29,6 +29,12 @@ const Profile: React.FC = () => {
 
     const [showForm, setShowForm] = useState(0);
 
+    const [showPassword, setShowPassword] = useState({
+        password: false,
+        newPassword: false,
+        confirmPassword: false
+    });
+
     const updateInfoForm = useFormik<IUpdateProfile>({
         initialValues: {
             displayName: selfProfile?.displayName || 'N/A'
@@ -207,20 +213,42 @@ const Profile: React.FC = () => {
                                             <label className="font-medium text-black pl-2">
                                                 Mật khẩu hiện tại
                                             </label>
-                                            <input
-                                                type="text"
-                                                name="password"
-                                                placeholder="Nhập tên của bạn"
-                                                disabled={isActionLoading}
-                                                className="border py-2.5 pl-6 pr-4 min-w-72 outline-none border-gray-400 rounded-full"
-                                                onChange={
-                                                    updatePasswordForm.handleChange
-                                                }
-                                                value={
-                                                    updatePasswordForm.values
-                                                        .password
-                                                }
-                                            />
+                                            <div className="relative">
+                                                <input
+                                                    type={
+                                                        showPassword?.password
+                                                            ? 'text'
+                                                            : 'password'
+                                                    }
+                                                    name="password"
+                                                    onChange={
+                                                        updatePasswordForm.handleChange
+                                                    }
+                                                    value={
+                                                        updatePasswordForm
+                                                            .values.password
+                                                    }
+                                                    placeholder="Nhập mật khẩu hiện tại"
+                                                    className="border py-2.5 pl-6 pr-4 min-w-72 outline-none border-gray-400 rounded-full w-full"
+                                                />
+                                                <span
+                                                    className="absolute top-1/2 right-[2px] -translate-y-1/2 w-11 h-11 flex items-center 
+                        justify-center bg-white hover:bg-gray-200 transition cursor-pointer rounded-full text-lg"
+                                                    onClick={() =>
+                                                        setShowPassword({
+                                                            ...showPassword,
+                                                            password:
+                                                                !showPassword.password
+                                                        })
+                                                    }
+                                                >
+                                                    {showPassword.password ? (
+                                                        <i className="icon-eye-close" />
+                                                    ) : (
+                                                        <i className="icon-eye-open" />
+                                                    )}
+                                                </span>
+                                            </div>
                                             {updatePasswordForm.touched
                                                 .password &&
                                                 updatePasswordForm.errors
@@ -239,20 +267,42 @@ const Profile: React.FC = () => {
                                             <label className="font-medium text-black pl-2">
                                                 Mật khẩu mới
                                             </label>
-                                            <input
-                                                type="text"
-                                                name="newPassword"
-                                                placeholder="Nhập mật khẩu mới"
-                                                disabled={isActionLoading}
-                                                className="border py-2.5 pl-6 pr-4 min-w-72 outline-none border-gray-400 rounded-full"
-                                                onChange={
-                                                    updatePasswordForm.handleChange
-                                                }
-                                                value={
-                                                    updatePasswordForm.values
-                                                        .newPassword
-                                                }
-                                            />
+                                            <div className="relative">
+                                                <input
+                                                    type={
+                                                        showPassword.newPassword
+                                                            ? 'text'
+                                                            : 'password'
+                                                    }
+                                                    name="newPassword"
+                                                    onChange={
+                                                        updatePasswordForm.handleChange
+                                                    }
+                                                    value={
+                                                        updatePasswordForm
+                                                            .values.newPassword
+                                                    }
+                                                    placeholder="Nhập mật khẩu mới"
+                                                    className="border py-2.5 pl-6 pr-4 min-w-72 outline-none border-gray-400 rounded-full w-full"
+                                                />
+                                                <span
+                                                    className="absolute top-1/2 right-[2px] -translate-y-1/2 w-11 h-11 flex items-center 
+                        justify-center bg-white hover:bg-gray-200 transition cursor-pointer rounded-full text-lg"
+                                                    onClick={() =>
+                                                        setShowPassword({
+                                                            ...showPassword,
+                                                            newPassword:
+                                                                !showPassword.newPassword
+                                                        })
+                                                    }
+                                                >
+                                                    {showPassword.newPassword ? (
+                                                        <i className="icon-eye-close" />
+                                                    ) : (
+                                                        <i className="icon-eye-open" />
+                                                    )}
+                                                </span>
+                                            </div>
                                             {updatePasswordForm.touched
                                                 .newPassword &&
                                                 updatePasswordForm.errors
@@ -273,20 +323,43 @@ const Profile: React.FC = () => {
                                             <label className="font-medium text-black pl-2">
                                                 Xác nhận mật khẩu
                                             </label>
-                                            <input
-                                                type="text"
-                                                name="confirmPassword"
-                                                disabled={isActionLoading}
-                                                placeholder="Nhập tên của bạn"
-                                                className="border py-2.5 pl-6 pr-4 min-w-72 outline-none border-gray-400 rounded-full"
-                                                onChange={
-                                                    updatePasswordForm.handleChange
-                                                }
-                                                value={
-                                                    updatePasswordForm.values
-                                                        .confirmPassword
-                                                }
-                                            />
+                                            <div className="relative">
+                                                <input
+                                                    type={
+                                                        showPassword.confirmPassword
+                                                            ? 'text'
+                                                            : 'password'
+                                                    }
+                                                    name="confirmPassword"
+                                                    onChange={
+                                                        updatePasswordForm.handleChange
+                                                    }
+                                                    value={
+                                                        updatePasswordForm
+                                                            .values
+                                                            .confirmPassword
+                                                    }
+                                                    placeholder="Nhập lại mật khẩu mới"
+                                                    className="border py-2.5 pl-6 pr-4 min-w-72 outline-none border-gray-400 rounded-full w-full"
+                                                />
+                                                <span
+                                                    className="absolute top-1/2 right-[2px] -translate-y-1/2 w-11 h-11 flex items-center 
+                        justify-center bg-white hover:bg-gray-200 transition cursor-pointer rounded-full text-lg"
+                                                    onClick={() =>
+                                                        setShowPassword({
+                                                            ...showPassword,
+                                                            confirmPassword:
+                                                                !showPassword.confirmPassword
+                                                        })
+                                                    }
+                                                >
+                                                    {showPassword.confirmPassword ? (
+                                                        <i className="icon-eye-close" />
+                                                    ) : (
+                                                        <i className="icon-eye-open" />
+                                                    )}
+                                                </span>
+                                            </div>
                                             {updatePasswordForm.touched
                                                 .confirmPassword &&
                                                 updatePasswordForm.errors

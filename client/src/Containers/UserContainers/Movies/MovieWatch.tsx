@@ -31,6 +31,7 @@ const MovieWatch: React.FC<MovieWatchProps> = ({ urlVideo }) => {
                     )}
                     <iframe
                         onLoad={() => setIsLoading(false)}
+                        allowFullScreen={true}
                         style={{
                             height: '100%',
                             width: '100%',
