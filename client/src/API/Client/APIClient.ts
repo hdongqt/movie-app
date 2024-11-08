@@ -35,7 +35,8 @@ APIClient.interceptors.request.use((request: InternalAxiosRequestConfig) => {
 });
 
 let requestRefreshToken: null | Promise<AxiosResponse<any, any>> = null;
-let isRetry = false;
+let isRetry = true;
+
 APIClient.interceptors.response.use(
     async (response: any) => {
         if (response && response.data) return response.data;
@@ -44,8 +45,8 @@ APIClient.interceptors.response.use(
     async (error) => {
         const originalRequest: any = error.config;
         const refreshTokenSaved = Utils.getSavedRefreshToken();
-        if (error?.response?.status === 401 && !isRetry && refreshTokenSaved) {
-            isRetry = true;
+        if (error?.response?.status === 401 && isRetry && refreshTokenSaved) {
+            isRetry = false;
             try {
                 if (!refreshTokenSaved) throw error;
                 requestRefreshToken =
@@ -59,7 +60,13 @@ APIClient.interceptors.response.use(
                 return APIClient(originalRequest);
             } catch {
                 Utils.clearAllSavedData();
-                Utils.redirect('/');
+                Utils.delay(3000).then(() => {
+                    window.location.href = '/';
+                });
+                return Promise.reject({
+                    status: 401,
+                    message: 'Vui lòng đăng nhập lại'
+                });
             }
         } else {
             return Promise.reject({

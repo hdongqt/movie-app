@@ -3,8 +3,6 @@ import _ from 'lodash';
 import Utils from '@/Utils';
 import AuthAPI from '@/API/Modules/AuthAPI';
 import { ISignInPayload, ISignUpPayload } from '@/Interfaces/Auth.interface';
-import ROLE from '@/Constants/Enums/Roles.enum';
-import { ROUTERS } from '@/Constants';
 
 const signUp = createAsyncThunk(
     'Auth/signUp',
@@ -32,8 +30,6 @@ const signIn = createAsyncThunk(
             Utils.saveAccessToken(token);
             Utils.saveRefreshToken(refreshToken);
             Utils.saveUserData(userData);
-            // const role = _.get(userData, 'role');
-            // if (role === ROLE.ADMIN) Utils.redirect(ROUTERS.ADMIN_DASHBOARD);
             Utils.ToastMessage('Đăng nhập thành công !', 'success');
             return userData;
         } catch (error: any) {

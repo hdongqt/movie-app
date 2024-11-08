@@ -1,4 +1,4 @@
-import responseHandler from "../handlers/response.handler.js";
+import ResponseHandler from "../handlers/response.handler.js";
 import Country from "../models/country.model.js";
 import { Constants } from "../helpers/constants.js";
 import _ from "lodash";
@@ -51,7 +51,7 @@ CountryService.updateCountry = async (country, payload) => {
       name: { $regex: name.toLowerCase(), $options: "i" },
     });
     if (findCountry && findCountry.length > 0)
-      throw responseHandler.generateError(
+      throw ResponseHandler.generateError(
         RESPONSE_TYPE.BAD_REQUEST,
         "Country name already existed"
       );

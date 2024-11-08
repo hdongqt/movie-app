@@ -1,6 +1,6 @@
 import userModel from "../models/user.model.js";
 import jsonwebtoken from "jsonwebtoken";
-import responseHandler from "../handlers/response.handler.js";
+import ResponseHandler from "../handlers/response.handler.js";
 
 import { Constants } from "../helpers/constants.js";
 import COMMON_HELPERS from "../helpers/common.js";
@@ -19,19 +19,19 @@ AuthController.SignUp = async (req, res) => {
     const isHasUser = await UserService.findOneByEmail(email);
 
     if (isHasUser)
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.BAD_REQUEST,
         message: "Email đã tồn tại",
       });
 
     await UserService.createUser(req.body);
 
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.CREATED, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.CREATED, {
       message: "Đăng ký tài khoản thành công",
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
@@ -41,17 +41,17 @@ AuthController.SignIn = async (req, res) => {
 
     const user = await UserService.findOneByEmail(email);
     if (!user)
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.BAD_REQUEST,
         message: "Người dùng không tồn tại",
       });
     if (!user.validPassword(password))
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.BAD_REQUEST,
         message: "Sai mật khẩu",
       });
     if (user.status !== Constants.STATUS.ACTIVE)
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.BAD_REQUEST,
         message: "Tài khoản đã bị vô hiệu hoá",
       });
@@ -64,7 +64,7 @@ AuthController.SignIn = async (req, res) => {
       "_id",
       "favorites",
     ]);
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.CREATED, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.CREATED, {
       payload: {
         tokens: {
           accessToken,
@@ -78,7 +78,7 @@ AuthController.SignIn = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
@@ -90,18 +90,18 @@ AuthController.UpdatePassword = async (req, res) => {
       .findById(req.user.id)
       .select("password id salt");
 
-    if (!user) return responseHandler.unauthorize(res);
+    if (!user) return ResponseHandler.unauthorize(res);
 
     if (!user.validPassword(password))
-      return responseHandler.badrequest(res, "Sai mật khẩu");
+      return ResponseHandler.badrequest(res, "Sai mật khẩu");
 
     user.setPassword(newPassword);
 
     await user.save();
 
-    responseHandler.ok(res);
+    ResponseHandler.ok(res);
   } catch (error) {
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
@@ -109,12 +109,12 @@ AuthController.GetInfo = async (req, res) => {
   try {
     const user = await UserService.findById(req.user.id);
     if (!user)
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.NOT_FOUND,
         message: "Tài khoản không tồn tại",
       });
     const { _id, ...result } = user._doc;
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
       payload: {
         ...result,
         id: _id,
@@ -122,7 +122,7 @@ AuthController.GetInfo = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
@@ -132,7 +132,7 @@ AuthController.LogOut = async (req, res) => {
     const userRT = jsonwebtoken.verify(refreshToken, process.env.TOKEN_SECRET);
     //check refreshToken
     if (!userRT || (userRT && userRT.data !== req.user.id))
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.BAD_REQUEST,
         message: "Token không hợp lệ",
       });
@@ -141,15 +141,15 @@ AuthController.LogOut = async (req, res) => {
       { token: refreshToken }
     );
     if (!findAndDeleteToken)
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.BAD_REQUEST,
         message: "Token không hợp lệ",
       });
-    return responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+    return ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
       message: "Đăng xuất thành công",
     });
   } catch (error) {
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
@@ -158,7 +158,7 @@ AuthController.RefreshToken = async (req, res) => {
     const { refreshToken } = req.body;
     const tokenDecode = COMMON_HELPERS.tokenDecode(refreshToken);
     if (!tokenDecode) {
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.BAD_REQUEST,
         message: "Token không hợp lệ",
       });
@@ -168,7 +168,16 @@ AuthController.RefreshToken = async (req, res) => {
     });
 
     if (!tokenFound)
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
+        type: RESPONSE_TYPE.UNAUTHORIZED,
+        message: "Token không hợp lệ",
+      });
+
+    const { userId } = tokenFound;
+
+    const user = await UserService.findById(userId);
+    if (!user)
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.UNAUTHORIZED,
         message: "Token không hợp lệ",
       });
@@ -179,11 +188,11 @@ AuthController.RefreshToken = async (req, res) => {
         expiresIn: 60 * 60 * 24,
       }
     );
-    return responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+    return ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
       payload: { accessToken },
     });
   } catch (error) {
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 

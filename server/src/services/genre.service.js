@@ -1,4 +1,4 @@
-import responseHandler from "../handlers/response.handler.js";
+import ResponseHandler from "../handlers/response.handler.js";
 import Genre from "../models/genre.model.js";
 import Movie from "../models/movie.model.js";
 import { Constants } from "../helpers/constants.js";

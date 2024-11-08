@@ -8,6 +8,8 @@ export default mongoose.model(
       name: {
         type: String,
         required: true,
+        minLength: 1,
+        maxLength: 50,
       },
       // movies: [
       //   {

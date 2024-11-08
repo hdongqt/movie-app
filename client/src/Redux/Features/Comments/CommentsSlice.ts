@@ -69,7 +69,7 @@ const CommentsManagementSlice = createSlice({
             .addCase(createComment.fulfilled, (state, action: any) => {
                 return {
                     ...state,
-                    isActionLoading: true,
+                    isActionLoading: false,
                     isError: false,
                     comments: action.payload
                 };

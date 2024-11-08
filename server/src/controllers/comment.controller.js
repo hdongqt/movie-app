@@ -1,4 +1,4 @@
-import responseHandler from "../handlers/response.handler.js";
+import ResponseHandler from "../handlers/response.handler.js";
 import CommentService from "./../services/comment.service.js";
 import { Constants } from "../helpers/constants.js";
 const { RESPONSE_TYPE, STATUS, ROLE } = Constants;
@@ -16,12 +16,12 @@ CommentController.fetchAllComment = async (req, res) => {
       { ...convertDataForPagination.pagination, limit: 5 },
       { ...convertDataForPagination.searchQuery, movieId }
     );
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
       payload: payload,
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
@@ -31,12 +31,12 @@ CommentController.createComment = async (req, res) => {
       ...req.body,
       userId: req.user._id,
     });
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.CREATED, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.CREATED, {
       payload: commentSave,
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
@@ -46,7 +46,7 @@ CommentController.updateComment = async (req, res) => {
     const { id } = req.params;
     const Comment = await CommentService.Comment.findById(id);
     if (!Comment) {
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.BAD_REQUEST,
         message: "Không tìm thấy thể loại",
       });
@@ -55,17 +55,17 @@ CommentController.updateComment = async (req, res) => {
       name: { $regex: new RegExp("^" + name?.trim() + "$", "i") },
     });
     if (checkName && id !== checkName?._id?.toString())
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.BAD_REQUEST,
         message: "Tên thể loại đã tồn tại",
       });
     const payload = await CommentService.updateComment(Comment, req.body);
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
       payload: payload,
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
@@ -74,19 +74,19 @@ CommentController.activateComment = async (req, res) => {
     const { id } = req.params;
     const Comment = await CommentService.findById(id);
     if (!Comment) {
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.NOT_FOUND,
         message: "Thể loại không tồn tại",
       });
     }
     if (Comment.role === ROLE.ADMIN) {
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.FORBIDDEN,
         message: "Bạn không có quyền thực hiện thao tác này",
       });
     }
     if (Comment.status === STATUS.ACTIVE) {
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.BAD_REQUEST,
         message: "Thể loại đã ở trạng thái hiển thị",
       });
@@ -95,13 +95,13 @@ CommentController.activateComment = async (req, res) => {
       Comment,
       STATUS.ACTIVE
     );
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
       message: "Hiển thị thể loại thành công",
       payload: result,
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
@@ -110,13 +110,13 @@ CommentController.deactivateComment = async (req, res) => {
     const { id } = req.params;
     const Comment = await CommentService.findById(id);
     if (!Comment) {
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.NOT_FOUND,
         message: "Thể loại không tồn tại",
       });
     }
     if (Comment.status === STATUS.INACTIVE) {
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.BAD_REQUEST,
         message: "Thể loại đã ở trạng thái ẩn",
       });
@@ -125,13 +125,13 @@ CommentController.deactivateComment = async (req, res) => {
       Comment,
       STATUS.INACTIVE
     );
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
       message: "Ẩn thể loại thành công",
       payload: result,
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 

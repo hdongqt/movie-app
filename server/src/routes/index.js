@@ -1,6 +1,5 @@
 import express from "express";
 import MovieRoute from "./movie.route.js";
-import EpisodeRoute from "./episode.route.js";
 import CountryRoute from "./country.route.js";
 import GenreRoute from "./genre.route.js";
 import PersonRoute from "./person.route.js";
@@ -13,7 +12,6 @@ const router = express.Router();
 
 router.use("/movies", MovieRoute);
 router.use("/countries", CountryRoute);
-router.use("/episodes", EpisodeRoute);
 router.use("/genres", GenreRoute);
 router.use("/persons", PersonRoute);
 router.use("/users", UserRoute);

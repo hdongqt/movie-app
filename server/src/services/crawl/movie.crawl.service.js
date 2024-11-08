@@ -15,7 +15,11 @@ const createMovie = async (movie) => {
     const { persons, ...movieRest } = await MovieService.handleMovieCrawlData(
       movie
     );
-    const [movieSave] = await Movie.create([movieRest], { session });
+    const { vietnameseName } = movieRest;
+    const [movieSave] = await Movie.create(
+      [{ ...movieRest, vietnameseName: vietnameseName.normalize("NFC") }],
+      { session }
+    );
     movieSave.set(
       "persons",
       await PersonService.createPersons(_.get(movieSave, "id"), persons)

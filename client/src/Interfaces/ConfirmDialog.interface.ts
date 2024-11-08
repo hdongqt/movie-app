@@ -2,7 +2,7 @@ export interface IConfirmDialog {
     isOpen: boolean;
     message: string;
     state: {
-        id?: string;
+        id: string;
         status: string;
     };
 }

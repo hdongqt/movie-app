@@ -1,4 +1,4 @@
-import responseHandler from "../handlers/response.handler.js";
+import ResponseHandler from "../handlers/response.handler.js";
 import MovieService from "./../services/movie.service.js";
 import { Constants } from "../helpers/constants.js";
 import COMMON_HELPERS from "../helpers/common.js";
@@ -21,12 +21,12 @@ MovieController.fetchAllMovies = async (req, res) => {
       convertDataForPagination.pagination,
       convertDataForPagination.searchQuery
     );
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
       payload: payload,
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
@@ -38,12 +38,12 @@ MovieController.fetchAllMoviesForAdmin = async (req, res) => {
       convertDataForPagination.pagination,
       convertDataForPagination.searchQuery
     );
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
       payload: payload,
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
@@ -55,24 +55,24 @@ MovieController.getTrendingMovies = async (req, res) => {
       convertDataForPagination.pagination,
       convertDataForPagination.searchQuery
     );
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
       payload: payload,
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
 MovieController.getRecommendMovie = async (__, res) => {
   try {
     const payload = await MovieService.getRecommendMovie();
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
       payload: payload,
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
@@ -84,17 +84,17 @@ MovieController.getMovie = async (req, res) => {
         ? await MovieService.getMovieForAdmin(id)
         : await MovieService.getMovieForUser(id);
     if (!payload) {
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.NOT_FOUND,
         message: "Phim không tồn tại",
       });
     }
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
       payload: payload,
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
@@ -107,12 +107,12 @@ MovieController.getMovieOfPerson = async (req, res) => {
       convertDataForPagination.pagination,
       id
     );
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
       payload: payload,
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
@@ -149,13 +149,13 @@ MovieController.createMovie = async (req, res) => {
         posterPath: posterFile?.path || "",
       };
       const movieSave = await MovieService.createMovie(data);
-      responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.CREATED, {
+      ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.CREATED, {
         payload: movieSave,
       });
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
@@ -192,13 +192,13 @@ MovieController.updateMovie = async (req, res) => {
       };
       const movieSave = await MovieService.updateMovie(id, data);
 
-      responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.CREATED, {
+      ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.CREATED, {
         payload: movieSave,
       });
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
@@ -207,24 +207,24 @@ MovieController.deactivateMovie = async (req, res) => {
     const { id } = req.params;
     const movie = await MovieService.findOneByIdMovie(id);
     if (!movie) {
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.NOT_FOUND,
         message: "Phim không tồn tại",
       });
     }
     if (movie.status === STATUS.INACTIVE) {
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.BAD_REQUEST,
         message: "Phim đã ở trạng thái chưa phê duyệt",
       });
     }
     await MovieService.updateMovieStatus(movie, STATUS.INACTIVE);
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
       message: "Huỷ phê duyệt phim thành công",
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
@@ -233,24 +233,24 @@ MovieController.activateMovie = async (req, res) => {
     const { id } = req.params;
     const movie = await MovieService.findOneByIdMovie(id);
     if (!movie) {
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.NOT_FOUND,
         message: "Phim không tồn tại",
       });
     }
     if (movie.status === STATUS.ACTIVE) {
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.BAD_REQUEST,
         message: "Phim đã được phê duyệt",
       });
     }
     await MovieService.updateMovieStatus(movie, STATUS.ACTIVE);
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
       message: "Phê duyệt phim thành công",
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
@@ -259,18 +259,18 @@ MovieController.terminatedMovie = async (req, res) => {
     const { id } = req.params;
     const movie = await MovieService.findOneByIdMovie(id);
     if (!movie) {
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.NOT_FOUND,
         message: "Phim không tồn tại",
       });
     }
     await MovieService.updateMovieStatus(movie, STATUS.TERMINATED);
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
       message: "Xoá phim thành công",
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
@@ -278,12 +278,12 @@ MovieController.getSimilarMovie = async (req, res) => {
   try {
     const { id } = req.params;
     const movies = await MovieService.getSimilarMovie(id);
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
       payload: movies,
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 

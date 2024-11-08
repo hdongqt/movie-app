@@ -1,4 +1,4 @@
-import responseHandler from "../handlers/response.handler.js";
+import ResponseHandler from "../handlers/response.handler.js";
 import { Constants } from "../helpers/constants.js";
 import MovieCrawlService from "../services/crawl/movie.crawl.service.js";
 import CrawlService from "../services/crawl.service.js";
@@ -54,18 +54,18 @@ CrawlController.createCrawl = async (req, res) => {
     const { page } = req.body;
     const isAllowCrawl = await CrawlService.checkCrawling();
     if (!isAllowCrawl) {
-      throw responseHandler.generateError(
+      throw ResponseHandler.generateError(
         RESPONSE_TYPE.BAD_REQUEST,
         "Đã có hoạt động crawl đang chạy"
       );
     } else {
-      responseHandler.buildResponseSuccess(res, Constants.RESPONSE_TYPE.OK, {
+      ResponseHandler.buildResponseSuccess(res, Constants.RESPONSE_TYPE.OK, {
         message: "Tạo crawl thành công",
       });
       await handleCrawl(page);
     }
   } catch (error) {
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
@@ -77,12 +77,12 @@ CrawlController.fetchAllCrawls = async (req, res) => {
       convertDataForPagination.pagination,
       convertDataForPagination.searchQuery
     );
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
       payload: payload,
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
@@ -91,17 +91,17 @@ CrawlController.getCrawl = async (req, res) => {
     const { id } = req.params;
     const payload = await CrawlService.getCrawl(id);
     if (!payload) {
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.NOT_FOUND,
         message: "Không tìm thấy hoạt động crawl",
       });
     }
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
       payload: payload,
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 

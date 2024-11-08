@@ -107,9 +107,8 @@ const Persons: React.FC = () => {
                         )}
                         {isGetLoading && (
                             <>
-                                <div className="w-20 h-20 animate-pulse bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                                <div className="h-3 animate-pulse flex-1 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                            </>
+                                <div className="h-8 animate-pulse flex-1 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                            </> 
                         )}
                     </div>
                     <div className="mt-8">

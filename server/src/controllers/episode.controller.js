@@ -1,4 +1,4 @@
-import responseHandler from "../handlers/response.handler.js";
+import ResponseHandler from "../handlers/response.handler.js";
 import EpisodeService from "./../services/episode.service.js";
 import { Constants } from "../helpers/constants.js";
 
@@ -10,11 +10,11 @@ EpisodeController.fetchAllEpisode = async (req, res) => {
   try {
     const { status = STATUS.ALL } = req.query;
     const payload = await EpisodeService.fetchAllEpisode(status);
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
       payload: payload,
     });
   } catch (error) {
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
@@ -24,22 +24,22 @@ EpisodeController.getEpisode = async (req, res) => {
     const { id } = req.params;
     const payload = await EpisodeService.getEpisode(id);
     if (!payload) {
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.NOT_FOUND,
         message: "Episode not found",
       });
     }
     if (role !== "admin" && payload?.status !== STATUS.ACTIVE) {
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.NOT_FOUND,
         message: "Episode not found",
       });
     }
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
       payload: payload,
     });
   } catch (error) {
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
@@ -51,17 +51,17 @@ EpisodeController.createEpisode = async (req, res) => {
       path: path,
     });
     if (existEpisode && existEpisode.length > 0)
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.BAD_REQUEST,
         message: "Episode already existed",
       });
     const episode = await EpisodeService.createEpisode(req.body);
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.CREATED, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.CREATED, {
       payload: episode,
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 
@@ -70,18 +70,18 @@ EpisodeController.updateEpisode = async (req, res) => {
     const { id } = req.params;
     const episode = await EpisodeService.Episode.findById(id);
     if (!episode) {
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.BAD_REQUEST,
         message: "Episode not found",
       });
     }
     const payload = await EpisodeService.updateEpisode(episode, req.body);
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
       payload: payload,
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 

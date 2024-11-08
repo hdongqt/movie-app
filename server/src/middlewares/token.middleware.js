@@ -1,7 +1,7 @@
 import jsonwebtoken from "jsonwebtoken";
 import { Constants } from "../helpers/constants.js";
 import UserService from "../services/user.service.js";
-import responseHandler from "../handlers/response.handler.js";
+import ResponseHandler from "../handlers/response.handler.js";
 import COMMON_HELPERS from "./../helpers/common.js";
 
 const decodeTokenHeader = (req) => {
@@ -20,13 +20,13 @@ const decodeTokenHeader = (req) => {
 const auth = async (req, res, next) => {
   const tokenDecoded = decodeTokenHeader(req);
   if (!tokenDecoded) {
-    return responseHandler.buildResponseFailed(res, {
+    return ResponseHandler.buildResponseFailed(res, {
       type: Constants.RESPONSE_TYPE.UNAUTHORIZED,
     });
   } else {
     const user = await UserService.findById(tokenDecoded.data);
     if (!user)
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: Constants.RESPONSE_TYPE.UNAUTHORIZED,
       });
     req.user = user;

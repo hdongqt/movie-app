@@ -26,6 +26,11 @@ const ADMIN_SETTINGS: IMenuSettings[] = [
         icon: <i className="icon-bar-chart" />
     },
     {
+        label: 'Yêu thích',
+        value: ROUTERS.FAVORITES,
+        icon: <i className="icon-heart" />
+    },
+    {
         label: 'Đăng xuất',
         value: 'logout',
         icon: <i className="icon-signout" />

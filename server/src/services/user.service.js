@@ -1,4 +1,4 @@
-import responseHandler from "../handlers/response.handler.js";
+import ResponseHandler from "../handlers/response.handler.js";
 import { Constants } from "../helpers/constants.js";
 import _ from "lodash";
 import User from "../models/user.model.js";
@@ -130,7 +130,7 @@ UserService.fetchFavoriteMovies = async (paginationOptions, payload) => {
     .exec();
 
   if (!user) {
-    throw responseHandler.generateError(
+    throw ResponseHandler.generateError(
       RESPONSE_TYPE.NOT_FOUND,
       `Người dùng không tồn tại`
     );
@@ -153,7 +153,7 @@ UserService.removeMovieFromFavorites = async (userId, movieId) => {
     status: "active",
   });
   if (!user)
-    throw responseHandler.generateError(
+    throw ResponseHandler.generateError(
       RESPONSE_TYPE.NOT_FOUND,
       `Người dùng không tồn tại`
     );

@@ -65,7 +65,7 @@ const getMovieMetaData = createAsyncThunk(
                 await Promise.allSettled([
                     GenreAPI.fetchGenres({ page: 0, limit: 0 }),
                     CountryAPI.fetchCountries({ page: 0, limit: 0 }),
-                    isGetDetail ? MovieAPI.getMovie(id) : null
+                    isGetDetail ? MovieAPI.getMovieForAdmin(id) : null
                 ]);
             return {
                 genres: _.get(resGenres, 'value.payload.data', []),

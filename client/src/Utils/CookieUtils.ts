@@ -55,6 +55,12 @@ const getSavedGenres = () => {
     return !!savedGenres ? JSON.parse(savedGenres) : [];
 };
 
+const delay = (delay: number) => {
+    return new Promise((resolve) => {
+        setTimeout(resolve, delay);
+    });
+};
+
 export default {
     saveRefreshToken,
     saveAccessToken,
@@ -65,5 +71,6 @@ export default {
     clearAllSavedData,
     getRoleUser,
     saveGenres,
-    getSavedGenres
+    getSavedGenres,
+    delay
 };

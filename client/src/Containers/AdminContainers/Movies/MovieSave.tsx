@@ -1,18 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import _ from 'lodash';
 import DefaultLayout from '@/Components/DefaultLayout';
-import Table from '@/Components/Common/Table';
-import Select, { GroupBase, MultiValue, OptionsOrGroups } from 'react-select';
+import Select from 'react-select';
 import { useTypedDispatch } from '../../../Redux/Store';
 
 import { useSelector } from 'react-redux';
 import { RootState } from '@/Redux/Store';
-import { MOVIES_MANAGEMENT_TABLE_HEADER } from '@/Constants/Tables/MoviesManagement.table';
-import { DEFAULT_CONFIRM_DIALOG, ENUMS, ROUTERS } from '@/Constants';
-import { IMenuTableClick } from '@/Interfaces/Table.interface';
-import { IMovie, IMovieSave, IPersonMovie } from '@/Interfaces/Movie.interface';
-import { Dialogs, ImageInput, TagInput } from '@/Components/Common';
-import { IConfirmDialog } from '@/Interfaces/ConfirmDialog.interface';
+import { ROUTERS } from '@/Constants';
+import { IMovie, IMovieSave } from '@/Interfaces/Movie.interface';
+import { ImageInput, TagInput } from '@/Components/Common';
 import { Link, useLocation } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -98,7 +94,8 @@ const MovieSave: React.FC = () => {
         validationSchema: Yup.object({
             vietnameseName: Yup.string()
                 .trim()
-                .required('Tên phim không được để trống'),
+                .required('Tên phim không được để trống')
+                .max(50, 'Tên phim không quá 150 ký tự'),
             originalName: Yup.string()
                 .trim()
                 .required('Tên quốc tế không được để trống'),

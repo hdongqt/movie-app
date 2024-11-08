@@ -1,4 +1,4 @@
-import responseHandler from "../handlers/response.handler.js";
+import ResponseHandler from "../handlers/response.handler.js";
 import { Constants } from "../helpers/constants.js";
 import _ from "lodash";
 import Person from "../models/person.model.js";

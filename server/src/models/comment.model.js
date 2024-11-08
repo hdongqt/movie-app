@@ -5,7 +5,11 @@ export default mongoose.model(
   "Comment",
   mongoose.Schema(
     {
-      content: String,
+      content: {
+        type: String,
+        require: true,
+        maxLength: 250,
+      },
       user: { type: Schema.Types.ObjectId, ref: "User" },
       parent_id: {
         type: mongoose.Schema.Types.ObjectId,

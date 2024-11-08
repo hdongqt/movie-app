@@ -69,7 +69,6 @@ const AuthModal: React.FC = () => {
             setFormAction(FormActionType.SIGN_IN);
         }, 285);
     };
-
     const changeToSignIn = () => {
         dispatch(resetAuthErrorState());
         setFormAction(FormActionType.SIGN_IN);
@@ -104,7 +103,7 @@ const AuthModal: React.FC = () => {
                                 <span className="text-xl text-red-600 w-6 h-6 flex items-center justify-center text-center rounded-full">
                                     <i className="icon-info-sign"></i>
                                 </span>
-                                <span className="font-semibold text-red-600 pl-2 py-1.5 line-clamp-2">
+                                <span className="whitespace-pre-line font-semibold text-red-600 pl-2 py-1.5">
                                     {message}
                                 </span>
                             </div>

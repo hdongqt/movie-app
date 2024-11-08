@@ -1,4 +1,4 @@
-import responseHandler from "../handlers/response.handler.js";
+import ResponseHandler from "../handlers/response.handler.js";
 import Movie from "../models/movie.model.js";
 import { Constants } from "../helpers/constants.js";
 import _ from "lodash";
@@ -180,7 +180,6 @@ MovieService.getRecommendMovie = async () => {
     ]);
   });
   const result = await Promise.all(listIdGenres);
-  console.log(result?.length);
   if (!result || result.length < 1) return [];
   const mergedResult = result.flat();
   const uniqueList = _.uniqBy(mergedResult, "id");
@@ -191,13 +190,30 @@ MovieService.getSimilarMovie = async (id) => {
   const movie = await Movie.findOne({
     _id: mongoose.Types.ObjectId.createFromHexString(id),
   });
+  let result = [];
   if (movie) {
+    if (
+      movie?.originalName &&
+      movie.originalName.toLowerCase().includes("(season")
+    ) {
+      const nameFind = movie.originalName
+        .toLowerCase()
+        .split("(season")[0]
+        .trim();
+      result = await Movie.find({
+        originalName: new RegExp(nameFind, "i"),
+      }).select("-episodes -persons -countries -genres");
+    }
     const genreIds = _.get(movie, "genres");
     const typeOfMovie = _.get(movie, "movieType");
-    const result = await Movie.aggregate([
+    const resultIds = result.map((movie) => movie._id);
+    const similarGenre = await Movie.aggregate([
       {
         $match: {
-          _id: { $ne: mongoose.Types.ObjectId.createFromHexString(id) },
+          _id: {
+            $ne: mongoose.Types.ObjectId.createFromHexString(id),
+            $nin: resultIds,
+          },
           status: "active",
           genres: {
             $in: genreIds,
@@ -211,12 +227,12 @@ MovieService.getSimilarMovie = async (id) => {
         },
       },
       {
-        $unset: ["episodes", "persons", "countries", "_id", "-genres"],
+        $unset: ["episodes", "persons", "countries", "_id", "genres"],
       },
       { $sort: { createdAt: -1 } },
       { $limit: 30 },
     ]);
-    return _.slice(result, 0, 5);
+    return _.slice([...result, ...similarGenre], 0, 5);
   }
   return [];
 };
@@ -359,8 +375,7 @@ MovieService.handleMovieCrawlData = async (movie) => {
 };
 
 MovieService.handleMovieDataForm = async (movie) => {
-  const { countries, genres, persons, personsNew, episodes, id, episodesNew } =
-    movie;
+  const { countries, genres, personsNew, episodes, id, episodesNew } = movie;
 
   //check ids country,
   const existingCountries = await CountryService.Country.find({
@@ -386,7 +401,7 @@ MovieService.handleMovieDataForm = async (movie) => {
       : "";
     if (nonExistingCountries.length)
       message = `${message}Quốc gia ${nonExistingCountries} không hợp lệ`;
-    throw responseHandler.generateError(RESPONSE_TYPE.BAD_REQUEST, message);
+    throw ResponseHandler.generateError(RESPONSE_TYPE.BAD_REQUEST, message);
   }
   //handle episode of movie
   // if update delete all episode of movie before add new

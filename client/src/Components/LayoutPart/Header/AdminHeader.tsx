@@ -35,7 +35,10 @@ const AdminHeader = () => {
                 >
                     <i className="icon-align-justify"></i>
                 </button>
-                <Link to="/" className="h-10 lg:h-12 flex items-center gap-1">
+                <Link
+                    to="/"
+                    className="h-10 lg:h-12 flex lg:hidden items-center gap-1"
+                >
                     <img src={LogoIcon} alt="logoFilm" className="h-full" />
                     <span className="font-extrabold text-xl">
                         BRONZE<span className="text-red-600">FILM</span>

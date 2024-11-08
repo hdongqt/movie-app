@@ -42,7 +42,7 @@ const MovieCarousel: React.FC<IMovieSwipper> = ({
         movies &&
         movies.length > 0 &&
         movies.map((movie: IMovie, index: number) => (
-            <SwiperSlide key={`${mediaHeading}${movie.id}`}>
+            <SwiperSlide key={`${index}${movie.id}`}>
                 <Link
                     className="flex group cursor-pointer h-[350px]"
                     key={`${movie?.id}${index}`}

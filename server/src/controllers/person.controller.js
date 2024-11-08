@@ -1,4 +1,4 @@
-import responseHandler from "../handlers/response.handler.js";
+import ResponseHandler from "../handlers/response.handler.js";
 import PersonService from "../services/person.service.js";
 import { Constants } from "../helpers/constants.js";
 const { RESPONSE_TYPE, STATUS } = Constants;
@@ -10,17 +10,17 @@ PeopleController.getPerson = async (req, res) => {
     const { id } = req.params;
     const payload = await PersonService.getPerson(id);
     if (!payload) {
-      return responseHandler.buildResponseFailed(res, {
+      return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.NOT_FOUND,
         message: "Person not found",
       });
     }
-    responseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
       payload: payload,
     });
   } catch (error) {
     console.log(error);
-    responseHandler.buildResponseFailed(res, error);
+    ResponseHandler.buildResponseFailed(res, error);
   }
 };
 

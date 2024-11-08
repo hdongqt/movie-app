@@ -19,6 +19,9 @@ import Utils from '@/Utils';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { AuthAction } from '@/Redux/Features/Auth';
+import Confirm from '@/Components/Common/Dialogs/Confirms';
+import { DEFAULT_CONFIRM_DIALOG } from '@/Constants';
+import { IConfirmDialog } from '@/Interfaces/ConfirmDialog.interface';
 
 const { fetchAllCommentOfMovie, createComment, resetCommentsState } =
     CommentsManagementAction;
@@ -67,6 +70,10 @@ const MediaDetail: React.FC = () => {
         _.get(state.COMMENTS, 'comments')
     );
 
+    const isActionCommentLoading: boolean = useSelector((state: RootState) =>
+        _.get(state.COMMENTS, 'isActionLoading')
+    );
+
     const isWatch = useMatch({ path: '/film/:id/watch' });
 
     const history = useNavigate();
@@ -76,9 +83,13 @@ const MediaDetail: React.FC = () => {
             comment: ''
         },
         validationSchema: Yup.object({
-            comment: Yup.string().trim().required('Hãy nhập nội dung bình luận')
+            comment: Yup.string()
+                .trim()
+                .required('Hãy nhập nội dung bình luận')
+                .max(250, 'Nội dung bình luận không được vượt quá 250 kí tự')
         }),
         onSubmit: async (values, { resetForm }) => {
+            setIsCommentClick(true);
             if (id) {
                 const resultAction = await dispatch(
                     createComment({
@@ -89,6 +100,7 @@ const MediaDetail: React.FC = () => {
                 if (resultAction.meta.requestStatus === 'fulfilled') {
                     resetForm();
                 }
+                setIsCommentClick(false);
             }
         }
     });
@@ -105,6 +117,7 @@ const MediaDetail: React.FC = () => {
             replyComment: Yup.string()
                 .trim()
                 .required('Hãy nhập nội dung bình luận')
+                .max(250, 'Nội dung bình luận không được vượt quá 250 kí tự')
         }),
         onSubmit: async (values, { resetForm }) => {
             if (id) {
@@ -126,11 +139,38 @@ const MediaDetail: React.FC = () => {
     const [urlPlaying, setUrlPlaying] = useState<string>('');
 
     const [commentsMovie, setCommentMovie] = useState<any>([]);
+    const [isCommentClick, setIsCommentClick] = useState<boolean>(false);
+    const [confirmDeleteComment, setConfirmDeleteComment] =
+        useState<IConfirmDialog>(DEFAULT_CONFIRM_DIALOG);
 
     const handlePlayMovie = (video: VideoPlayState) => {
         setVideoPlay(video);
         setUrlPlaying(video?.path?.[0]);
         !isWatch && history('/film/' + movieDetail?.id + '/watch');
+    };
+    const onClickReply = (id: string) => {
+        setCommentMovie(
+            commentsMovie.map((comment: any) =>
+                comment.id === id
+                    ? { ...comment, isShowBoxReply: true }
+                    : { ...comment, isShowBoxReply: false }
+            )
+        );
+    };
+
+    const cancelReply = () => {
+        setCommentMovie(
+            commentsMovie.map((comment: any) => ({
+                ...comment,
+                isShowBoxReply: false
+            }))
+        );
+    };
+
+    const handleDeleteComment = (id: string) => {
+        console.log(id);
+
+        setConfirmDeleteComment(DEFAULT_CONFIRM_DIALOG);
     };
 
     useEffect(() => {
@@ -175,25 +215,6 @@ const MediaDetail: React.FC = () => {
         setCommentMovie(handleComments);
     }, [comments]);
 
-    const onClickReply = (id: string | undefined) => {
-        setCommentMovie(
-            commentsMovie.map((comment: any) =>
-                comment.id === id
-                    ? { ...comment, isShowBoxReply: true }
-                    : { ...comment, isShowBoxReply: false }
-            )
-        );
-    };
-
-    const cancelReply = () => {
-        setCommentMovie(
-            commentsMovie.map((comment: any) => ({
-                ...comment,
-                isShowBoxReply: false
-            }))
-        );
-    };
-
     const _renderComment = (comments: any, parentId?: string) => {
         return (
             <div
@@ -231,12 +252,12 @@ const MediaDetail: React.FC = () => {
                                             </span>
                                         )}
                                     </div>
-                                    <p className="mt-1 text-lg break-words whitespace-pre-line break-all max-w-full w-full">
+                                    <p className="mt-1 break-words whitespace-pre-line break-all max-w-full w-full">
                                         {comment?.content}
                                     </p>
                                     <div>
                                         <button
-                                            className="text-blue-700 hover:underline"
+                                            className="text-blue-700 hover:underline font-medium"
                                             onClick={() => {
                                                 if (mySelf)
                                                     onClickReply(
@@ -249,6 +270,22 @@ const MediaDetail: React.FC = () => {
                                             }}
                                         >
                                             Trả lời
+                                        </button>
+                                        <button
+                                            className="text-red-600 hover:underline ml-3 font-medium"
+                                            onClick={() =>
+                                                setConfirmDeleteComment({
+                                                    isOpen: true,
+                                                    state: {
+                                                        id: comment.id,
+                                                        status: ''
+                                                    },
+                                                    message:
+                                                        'Bạn có chắc chắn muốn xóa bình luận này không?'
+                                                })
+                                            }
+                                        >
+                                            Xoá
                                         </button>
                                     </div>
                                 </div>
@@ -283,6 +320,7 @@ const MediaDetail: React.FC = () => {
                                             </h4>
                                             <textarea
                                                 name="replyComment"
+                                                rows={4}
                                                 value={
                                                     formReplyComment.values
                                                         .replyComment
@@ -306,25 +344,62 @@ const MediaDetail: React.FC = () => {
                                                         }
                                                     </p>
                                                 )}
-                                            <button
-                                                className="mt-2.5 mr-2 py-2 px-3 rounded bg-gray-500 text-white hover:bg-gray-600"
-                                                onClick={() => cancelReply()}
-                                            >
-                                                Huỷ
-                                            </button>
-                                            <button
-                                                type="button"
-                                                className="mt-2.5 py-2 px-3 rounded bg-blue-500 text-white hover:bg-blue-600"
-                                                onClick={() => {
-                                                    formReplyComment.setValues({
-                                                        ...formReplyComment.values,
-                                                        parentId: comment.id
-                                                    });
-                                                    formReplyComment.handleSubmit();
-                                                }}
-                                            >
-                                                Trả lời
-                                            </button>
+                                            <div className="flex ">
+                                                <button
+                                                    className="mt-2.5 mr-2 py-2 px-3 rounded bg-gray-500 text-white hover:bg-gray-600"
+                                                    onClick={() =>
+                                                        cancelReply()
+                                                    }
+                                                    disabled={
+                                                        isActionCommentLoading
+                                                    }
+                                                >
+                                                    Huỷ
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    disabled={
+                                                        isActionCommentLoading
+                                                    }
+                                                    className={`flex gap-2 mt-2.5 py-2 px-3 rounded text-white
+                                                     ${
+                                                         isActionCommentLoading
+                                                             ? 'bg-blue-300'
+                                                             : 'bg-blue-500 hover:bg-blue-600'
+                                                     }
+                                                    `}
+                                                    onClick={() => {
+                                                        formReplyComment.setValues(
+                                                            {
+                                                                ...formReplyComment.values,
+                                                                parentId:
+                                                                    comment.id
+                                                            }
+                                                        );
+                                                        formReplyComment.handleSubmit();
+                                                    }}
+                                                >
+                                                    {isActionCommentLoading && (
+                                                        <svg
+                                                            aria-hidden="true"
+                                                            className="w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600"
+                                                            viewBox="0 0 100 101"
+                                                            fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                        >
+                                                            <path
+                                                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                                                fill="currentColor"
+                                                            />
+                                                            <path
+                                                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                                                fill="currentFill"
+                                                            />
+                                                        </svg>
+                                                    )}
+                                                    Trả lời
+                                                </button>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -719,6 +794,7 @@ const MediaDetail: React.FC = () => {
                                             </h4>
                                             <textarea
                                                 name="comment"
+                                                rows={4}
                                                 value={
                                                     formComment.values.comment
                                                 }
@@ -739,9 +815,37 @@ const MediaDetail: React.FC = () => {
                                                     </p>
                                                 )}
                                             <button
-                                                className="mt-2.5 py-2 px-3 rounded bg-blue-500 text-white hover:bg-blue-600"
+                                                className={`flex gap-2 mt-2.5 py-2 px-3 rounded text-white ${
+                                                    isActionCommentLoading &&
+                                                    isCommentClick
+                                                        ? 'bg-gray-400'
+                                                        : 'bg-blue-500 hover:bg-blue-600'
+                                                }`}
                                                 type="submit"
+                                                disabled={
+                                                    isActionCommentLoading &&
+                                                    isCommentClick
+                                                }
                                             >
+                                                {isActionCommentLoading &&
+                                                    isCommentClick && (
+                                                        <svg
+                                                            aria-hidden="true"
+                                                            className="w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600"
+                                                            viewBox="0 0 100 101"
+                                                            fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                        >
+                                                            <path
+                                                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                                                fill="currentColor"
+                                                            />
+                                                            <path
+                                                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                                                fill="currentFill"
+                                                            />
+                                                        </svg>
+                                                    )}
                                                 Bình luận
                                             </button>
                                         </div>
@@ -840,6 +944,18 @@ const MediaDetail: React.FC = () => {
                             })}
                     </div>
                 </div>
+                {confirmDeleteComment.isOpen && (
+                    <Confirm
+                        title="Xoá bình luận ?"
+                        confirm={confirmDeleteComment}
+                        callback={() =>
+                            handleDeleteComment(confirmDeleteComment.state.id)
+                        }
+                        onCancel={() =>
+                            setConfirmDeleteComment(DEFAULT_CONFIRM_DIALOG)
+                        }
+                    />
+                )}
             </div>
         );
     };

@@ -1,4 +1,4 @@
-import responseHandler from "../handlers/response.handler.js";
+import ResponseHandler from "../handlers/response.handler.js";
 import { Constants } from "../helpers/constants.js";
 
 const allowedUrls = ["/api/v1/country/", "/api/comments", "/api/profile"];
@@ -13,7 +13,7 @@ export const checkRoleAndStatus = () => {
         return next();
       } else {
         if (status && status !== "active") {
-          return responseHandler.buildResponseFailed(res, {
+          return ResponseHandler.buildResponseFailed(res, {
             type: Constants.RESPONSE_TYPE.FORBIDDEN,
             message: "Forbidden ",
           });

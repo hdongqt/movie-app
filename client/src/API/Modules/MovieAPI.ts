@@ -9,11 +9,15 @@ const fetchMovies = async (payload: IMoviePaginationFilter) => {
 };
 
 const fetchMoviesForAdmin = async (payload: IMoviePaginationFilter) => {
-    return APIClient.get(MOVIE.FETCH_FOR_ADMIN, { params: payload });
+    return APIClient.get(MOVIE.FOR_ADMIN, { params: payload });
 };
 
 const getMovie = async (id: string) => {
     return APIClient.get(`${MOVIE.ROOT}/${id}`);
+};
+
+const getMovieForAdmin = async (id: string) => {
+    return APIClient.get(`${MOVIE.FOR_ADMIN}/${id}`);
 };
 
 const createMovie = async (payload: FormData) => {
@@ -59,6 +63,7 @@ export default {
     fetchMovies,
     fetchMoviesForAdmin,
     getMovie,
+    getMovieForAdmin,
     createMovie,
     updateMovie,
     activateMovie,

@@ -48,6 +48,8 @@ const GenreSave: React.FC = () => {
             name: Yup.string()
                 .trim()
                 .required('Tên thể loại không được để trống')
+                .min(1, 'Tên thể loại có ít nhất 1 ký tự')
+                .max(50, 'Tên thể loại không quá 50 ký tự')
         }),
         onSubmit: async (values) => {
             const { name } = values;
