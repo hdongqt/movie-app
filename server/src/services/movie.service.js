@@ -211,7 +211,8 @@ MovieService.getSimilarMovie = async (id) => {
     }
     const genreIds = _.get(movie, "genres");
     const typeOfMovie = _.get(movie, "movieType");
-    const resultIds = result.map((movie) => movie._id);
+    const resultIds = result.filter((movie) => !movie._id.equals(id));
+    if (resultIds.length < 1 && result.length > 0) result = [];
     const similarGenre = await Movie.aggregate([
       {
         $match: {

@@ -215,7 +215,10 @@ const SearchMovies: React.FC = () => {
                                                             src={
                                                                 movie?.thumbnailPath
                                                             }
+                                                            effect="blur"
                                                             alt="Poster film"
+                                                            width={'100%'}
+                                                            height={'100%'}
                                                             className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
                                                         />
                                                     </div>
@@ -253,11 +256,13 @@ const SearchMovies: React.FC = () => {
                                                         }}
                                                     >
                                                         <div className="block absolute inset-0 bg-gradient-to-r from-[#000] to-[#0000004d]"></div>
-                                                        <img
+                                                        <LazyLoadImage
                                                             src={
                                                                 movie?.thumbnailPath
                                                             }
                                                             alt="loading"
+                                                            width={'100%'}
+                                                            height={'100%'}
                                                             className="hidden z-10 md:block h-60 w-40 min-w-40 object-cover rounded md:border md:border-teal-200"
                                                         />
                                                         <div className="md:mt-2 z-10 w-full">

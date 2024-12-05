@@ -483,7 +483,10 @@ const MediaDetail: React.FC = () => {
                                                                     ROUTERS.FILM,
                                                                     {
                                                                         country:
-                                                                            country.id
+                                                                            {
+                                                                                id: country.id,
+                                                                                name: country.name
+                                                                            }
                                                                     }
                                                                 );
                                                             }}
@@ -747,25 +750,21 @@ const MediaDetail: React.FC = () => {
                                     </p>
                                     <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-3 gap-y-4 max-h-44 overflow-y-auto">
                                         {creators && creators.length > 0 ? (
-                                            creators.map(
-                                                (creator: any, index) => {
-                                                    return (
-                                                        <Link
-                                                            to={`/person/${creator?.id}`}
-                                                            key={`creator${index}`}
-                                                            className="inline-block"
-                                                        >
-                                                            <div className=" hover:bg-indigo-200 border dark:hover:bg-slate-500 border-gray-200 shadow-md transition duration-200 group px-2 py-1 md:py-2 rounded-md overflow-hidden dark:text-white/90">
-                                                                <p className="text-lg font-bold py-1 text-gray-800 dark:text-white/90 line-clamp-1">
-                                                                    {
-                                                                        creator?.name
-                                                                    }
-                                                                </p>
-                                                            </div>
-                                                        </Link>
-                                                    );
-                                                }
-                                            )
+                                            creators.map((creator, index) => {
+                                                return (
+                                                    <Link
+                                                        to={`/person/${creator?.id}`}
+                                                        key={`creator${index}`}
+                                                        className="inline-block"
+                                                    >
+                                                        <div className=" hover:bg-indigo-200 border dark:hover:bg-slate-500 border-gray-200 shadow-md transition duration-200 group px-2 py-1 md:py-2 rounded-md overflow-hidden dark:text-white/90">
+                                                            <p className="text-lg font-bold py-1 text-gray-800 dark:text-white/90 line-clamp-1">
+                                                                {creator?.name}
+                                                            </p>
+                                                        </div>
+                                                    </Link>
+                                                );
+                                            })
                                         ) : (
                                             <p className="text-gray-700 text-lg dark:text-white/90">
                                                 Đang cập nhật...
@@ -777,7 +776,7 @@ const MediaDetail: React.FC = () => {
                                     </p>
                                     <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 pr-2 md:grid-cols-3 gap-x-3 gap-y-4 max-h-44 overflow-y-auto">
                                         {actors && actors.length > 0 ? (
-                                            actors.map((actor: any, index) => {
+                                            actors.map((actor, index) => {
                                                 return (
                                                     <Link
                                                         to={`/person/${actor?.id}`}
@@ -974,14 +973,14 @@ const MediaDetail: React.FC = () => {
                                         className="flex gap-4 group hover:opacity-90 transition"
                                         to={`/film/${movie?.id}`}
                                     >
-                                        <div className="h-48 w-2/5 overflow-hidden rounded-xl group relative">
+                                        <div className="h-48 w-2/5 overflow-hidden rounded-xl group-hover:scale-105 transition duration-300 relative">
                                             <LazyLoadImage
                                                 src={movie?.thumbnailPath}
                                                 alt="loading..."
                                                 effect="blur"
                                                 width="100%"
                                                 height="100%"
-                                                className="absolute w-full h-full object-cover group-hover:scale-125 transition-transform duration-300"
+                                                className="absolute w-full h-full object-cover"
                                             />
                                         </div>
                                         <div className="mt-1 flex-1">

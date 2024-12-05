@@ -99,14 +99,14 @@ const Home: React.FC = () => {
                                             className="flex gap-4 group hover:opacity-90 transition"
                                             to={`/film/${movie?.id}`}
                                         >
-                                            <div className="h-48 w-2/5 overflow-hidden rounded-xl group relative">
+                                            <div className="h-48 w-2/5 overflow-hidden rounded-xl relative group-hover:scale-105 transition duration-300">
                                                 <LazyLoadImage
                                                     src={movie?.thumbnailPath}
                                                     alt="ThumbMovie"
                                                     effect="blur"
                                                     width={'100%'}
                                                     height={'100%'}
-                                                    className="absolute w-full h-full object-cover group-hover:scale-125 transition-transform duration-300"
+                                                    className="absolute w-full h-full object-cover"
                                                 />
                                             </div>
                                             <div className="mt-1 flex-1">

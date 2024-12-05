@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import Utils from '@/Utils';
 import { ISelfProfile } from '@/Interfaces/Auth.interface';
 import { IUpdatePassword, IUpdateProfile } from '@/Interfaces/User.interface';
+import { ROUTERS } from '@/Constants';
 
 const { updateProfile, updatePassword } = ProfileAction;
 
@@ -84,6 +85,10 @@ const Profile: React.FC = () => {
                 setShowForm(0);
         }
     });
+
+    useEffect(() => {
+        if (!selfProfile) Utils.redirect(ROUTERS.HOME);
+    }, [selfProfile]);
 
     const __renderContent = () => {
         return (

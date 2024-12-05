@@ -63,9 +63,8 @@ const Movies: React.FC = () => {
     );
     const [filters, setFilters] = useState<IMoviePaginationFilter>(pagination);
     const [isShowMenu, setIsShowMenu] = useState(false);
-
     const buttonClickedRef = useRef(false);
-    const [isFirstRender, setIsFirstRender] = useState(true);
+    const [isAllowCallAPI, setIsAllowCallAPI] = useState(true);
 
     const handleOptionSortChange = (option: ISelect | null) => {
         if (option?.value && option.value !== _.get(pagination, 'sortBy'))
@@ -78,15 +77,20 @@ const Movies: React.FC = () => {
     };
 
     useEffect(() => {
-        if (!isFirstRender) {
+        if (!isAllowCallAPI) {
             if (filters.isFetchNew)
                 window.scrollTo({
                     top: 0,
                     behavior: 'smooth'
                 });
             dispatch(fetchAllMovies(filters));
+            setIsAllowCallAPI(true);
         }
-    }, [filters, isFirstRender]);
+    }, [filters, isAllowCallAPI]);
+
+    useEffect(() => {
+        if (isAllowCallAPI) setIsAllowCallAPI(false);
+    }, [filters]);
 
     useEffect(() => {
         if (state) {
@@ -97,12 +101,12 @@ const Movies: React.FC = () => {
                 page: 1,
                 year: year || undefined,
                 movieType: movieType || 'all',
-                country: country || undefined,
+                country: country?.id,
                 isFetchNew: true,
                 genre: genreId ? [genreId] : []
             });
         }
-        setIsFirstRender(false);
+        if (isAllowCallAPI) setIsAllowCallAPI(false);
         return () => {
             if (!buttonClickedRef.current) dispatch(resetMovieState());
             buttonClickedRef.current = false;
@@ -149,13 +153,14 @@ const Movies: React.FC = () => {
             <div className="w-full flex lg:flex-row flex-col-reverse mt-16 dark:bg-slate-900 h-full">
                 <div className="w-full lg:w-3/4 px-6 mt-6 lg:mt-2 pb-5 h-full">
                     <div className="flex justify-between">
-                        <p className="text-lg uppercase relative py-1.5 bg-red-700 text-white pl-2 rounded-md rounded-r-none w-48">
+                        <p className="text-lg uppercase relative py-1.5 bg-red-700 text-white pl-2 rounded-md rounded-r-none min-w-48">
                             Danh sách phim{' '}
                             {filters.movieType === 'all'
                                 ? ''
                                 : filters.movieType === 'tv'
                                 ? 'bộ'
                                 : 'lẻ'}
+                            {state?.country?.name && ` ${state.country.name}`}
                             <span className="absolute left-full top-0 border-red-700 w-0 h-0 border-b-[2.5rem] border-solid border-r-[2.5rem] border-r-transparent"></span>
                         </p>
                         <div className="border-b flex-1 border-red-300 dark:border-red-700 flex justify-end items-center">
@@ -306,16 +311,18 @@ const Movies: React.FC = () => {
                                                                     'N/A'}
                                                             </span>
                                                         </span>
-                                                        <LazyLoadImage
-                                                            src={
-                                                                movie?.thumbnailPath
-                                                            }
-                                                            alt="ThumbMovie"
-                                                            effect="blur"
-                                                            width={'100%'}
-                                                            height={'100%'}
-                                                            className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
-                                                        />
+                                                        <div className="group-hover:scale-110 transition duration-300">
+                                                            <LazyLoadImage
+                                                                src={
+                                                                    movie?.thumbnailPath
+                                                                }
+                                                                alt="ThumbMovie"
+                                                                effect="blur"
+                                                                width={'100%'}
+                                                                height={'100%'}
+                                                                className="w-full h-full object-cover"
+                                                            />
+                                                        </div>
                                                     </div>
                                                     <div className="px-2 py-3 bg-gradient-to-r from-slate-800 to-slate-600">
                                                         <h3 className="px-2 text-center text-white font-medium text-lg line-clamp-1">

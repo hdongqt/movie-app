@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 import { IMovie } from '@/Interfaces/Movie.interface';
-import { ENUMS, ROUTERS } from '@/Constants';
+import { ROUTERS } from '@/Constants';
 import DefaultLayout from '@/Components/DefaultLayout';
 import { RootState, useTypedDispatch } from '@/Redux/Store';
 import { FavoritesAction } from '@/Redux/Features/Favorites';
