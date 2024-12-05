@@ -15,15 +15,15 @@ const CollapseMenu: React.FC<ICollapseMenu> = (props: ICollapseMenu) => {
         setIsOpen(!isOpen);
     };
     return (
-        <div className="relative border rounded-md text-light px-3 shadow-lg">
+        <div className="relative border rounded-md text-light px-3 shadow-lg dark:border-slate-600">
             <div
                 className="flex items-center justify-between cursor-pointer"
                 onClick={changeStatusCollapse}
             >
-                <span className="font-medium text-lg py-1.5 block">
+                <span className="font-medium text-lg py-1.5 block dark:text-white/90">
                     {heading}
                 </span>
-                <span className="text-lg cursor-pointer p-1 text-gray-800">
+                <span className="text-lg cursor-pointer p-1 text-gray-800 dark:text-gray-500">
                     {isOpen ? (
                         <i className="icon-chevron-down"></i>
                     ) : (
@@ -37,7 +37,7 @@ const CollapseMenu: React.FC<ICollapseMenu> = (props: ICollapseMenu) => {
                 }`}
             >
                 <div className="collapse-content">
-                    <div className="border-t border-stone-300 w-full mt-1">
+                    <div className="border-t border-stone-300 dark:border-slate-600 w-full mt-1">
                         {children}
                     </div>
                 </div>

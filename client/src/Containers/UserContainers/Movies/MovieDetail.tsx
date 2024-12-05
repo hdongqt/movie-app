@@ -20,11 +20,16 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { AuthAction } from '@/Redux/Features/Auth';
 import Confirm from '@/Components/Common/Dialogs/Confirms';
-import { DEFAULT_CONFIRM_DIALOG } from '@/Constants';
+import { DEFAULT_CONFIRM_DIALOG, ROUTERS } from '@/Constants';
 import { IConfirmDialog } from '@/Interfaces/ConfirmDialog.interface';
+import ROLE from '@/Constants/Enums/Roles.enum';
 
-const { fetchAllCommentOfMovie, createComment, resetCommentsState } =
-    CommentsManagementAction;
+const {
+    fetchAllCommentOfMovie,
+    createComment,
+    resetCommentsState,
+    terminatedComment
+} = CommentsManagementAction;
 const { setIsShowModalAuth } = AuthAction;
 const { getMovie, setFiltersSave, addMovieToFavorites } = MoviesAction;
 
@@ -36,7 +41,7 @@ interface VideoPlayState {
 
 const MediaDetail: React.FC = () => {
     const dispatch = useTypedDispatch();
-    let { id } = useParams();
+    const { id } = useParams();
     const { isMobile } = useCurrentViewportView();
     const { state } = useLocation();
     const isGetLoading: boolean = useSelector((state: RootState) =>
@@ -148,6 +153,12 @@ const MediaDetail: React.FC = () => {
         setUrlPlaying(video?.path?.[0]);
         !isWatch && history('/film/' + movieDetail?.id + '/watch');
     };
+
+    const handleClickFavorite = (id?: string) => {
+        if (!mySelf) dispatch(setIsShowModalAuth(true));
+        else if (id) dispatch(addMovieToFavorites(id));
+    };
+
     const onClickReply = (id: string) => {
         setCommentMovie(
             commentsMovie.map((comment: any) =>
@@ -159,6 +170,7 @@ const MediaDetail: React.FC = () => {
     };
 
     const cancelReply = () => {
+        formReplyComment.resetForm();
         setCommentMovie(
             commentsMovie.map((comment: any) => ({
                 ...comment,
@@ -167,9 +179,8 @@ const MediaDetail: React.FC = () => {
         );
     };
 
-    const handleDeleteComment = (id: string) => {
-        console.log(id);
-
+    const handleDeleteComment = (id: string, parentId: string) => {
+        dispatch(terminatedComment({ id, parentId }));
         setConfirmDeleteComment(DEFAULT_CONFIRM_DIALOG);
     };
 
@@ -219,7 +230,7 @@ const MediaDetail: React.FC = () => {
         return (
             <div
                 className={`pt-5 flex flex-col gap-3 ${
-                    parentId && 'border-l-2 pt-5 pl-6'
+                    parentId && 'border-l-2 pt-5 pl-6 dark:border-gray-700'
                 }`}
             >
                 {comments?.length > 0 &&
@@ -236,15 +247,15 @@ const MediaDetail: React.FC = () => {
                                 </div>
                                 <div className="w-full">
                                     <div className="flex items-end gap-2">
-                                        <h4 className="text-sky-700 font-semibold">
+                                        <h4 className="text-sky-700 font-semibold cursor-default">
                                             {comment?.user?.displayName}
                                         </h4>
                                         {comment?.updatedAt && (
-                                            <span className="group cursor-default text-gray-600 font-medium relative">
+                                            <span className="group cursor-default text-gray-600 dark:text-gray-500 font-medium relative">
                                                 {Utils.formatDateAgo(
                                                     comment.updatedAt
                                                 )}
-                                                <span className="invisible opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:visible absolute bg-slate-900 text-white px-1 py-0.5 rounded-md block w-max -bottom-8 left-1/2 -translate-x-1/2">
+                                                <span className="invisible opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:visible absolute bg-slate-900 dark:bg-slate-700 text-white px-1 py-0.5 rounded-md block w-max -bottom-8 left-1/2 -translate-x-1/2">
                                                     {Utils.formatDateTime(
                                                         comment.updatedAt
                                                     )}
@@ -252,7 +263,7 @@ const MediaDetail: React.FC = () => {
                                             </span>
                                         )}
                                     </div>
-                                    <p className="mt-1 break-words whitespace-pre-line break-all max-w-full w-full">
+                                    <p className="mt-1 break-words whitespace-pre-line break-all max-w-full dark:text-white/80 w-full">
                                         {comment?.content}
                                     </p>
                                     <div>
@@ -271,22 +282,27 @@ const MediaDetail: React.FC = () => {
                                         >
                                             Trả lời
                                         </button>
-                                        <button
-                                            className="text-red-600 hover:underline ml-3 font-medium"
-                                            onClick={() =>
-                                                setConfirmDeleteComment({
-                                                    isOpen: true,
-                                                    state: {
-                                                        id: comment.id,
-                                                        status: ''
-                                                    },
-                                                    message:
-                                                        'Bạn có chắc chắn muốn xóa bình luận này không?'
-                                                })
-                                            }
-                                        >
-                                            Xoá
-                                        </button>
+                                        {((mySelf &&
+                                            comment?.user?.id === mySelf?.id) ||
+                                            mySelf?.role === ROLE.ADMIN) && (
+                                            <button
+                                                className="text-red-600 hover:underline ml-3 font-medium"
+                                                onClick={() =>
+                                                    setConfirmDeleteComment({
+                                                        isOpen: true,
+                                                        state: {
+                                                            id: comment.id,
+                                                            status:
+                                                                parentId || ''
+                                                        },
+                                                        message:
+                                                            'Bạn có chắc chắn muốn xóa bình luận này không?'
+                                                    })
+                                                }
+                                            >
+                                                Xoá
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -315,7 +331,7 @@ const MediaDetail: React.FC = () => {
                                             }
                                             className="w-full"
                                         >
-                                            <h4 className="text-sky-700 font-semibold">
+                                            <h4 className="text-sky-700 font-semibold cursor-default">
                                                 {mySelf?.displayName}
                                             </h4>
                                             <textarea
@@ -328,7 +344,7 @@ const MediaDetail: React.FC = () => {
                                                 onChange={
                                                     formReplyComment.handleChange
                                                 }
-                                                className="resize-none block mt-2 w-full border-2 py-3 px-4 rounded outline-none focus:border-2 focus:border-blue-500"
+                                                className="resize-none block mt-2 w-full border-2 py-3 px-4 rounded outline-none focus:border-2 dark:border-slate-600 dark:text-white/80 dark:bg-gray-700 focus:border-blue-500"
                                                 placeholder="Viết bình luận của bạn..."
                                             />
                                             {formReplyComment.touched
@@ -365,7 +381,7 @@ const MediaDetail: React.FC = () => {
                                                      ${
                                                          isActionCommentLoading
                                                              ? 'bg-blue-300'
-                                                             : 'bg-blue-500 hover:bg-blue-600'
+                                                             : 'bg-blue-500 dark:bg-blue-600 hover:bg-blue-700'
                                                      }
                                                     `}
                                                     onClick={() => {
@@ -382,7 +398,7 @@ const MediaDetail: React.FC = () => {
                                                     {isActionCommentLoading && (
                                                         <svg
                                                             aria-hidden="true"
-                                                            className="w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600"
+                                                            className="w-6 h-6 text-gray-200 animate-spin dark:text-white fill-gray-600 dark:fill-gray-400"
                                                             viewBox="0 0 100 101"
                                                             fill="none"
                                                             xmlns="http://www.w3.org/2000/svg"
@@ -415,12 +431,12 @@ const MediaDetail: React.FC = () => {
             role: 'creator'
         });
         return (
-            <div className="w-full flex flex-col lg:flex-row mt-16">
+            <div className="w-full flex flex-col lg:flex-row mt-16 dark:bg-slate-900">
                 <div className="w-full lg:w-3/4 px-6 pb-5">
                     {isGetLoading && (
                         <div className="relative -translate-y-2">
                             <Skeleton heightRow={isMobile ? 290 : 330} />
-                            <div className="animate-pulse absolute px-3 md:px-0 left-2 h-48 bg-zinc-200 dark:bg-gray-700 md:left-16 -bottom-16 right-2 md:right-16 rounded shadow-2xl flex gap-8 border"></div>
+                            <div className="animate-pulse absolute px-3 md:px-0 left-2 h-48 bg-zinc-200 dark:bg-gray-700 md:left-16 -bottom-16 right-2 md:right-16 rounded shadow-2xl flex gap-8 border dark:border-slate-600"></div>
                         </div>
                     )}
                     {!isGetLoading && (
@@ -432,15 +448,18 @@ const MediaDetail: React.FC = () => {
                             )}
                             {!isWatch && (
                                 <div className="relative rounded">
-                                    <img
+                                    <LazyLoadImage
                                         src={movieDetail?.posterPath}
-                                        alt="poster"
+                                        alt="Poster"
+                                        effect="blur"
+                                        width="100%"
+                                        height="100%"
                                         onError={({ currentTarget }) => {
                                             currentTarget.onerror = null;
                                             currentTarget.src =
                                                 'https://images.pexels.com/photos/255464/pexels-photo-255464.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
                                         }}
-                                        className="w-full object-cover h-72 md:h-80 overflow-hidden"
+                                        className="w-full md:aspect-[16/9] object-cover h-72 md:h-80 overflow-hidden"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-r from-[#000000ad] to-[#0000004d]"></div>
                                     <div className="flex gap-2.5 absolute right-2 md:left-7 top-14 md:top-4">
@@ -453,7 +472,21 @@ const MediaDetail: React.FC = () => {
                                                     return (
                                                         <span
                                                             key={`ctMedia${index}`}
-                                                            className="bg-gradient-to-r from-teal-600 to-cyan-700 text-white inline-block px-2.5 md:px-3.5 py-1 md:py-2 rounded-full font-medium"
+                                                            className="cursor-pointer bg-gradient-to-r from-teal-600 to-cyan-700 text-white inline-block px-2.5 md:px-3.5 py-1 md:py-2 rounded-full font-medium"
+                                                            onClick={() => {
+                                                                dispatch(
+                                                                    setFiltersSave(
+                                                                        null
+                                                                    )
+                                                                );
+                                                                Utils.redirect(
+                                                                    ROUTERS.FILM,
+                                                                    {
+                                                                        country:
+                                                                            country.id
+                                                                    }
+                                                                );
+                                                            }}
                                                         >
                                                             {country?.name}
                                                         </span>
@@ -483,17 +516,18 @@ const MediaDetail: React.FC = () => {
                                             <i className="icon-star pl-2"></i>
                                         </span>
                                     </div>
-                                    <div className="absolute px-3 md:px-0 left-2 md:left-16 -bottom-16 right-2 md:right-16 rounded bg-[#ffffffec] shadow-2xl flex gap-8 border">
-                                        <img
+                                    <div className="absolute px-3 md:px-0 left-2 md:left-16 -bottom-16 right-2 md:right-16 rounded bg-white dark:bg-slate-900/90 shadow-2xl flex items-center gap-8 border dark:border-slate-600">
+                                        <LazyLoadImage
                                             src={movieDetail?.thumbnailPath}
                                             alt="loading"
-                                            className="hidden md:block ml-4 self-center w-40 h-48  object-fill rounded-lg shadow-md border border-gray-300 shadow-gray-700"
+                                            effect="blur"
+                                            className="hidden md:block ml-4 self-center w-40 h-48 object-fill rounded-lg shadow-md border border-gray-300 dark:border-gray-400 shadow-gray-700"
                                         />
                                         <div className="text-white flex-1">
                                             <h3 className="name text-2xl md:text-3xl font-bold text-[#ff0000] line-clamp-1 pr-12 md:pr-0 mt-2.5">
                                                 {movieDetail?.vietnameseName}
                                             </h3>
-                                            <h4 className="name text-lg text-gray-700 capitalize font-bold line-clamp-1">
+                                            <h4 className="name text-lg text-gray-700 dark:text-gray-100/80 capitalize font-bold line-clamp-1">
                                                 {movieDetail?.originalName}
                                                 {movieDetail?.release
                                                     ? ` (${movieDetail.release})`
@@ -504,15 +538,26 @@ const MediaDetail: React.FC = () => {
                                                     movieDetail?.genres.map(
                                                         (genre: any) => {
                                                             return (
-                                                                <span
+                                                                <button
+                                                                    onClick={() =>
+                                                                        Utils.redirect(
+                                                                            ROUTERS.FILM,
+                                                                            {
+                                                                                genreId:
+                                                                                    genre.id,
+                                                                                isReset:
+                                                                                    true
+                                                                            }
+                                                                        )
+                                                                    }
                                                                     key={`genreDetail${genre?.id}`}
-                                                                    className="py-1 px-3 bg-gradient-to-r from-blue-800 to-indigo-900 rounded-3xl hover:bg-sky-600 hover:border-sky-700 transition duration-200
+                                                                    className="py-1 px-3 bg-gradient-to-r from-blue-800 to-indigo-900 rounded-3xl hover:from-blue-700 hover:to-indigo-800 transition duration-200
                         min-w-20 block text-center max-w-40 text-nowrap line-clamp-1 text-base"
                                                                 >
                                                                     {
                                                                         genre?.name
                                                                     }
-                                                                </span>
+                                                                </button>
                                                             );
                                                         }
                                                     )}
@@ -530,12 +575,7 @@ const MediaDetail: React.FC = () => {
                                                 <button
                                                     type="button"
                                                     onClick={() =>
-                                                        id &&
-                                                        dispatch(
-                                                            addMovieToFavorites(
-                                                                id
-                                                            )
-                                                        )
+                                                        handleClickFavorite(id)
                                                     }
                                                     className={`outline-none flex px-3 py-6 items-center gap-3 rounded-full transition h-10 relative 
                                                     ${
@@ -548,7 +588,7 @@ const MediaDetail: React.FC = () => {
                                                     {isActionLoading && (
                                                         <svg
                                                             aria-hidden="true"
-                                                            className="inline w-6 h-6 text-gray-300 animate-spin dark:text-gray-600 fill-gray-500"
+                                                            className="inline w-6 h-6 text-gray-300 animate-spin dark:text-white fill-gray-600 dark:fill-gray-400"
                                                             viewBox="0 0 100 101"
                                                             fill="none"
                                                             xmlns="http://www.w3.org/2000/svg"
@@ -581,7 +621,7 @@ const MediaDetail: React.FC = () => {
                         (isGetLoading ? (
                             <Skeleton />
                         ) : (
-                            <p className="pt-2 font-medium border-b border-gray-300 pb-1.5">
+                            <p className="pt-2 font-medium border-b border-gray-300 pb-1.5 dark:text-white dark:border-slate-600">
                                 Xem phim:{' '}
                                 <span className="font-medium text-red-600 text-lg">
                                     {movieDetail?.vietnameseName}
@@ -594,7 +634,7 @@ const MediaDetail: React.FC = () => {
                                 <div className="pt-4 px-4 pb-3">
                                     {isWatch && (
                                         <>
-                                            <p className="uppercase font-semibold text-lg text-gray-900 border-b border-slate-300">
+                                            <p className="uppercase font-semibold text-lg text-gray-900 dark:text-white/80 border-b border-slate-300">
                                                 Server
                                             </p>
                                             {!isGetLoading && (
@@ -611,7 +651,7 @@ const MediaDetail: React.FC = () => {
                 ${
                     item === urlPlaying
                         ? 'opacity-90 bg-red-800 cursor-default'
-                        : 'hover:opacity-60 bg-stone-800 transition hover:shadow-lg'
+                        : 'hover:opacity-60 bg-stone-800 transition hover:shadow-lg dark:hover:opacity-100 dark:hover:bg-stone-700'
                 }
                 `}
                                                                     onClick={() =>
@@ -639,7 +679,7 @@ const MediaDetail: React.FC = () => {
                                         </>
                                     )}
 
-                                    <p className="uppercase font-semibold text-lg text-gray-900 border-b border-slate-300">
+                                    <p className="uppercase font-semibold text-lg text-gray-900 border-b border-slate-300 dark:text-white/90 dark:border-slate-600">
                                         Danh sách tập
                                     </p>
                                     {isGetLoading && (
@@ -664,7 +704,7 @@ const MediaDetail: React.FC = () => {
                                                             videoPlay
                                                         )
                                                             ? 'opacity-90 bg-red-800 cursor-default'
-                                                            : 'hover:opacity-60 bg-stone-800 transition hover:shadow-lg'
+                                                            : 'hover:opacity-60 bg-stone-800 transition hover:shadow-lg dark:hover:opacity-100 dark:hover:bg-stone-700'
                                                     }
                                                     `}
                                                             onClick={() =>
@@ -692,17 +732,17 @@ const MediaDetail: React.FC = () => {
                                     className="py-4 px-4 text-stone-800
                                 "
                                 >
-                                    <p className="uppercase font-semibold text-lg text-gray-900 border-b border-slate-300">
+                                    <p className="uppercase font-semibold text-lg text-gray-900 border-b border-slate-300 dark:text-white/90 dark:border-slate-600">
                                         Tóm tắt
                                     </p>
-                                    <p className="tracking-wide leading-7 pt-4">
+                                    <p className="tracking-wide leading-7 pt-4 dark:text-white/90">
                                         {movieDetail?.overview}
                                     </p>
                                 </div>
                             </Tab>
                             <Tab title="Diễn viên">
                                 <div className="py-4 px-4 text-stone-800">
-                                    <p className="uppercase font-semibold text-lg text-gray-900 border-b border-slate-300">
+                                    <p className="uppercase font-semibold text-lg text-gray-900 border-b border-slate-300 dark:border-slate-600 dark:text-white/90">
                                         Đạo diễn
                                     </p>
                                     <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-3 gap-y-4 max-h-44 overflow-y-auto">
@@ -715,8 +755,8 @@ const MediaDetail: React.FC = () => {
                                                             key={`creator${index}`}
                                                             className="inline-block"
                                                         >
-                                                            <div className=" hover:bg-indigo-200 border border-gray-200 shadow-md transition duration-200 group px-2 py-1 md:py-2 rounded-md overflow-hidden">
-                                                                <p className="text-lg font-bold py-1 text-gray-800 line-clamp-1">
+                                                            <div className=" hover:bg-indigo-200 border dark:hover:bg-slate-500 border-gray-200 shadow-md transition duration-200 group px-2 py-1 md:py-2 rounded-md overflow-hidden dark:text-white/90">
+                                                                <p className="text-lg font-bold py-1 text-gray-800 dark:text-white/90 line-clamp-1">
                                                                     {
                                                                         creator?.name
                                                                     }
@@ -727,12 +767,12 @@ const MediaDetail: React.FC = () => {
                                                 }
                                             )
                                         ) : (
-                                            <p className="text-gray-700 text-lg">
+                                            <p className="text-gray-700 text-lg dark:text-white/90">
                                                 Đang cập nhật...
                                             </p>
                                         )}
                                     </div>
-                                    <p className="uppercase font-semibold text-lg text-gray-900 border-b border-slate-300 mt-6">
+                                    <p className="uppercase font-semibold text-lg text-gray-900 border-b border-slate-300 mt-6 dark:border-slate-600 dark:text-white/90">
                                         Diễn viên
                                     </p>
                                     <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 pr-2 md:grid-cols-3 gap-x-3 gap-y-4 max-h-44 overflow-y-auto">
@@ -744,8 +784,8 @@ const MediaDetail: React.FC = () => {
                                                         key={`creator${index}`}
                                                         className="inline-block"
                                                     >
-                                                        <div className=" hover:bg-indigo-200 border border-gray-200 shadow-md transition duration-200 group px-2 py-1 md:py-2 rounded-md overflow-hidden">
-                                                            <p className="text-lg font-bold py-1 text-gray-800 line-clamp-1">
+                                                        <div className="hover:bg-indigo-200 dark:hover:bg-slate-500 border border-gray-200 shadow-md transition duration-200 group px-2 py-1 md:py-2 rounded-md overflow-hidden">
+                                                            <p className="text-lg font-bold py-1 text-gray-800 dark:text-white/90 line-clamp-1">
                                                                 {actor?.name}
                                                             </p>
                                                         </div>
@@ -753,7 +793,7 @@ const MediaDetail: React.FC = () => {
                                                 );
                                             })
                                         ) : (
-                                            <p className="text-gray-700 text-lg">
+                                            <p className="text-gray-700 text-lg dark:text-white/90">
                                                 Đang cập nhật...
                                             </p>
                                         )}
@@ -770,7 +810,9 @@ const MediaDetail: React.FC = () => {
                         />
                     </div>
                     <div className="mt-5">
-                        <h2 className="font-medium text-2xl">Bình luận</h2>
+                        <h2 className="font-medium text-2xl dark:text-white">
+                            Bình luận
+                        </h2>
                         {((!isFetchCommentLoading &&
                             commentsMovie?.length < 1) ||
                             commentsMovie?.length > 0) &&
@@ -789,7 +831,7 @@ const MediaDetail: React.FC = () => {
                                             </span>
                                         </div>
                                         <div className="w-full">
-                                            <h4 className="text-sky-700 font-semibold">
+                                            <h4 className="text-sky-700 font-semibold cursor-default">
                                                 {mySelf?.displayName}
                                             </h4>
                                             <textarea
@@ -801,7 +843,7 @@ const MediaDetail: React.FC = () => {
                                                 onChange={
                                                     formComment.handleChange
                                                 }
-                                                className="resize-none block mt-2 w-full border-2 py-3 px-4 rounded outline-none focus:border-2 focus:border-blue-500"
+                                                className="resize-none block mt-2 w-full border-2 py-3 px-4 rounded outline-none focus:border-2 dark:border-slate-600 dark:text-white/80 dark:bg-gray-700 focus:border-blue-500"
                                                 placeholder="Viết bình luận của bạn..."
                                             />
                                             {formComment.touched.comment &&
@@ -818,8 +860,8 @@ const MediaDetail: React.FC = () => {
                                                 className={`flex gap-2 mt-2.5 py-2 px-3 rounded text-white ${
                                                     isActionCommentLoading &&
                                                     isCommentClick
-                                                        ? 'bg-gray-400'
-                                                        : 'bg-blue-500 hover:bg-blue-600'
+                                                        ? 'bg-blue-300'
+                                                        : 'bg-blue-500 dark:bg-blue-600 hover:bg-blue-700'
                                                 }`}
                                                 type="submit"
                                                 disabled={
@@ -831,7 +873,7 @@ const MediaDetail: React.FC = () => {
                                                     isCommentClick && (
                                                         <svg
                                                             aria-hidden="true"
-                                                            className="w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600"
+                                                            className="w-6 h-6 text-gray-200 animate-spin dark:text-white fill-gray-600 dark:fill-gray-400"
                                                             viewBox="0 0 100 101"
                                                             fill="none"
                                                             xmlns="http://www.w3.org/2000/svg"
@@ -853,8 +895,8 @@ const MediaDetail: React.FC = () => {
                                 </form>
                             )}
                         {!isFetchCommentLoading && !mySelf && (
-                            <div className="flex justify-center px-2 py-3 border rounded mt-3">
-                                <p className="text-gray-800">
+                            <div className="flex justify-center px-2 py-3 border rounded mt-3 dark:border-slate-600">
+                                <p className="text-gray-800 dark:text-white/90">
                                     Vui lòng{' '}
                                     <button
                                         className="underline text-blue-700"
@@ -893,14 +935,37 @@ const MediaDetail: React.FC = () => {
                         )}
                     </div>
                 </div>
-                <div className="hidden lg:block lg:w-1/4 border-l px-6 border-stone-300">
+                <div className="hidden lg:block lg:w-1/4 border-l px-6 border-stone-300 dark:border-slate-600 mb-3">
                     <p className="mb-5 mt-3">
-                        <span className="text-black relative text-xl font-bold">
+                        <span className="text-black dark:text-white relative text-xl font-bold">
                             Có thể bạn muốn xem
                             <span className="w-2/3 h-[3px] bg-red-600 absolute left-0 -bottom-1" />
                         </span>
                     </p>
+
                     <div className="flex flex-col gap-6">
+                        {isGetLoading && (
+                            <>
+                                {[1, 2, 3, 4, 5].map((item) => {
+                                    return (
+                                        <div
+                                            key={`LoadingTrending${item}`}
+                                            className="flex gap-4 animate-pulse"
+                                        >
+                                            <div className="h-48 w-2/5 overflow-hidden rounded-xl group relative">
+                                                <div className="absolute w-full h-full bg-gray-200 dark:bg-gray-700" />
+                                            </div>
+                                            <div className="mt-1 flex-1">
+                                                <span className="h-6 rounded-md inline-block w-full bg-gray-200 dark:bg-gray-700"></span>
+                                                <span className="h-6 rounded-md inline-block w-full bg-gray-200 dark:bg-gray-700"></span>
+                                                <span className="h-6 rounded-md inline-block w-full bg-gray-200 dark:bg-gray-700"></span>
+                                                <span className="bg-gray-200 dark:bg-gray-700 rounded-md w-12 inline-block h-6"></span>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </>
+                        )}
                         {similarMovies &&
                             similarMovies.map((movie: IMovie) => {
                                 return (
@@ -913,17 +978,20 @@ const MediaDetail: React.FC = () => {
                                             <LazyLoadImage
                                                 src={movie?.thumbnailPath}
                                                 alt="loading..."
+                                                effect="blur"
+                                                width="100%"
+                                                height="100%"
                                                 className="absolute w-full h-full object-cover group-hover:scale-125 transition-transform duration-300"
                                             />
                                         </div>
                                         <div className="mt-1 flex-1">
-                                            <h3 className="font-semibold text-lg line-clamp-1">
+                                            <h3 className="font-semibold text-lg line-clamp-1 dark:text-white/90">
                                                 {movie?.vietnameseName}
                                             </h3>
                                             <h4 className="line-clamp-1 font-medium text-indigo-800">
                                                 {movie?.originalName}
                                             </h4>
-                                            <p className="mb-2 text-stale-600 font-medium">
+                                            <p className="mb-2 text-stale-600 font-medium dark:text-slate-300">
                                                 {movie?.release || 'N/A'}
                                             </p>
                                             <span className="items-baseline text-white bg-yellow-500 px-1 py-[2px] rounded-md">
@@ -949,7 +1017,10 @@ const MediaDetail: React.FC = () => {
                         title="Xoá bình luận ?"
                         confirm={confirmDeleteComment}
                         callback={() =>
-                            handleDeleteComment(confirmDeleteComment.state.id)
+                            handleDeleteComment(
+                                confirmDeleteComment.state.id,
+                                confirmDeleteComment.state.status
+                            )
                         }
                         onCancel={() =>
                             setConfirmDeleteComment(DEFAULT_CONFIRM_DIALOG)

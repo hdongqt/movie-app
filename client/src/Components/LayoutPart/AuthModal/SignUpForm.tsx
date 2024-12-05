@@ -59,7 +59,7 @@ const SignUpForm: React.FC<Props> = ({ changeToSignIn }: Props) => {
     return (
         <form onSubmit={signUpForm.handleSubmit} autoComplete="off">
             <img src={logoFilm} alt="logo" className="w-14 mx-auto" />
-            <h1 className="text-center font-medium text-2xl mt-2">
+            <h1 className="text-center font-medium text-2xl mt-2 dark:text-white">
                 Chào mừng đến với{' '}
                 <span className="font-extrabold">
                     BRONZE<span className="text-red-600">FILM</span>
@@ -67,14 +67,16 @@ const SignUpForm: React.FC<Props> = ({ changeToSignIn }: Props) => {
             </h1>
             <div className="mt-8 flex flex-col gap-2.5">
                 <div className="flex flex-col gap-1">
-                    <label className="font-medium text-black pl-2">Email</label>
+                    <label className="font-medium text-black pl-2 dark:text-white/90">
+                        Email
+                    </label>
                     <input
                         type="text"
                         name="email"
                         placeholder="Nhập email của bạn"
                         onChange={signUpForm.handleChange}
                         value={signUpForm.values.email}
-                        className="border py-2.5 pl-6 pr-4 outline-none border-gray-400 rounded-full"
+                        className="border py-2.5 pl-6 pr-4 outline-none border-gray-400 rounded-full dark:bg-gray-600 dark:border-slate-600 dark:text-white"
                     />
                     {signUpForm.touched.email &&
                         signUpForm.errors.email !== undefined && (
@@ -84,7 +86,7 @@ const SignUpForm: React.FC<Props> = ({ changeToSignIn }: Props) => {
                         )}
                 </div>
                 <div className="flex flex-col gap-1">
-                    <label className="font-medium text-black pl-2">
+                    <label className="font-medium text-black pl-2 dark:text-white/90">
                         Tên của bạn
                     </label>
                     <input
@@ -93,7 +95,7 @@ const SignUpForm: React.FC<Props> = ({ changeToSignIn }: Props) => {
                         name="displayName"
                         value={signUpForm.values.displayName}
                         onChange={signUpForm.handleChange}
-                        className="border py-2.5 pl-6 pr-4 outline-none border-gray-400 rounded-full"
+                        className="border py-2.5 pl-6 pr-4 outline-none border-gray-400 rounded-full dark:bg-gray-600 dark:border-slate-600 dark:text-white"
                     />
                     {signUpForm.touched.displayName &&
                         signUpForm.errors.displayName !== undefined && (
@@ -103,7 +105,7 @@ const SignUpForm: React.FC<Props> = ({ changeToSignIn }: Props) => {
                         )}
                 </div>
                 <div className="flex flex-col gap-1">
-                    <label className="text-base font-medium text-black pl-2">
+                    <label className="text-base font-medium text-black pl-2 dark:text-white/90">
                         Mật khẩu
                     </label>
                     <div className="relative">
@@ -113,11 +115,11 @@ const SignUpForm: React.FC<Props> = ({ changeToSignIn }: Props) => {
                             name="password"
                             onChange={signUpForm.handleChange}
                             value={signUpForm.values.password}
-                            className="w-full border py-2.5 pl-6 pr-4 outline-none border-gray-400 rounded-full"
+                            className="w-full border py-2.5 pl-6 pr-4 outline-none border-gray-400 rounded-full dark:bg-gray-600 dark:border-slate-600 dark:text-white"
                         />
                         <span
                             className="absolute top-1/2 right-[2px] -translate-y-1/2 w-11 h-11 flex items-center justify-center
-                         bg-white hover:bg-gray-200 transition cursor-pointer rounded-full text-lg"
+                         bg-white dark:bg-gray-300 hover:bg-gray-200 dark:hover:bg-slate-100 transition cursor-pointer rounded-full text-lg"
                             onClick={() =>
                                 setShowPassword({
                                     ...showPassword,
@@ -140,7 +142,7 @@ const SignUpForm: React.FC<Props> = ({ changeToSignIn }: Props) => {
                         )}
                 </div>
                 <div className="flex flex-col gap-1">
-                    <label className="text-base font-medium text-black pl-2">
+                    <label className="text-base font-medium text-black pl-2 dark:text-white/90">
                         Xác nhận mật khẩu
                     </label>
                     <div className="relative">
@@ -154,11 +156,11 @@ const SignUpForm: React.FC<Props> = ({ changeToSignIn }: Props) => {
                             onChange={signUpForm.handleChange}
                             value={signUpForm.values.confirmPassword}
                             placeholder="Xác nhận mật khẩu"
-                            className="border py-2.5 pl-6 pr-4 outline-none border-gray-400 rounded-full w-full"
+                            className="border py-2.5 pl-6 pr-4 outline-none border-gray-400 rounded-full w-full dark:bg-gray-600 dark:border-slate-600 dark:text-white"
                         />
                         <span
                             className="absolute top-1/2 right-[2px] -translate-y-1/2 w-11 h-11 flex items-center 
-                        justify-center bg-white hover:bg-gray-200 transition cursor-pointer rounded-full text-lg"
+                        justify-center bg-white dark:bg-gray-300 hover:bg-gray-200 dark:hover:bg-slate-100 transition cursor-pointer rounded-full text-lg"
                             onClick={() =>
                                 setShowPassword({
                                     ...showPassword,
@@ -186,7 +188,7 @@ const SignUpForm: React.FC<Props> = ({ changeToSignIn }: Props) => {
                     className={`py-2.5 flex items-center justify-center outline-none transition rounded-full text-white font-semibold mt-3
                     ${
                         isActionLoading
-                            ? 'bg-gray-400'
+                            ? 'bg-gray-400 dark:bg-sky-900'
                             : 'bg-red-600 hover:bg-red-700'
                     }
                     `}

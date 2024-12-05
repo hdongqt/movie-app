@@ -9,6 +9,9 @@ body {
 ::-webkit-scrollbar {
     @apply w-2 h-2;
 }
+.dark ::-webkit-scrollbar {
+    @apply bg-slate-900;
+}
 ::-webkit-scrollbar-button {
     @apply w-0 h-0;
 }
@@ -22,9 +25,18 @@ body {
 ::-webkit-scrollbar-thumb:active {
     @apply bg-neutral-500;
 }
+.dark ::-webkit-scrollbar-thumb:active {
+    @apply bg-neutral-200;
+}
 ::-webkit-scrollbar-track {
     @apply bg-white rounded-[50px];
     border: 0px none #fafafa;
+}
+.dark ::-webkit-scrollbar-thumb {
+    @apply border-slate-900;
+}
+.dark ::-webkit-scrollbar-track {
+    @apply bg-slate-700 rounded-none;
 }
 .custom-table::-webkit-scrollbar {
     @apply w-[10px] h-[10px];
@@ -39,6 +51,12 @@ body {
 ::-webkit-scrollbar-track:active {
     @apply bg-white;
 }
+
+.dark ::-webkit-scrollbar-track:active,
+.dark ::-webkit-scrollbar-track:hover {
+    @apply bg-gray-700;
+}
+
 ::-webkit-scrollbar-corner {
     @apply bg-transparent;
 }

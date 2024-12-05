@@ -11,7 +11,7 @@ const initialState = {
     pagination: {
         ...DEFAULT_PAGINATION,
         status: 'active',
-        searchBy: 'all'
+        movieType: 'all'
     },
     meta: null,
     movieSearchLists: [],

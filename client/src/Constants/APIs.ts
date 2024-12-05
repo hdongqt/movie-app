@@ -31,7 +31,8 @@ export default {
         ROOT: 'crawls'
     },
     COMMENT: {
-        ROOT: 'comments'
+        ROOT: 'comments',
+        TERMINATED_COMMENT: 'comments/terminated'
     },
     AUTH: {
         SIGN_UP: 'auth/signup',

@@ -5,6 +5,7 @@ import Utils from '@/Utils';
 import { IMoviePaginationFilter } from '@/Interfaces/Pagination.interface';
 import { setMoviesMeta, setMoviesPagination } from './MoviesSlice';
 import { RootState } from '../../Store';
+import { ROUTERS } from '@/Constants';
 
 const fetchAllMovies = createAsyncThunk(
     'Movies/fetchAllMovies',
@@ -43,7 +44,8 @@ const getMovie = createAsyncThunk(
                 similarMovies: _.get(resultSimilar, 'payload', [])
             };
         } catch (error: any) {
-            Utils.ToastMessage(error.message, 'error');
+            if (error?.status === 404) Utils.redirect(ROUTERS.NOT_FOUND);
+            else Utils.ToastMessage(error.message, 'error');
             return thunkApi.rejectWithValue(error.message);
         }
     }

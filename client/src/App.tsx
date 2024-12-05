@@ -3,15 +3,17 @@ import React, { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
-import { useTypedDispatch } from './Redux/Store';
+import { RootState, useTypedDispatch } from './Redux/Store';
 import Utils from './Utils';
 import { getInfo } from './Redux/Features/Auth/AuthAction';
 import { AuthAction } from './Redux/Features/Auth';
 import RootRouters from './Routers';
 import { AppStateAction } from '@/Redux/Features/AppState';
+import { useSelector } from 'react-redux';
 const { resetAuthState } = AuthAction;
 const App: React.FC = () => {
     const dispatch = useTypedDispatch();
+    const { themeMode } = useSelector((state: RootState) => state.APP_STATE);
 
     useEffect(() => {
         if (Utils.getSavedRefreshToken() || Utils.getSavedAccessToken()) {
@@ -33,9 +35,8 @@ const App: React.FC = () => {
                 closeOnClick
                 pauseOnFocusLoss
                 pauseOnHover
-                theme={'light'}
+                theme={themeMode === 'dark' ? 'dark' : 'light'}
             />
-            <div className="hidden bg-gray-500"></div>
         </div>
     );
 };

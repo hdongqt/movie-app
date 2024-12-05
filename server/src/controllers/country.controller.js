@@ -20,7 +20,6 @@ CountryController.fetchAllCountry = async (req, res) => {
       payload: payload,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -85,7 +84,6 @@ CountryController.updateCountry = async (req, res) => {
       payload: payload,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -111,7 +109,6 @@ CountryController.deactivateCountry = async (req, res) => {
       message: "Deactivate actor successfully",
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };

@@ -29,7 +29,7 @@ const ScrollToTop = () => {
     if (!isVisible) return null;
     return (
         <button
-            className="w-10 h-10 fixed z-50 bottom-5 right-4 md:bottom-3 md:right-3 bg-gray-900 hover:bg-gray-800 rounded-full text-lg text-center text-white overflow-hidden"
+            className="w-10 h-10 fixed z-50 bottom-5 right-4 md:bottom-3 md:right-3 bg-gray-900 dark:bg-blue-600 hover:bg-gray-800 dark:hover:bg-sky-700 rounded-full text-lg text-center text-white transition overflow-hidden"
             onClick={scrollToTop}
         >
             <i className="icon-chevron-up" />

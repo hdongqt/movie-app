@@ -20,7 +20,6 @@ GenreController.fetchAllGenre = async (req, res) => {
       payload: payload,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -60,7 +59,6 @@ GenreController.createGenre = async (req, res) => {
       payload: genre,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -89,7 +87,6 @@ GenreController.updateGenre = async (req, res) => {
       payload: payload,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -122,7 +119,6 @@ GenreController.activateGenre = async (req, res) => {
       payload: result,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -149,7 +145,6 @@ GenreController.deactivateGenre = async (req, res) => {
       payload: result,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };

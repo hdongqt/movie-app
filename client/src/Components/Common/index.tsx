@@ -11,6 +11,7 @@ import Table from './Table';
 import Dialogs from './Dialogs';
 import ImageInput from './ImageInput';
 import TagInput from './TagInput';
+import SelectSort from './SelectSort';
 export {
     MovieCarousel,
     CollapseMenu,
@@ -25,5 +26,6 @@ export {
     Table,
     Dialogs,
     ImageInput,
-    TagInput
+    TagInput,
+    SelectSort
 };

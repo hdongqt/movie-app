@@ -44,7 +44,7 @@ const Tabs: React.FC<ITabs> = ({ children }: ITabs) => {
                             return (
                                 <div
                                     key={`${child.props.label}${index}`}
-                                    className="rounded overflow-hidden shadow-md border border-stone-200 mt-2"
+                                    className="rounded overflow-hidden shadow-md border border-stone-200 dark:border-slate-600 mt-2"
                                 >
                                     {child.props.children}
                                 </div>

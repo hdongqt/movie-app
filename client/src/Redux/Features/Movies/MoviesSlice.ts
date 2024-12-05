@@ -13,7 +13,7 @@ const initialState = {
         limit: 20,
         status: 'active',
         isFetchNew: true,
-        searchBy: 'all',
+        movieType: 'all',
         genre: []
     },
     meta: null,

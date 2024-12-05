@@ -47,7 +47,7 @@ const InfiniteScroll: React.FC<IInfiniteScroll> = ({
             ) : (
                 !isLoading &&
                 endMessage && (
-                    <p className="text-base text-center pt-4 font-medium">
+                    <p className="text-base text-center pt-4 font-medium dark:text-white/80">
                         {endMessage}
                     </p>
                 )

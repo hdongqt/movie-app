@@ -65,13 +65,13 @@ const Favorites: React.FC = () => {
 
     const __renderContent = () => {
         return (
-            <div className="w-full mt-16 px-6 pb-5">
+            <div className="w-full mt-16 px-6 pb-5 dark:bg-slate-900">
                 <div className="flex justify-between pt-5">
                     <p className="text-lg uppercase relative py-1.5 bg-red-700 text-white pl-2 rounded-md rounded-r-none w-max">
                         Danh sách phim yêu thích
                         <span className="absolute left-full top-0 border-red-700 w-0 h-0 border-b-[2.5rem] border-solid border-r-[2.5rem] border-r-transparent"></span>
                     </p>
-                    <div className="border-b flex-1 border-red-300 flex justify-end items-center"></div>
+                    <div className="border-b flex-1 border-red-300 dark:border-red-600 flex justify-end items-center"></div>
                 </div>
                 <InfiniteScroll
                     fetchMore={fetchMore}
@@ -109,10 +109,12 @@ const Favorites: React.FC = () => {
                     isLoading={isFetchLoading}
                 >
                     {!isFetchLoading && favoritesMovie?.length < 1 && (
-                        <NoDataFound />
+                        <div className="min-h-dvh">
+                            <NoDataFound />
+                        </div>
                     )}
                     {favoritesMovie?.length > 0 && (
-                        <div className="cursor-pointer grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-4">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-4">
                             {favoritesMovie.map((movie: IMovie) => {
                                 return (
                                     <div key={`favorites${movie.id}`}>

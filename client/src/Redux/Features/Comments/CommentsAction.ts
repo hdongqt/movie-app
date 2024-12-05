@@ -59,4 +59,42 @@ const createComment = createAsyncThunk(
     }
 );
 
-export { fetchAllCommentOfMovie, createComment };
+const terminatedComment = createAsyncThunk(
+    'CommentsManagement/terminatedComment',
+    async (
+        payload: {
+            id: string;
+            parentId: string;
+        },
+        thunkApi
+    ) => {
+        try {
+            const { id, parentId } = payload;
+            await CommentAPI.terminatedComment(id);
+            Utils.ToastMessage('Xoá bình luận thành công', 'success');
+            const currentState = thunkApi.getState() as RootState;
+            const commentsState = _.get(currentState.COMMENTS, 'comments');
+            if (!parentId)
+                return commentsState.filter(
+                    (comment: any) => comment?.id !== id
+                );
+            else
+                return commentsState.map((comment: any) =>
+                    _.get(comment, 'id') === parentId
+                        ? {
+                              ...comment,
+                              replies: _.filter(
+                                  comment.replies,
+                                  (rep) => rep.id !== id
+                              )
+                          }
+                        : comment
+                );
+        } catch (error: any) {
+            Utils.ToastMessage(error.message, 'error');
+            return thunkApi.rejectWithValue(error.message);
+        }
+    }
+);
+
+export { fetchAllCommentOfMovie, createComment, terminatedComment };

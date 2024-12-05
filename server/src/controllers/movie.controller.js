@@ -25,7 +25,6 @@ MovieController.fetchAllMovies = async (req, res) => {
       payload: payload,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -42,7 +41,6 @@ MovieController.fetchAllMoviesForAdmin = async (req, res) => {
       payload: payload,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -59,7 +57,6 @@ MovieController.getTrendingMovies = async (req, res) => {
       payload: payload,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -71,7 +68,6 @@ MovieController.getRecommendMovie = async (__, res) => {
       payload: payload,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -93,7 +89,6 @@ MovieController.getMovie = async (req, res) => {
       payload: payload,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -111,7 +106,6 @@ MovieController.getMovieOfPerson = async (req, res) => {
       payload: payload,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -154,7 +148,6 @@ MovieController.createMovie = async (req, res) => {
       });
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -197,7 +190,6 @@ MovieController.updateMovie = async (req, res) => {
       });
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -223,7 +215,6 @@ MovieController.deactivateMovie = async (req, res) => {
       message: "Huỷ phê duyệt phim thành công",
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -249,7 +240,6 @@ MovieController.activateMovie = async (req, res) => {
       message: "Phê duyệt phim thành công",
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -269,7 +259,6 @@ MovieController.terminatedMovie = async (req, res) => {
       message: "Xoá phim thành công",
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -282,7 +271,6 @@ MovieController.getSimilarMovie = async (req, res) => {
       payload: movies,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };

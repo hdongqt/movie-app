@@ -18,6 +18,13 @@
     border-radius: 0px 200px 200px 0px !important;
 }
 
+.dark .auth-modal::-webkit-scrollbar-thumb:hover {
+    @apply bg-neutral-500;
+}
+.dark .auth-modal::-webkit-scrollbar-track {
+    @apply bg-slate-700 rounded-none;
+}
+
 .auth-modal.zoom-in {
     animation: zoomIn 0.3s ease-in-out;
 }

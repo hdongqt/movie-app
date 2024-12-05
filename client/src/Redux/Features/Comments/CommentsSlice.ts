@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { DEFAULT_LOADING_STATES } from '@/Constants/DefaultPagination';
 import {
-    DEFAULT_PAGINATION,
-    DEFAULT_LOADING_STATES
-} from '@/Constants/DefaultPagination';
-import { fetchAllCommentOfMovie, createComment } from './CommentsAction';
+    fetchAllCommentOfMovie,
+    createComment,
+    terminatedComment
+} from './CommentsAction';
 const initialState = {
     ...DEFAULT_LOADING_STATES,
     isError: false,
@@ -59,7 +60,7 @@ const CommentsManagementSlice = createSlice({
                     comments: []
                 };
             })
-            .addCase(createComment.pending, (state, action) => {
+            .addCase(createComment.pending, (state) => {
                 return {
                     ...state,
                     isActionLoading: true,
@@ -80,6 +81,28 @@ const CommentsManagementSlice = createSlice({
                     isActionLoading: false,
                     isError: true
                 };
+            })
+            .addCase(terminatedComment.pending, (state) => {
+                return {
+                    ...state,
+                    isActionLoading: true,
+                    isError: false
+                };
+            })
+            .addCase(terminatedComment.fulfilled, (state, action: any) => {
+                return {
+                    ...state,
+                    isActionLoading: false,
+                    isError: false,
+                    comments: action.payload
+                };
+            })
+            .addCase(terminatedComment.rejected, (state) => {
+                return {
+                    ...state,
+                    isActionLoading: false,
+                    isError: true
+                };
             });
     }
 });
@@ -87,6 +110,7 @@ const CommentsManagementSlice = createSlice({
 export const CommentsManagementAction = {
     fetchAllCommentOfMovie,
     createComment,
+    terminatedComment,
     ...CommentsManagementSlice.actions
 };
 export default CommentsManagementSlice.reducer;

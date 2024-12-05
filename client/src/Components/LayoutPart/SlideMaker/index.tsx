@@ -118,7 +118,7 @@ const SlideMaker: React.FC = () => {
                                                     )}
                                                     ...
                                                 </div>
-                                                <div className="hidden md:block w-60 h-3 bg-gray-300 rounded-lg relative rating mt-8">
+                                                <div className="hidden md:block w-60 h-3 bg-gray-300 dark:bg-gray-400 rounded-lg relative rating mt-8">
                                                     <span className="z-10 text-yellow-400 absolute top-0 -translate-y-3 -left-2.5 text-3xl rotate-90">
                                                         <i className="icon-star"></i>
                                                     </span>
@@ -141,7 +141,7 @@ const SlideMaker: React.FC = () => {
                                                 <div className="mt-4 lg:mt-10 btnGroup">
                                                     <Link
                                                         to={`/film/${item?.id}`}
-                                                        className="inline-flex group gap-3 bg-red-600 border-2 border-transparent hover:border-white transition duration-300 justify-center items-center px-3.5 md:px-4 py-2 rounded-full"
+                                                        className="inline-flex group gap-3 bg-red-600 border-2 border-transparent hover:border-white dark:hover:border-gray-200 transition duration-300 justify-center items-center px-3.5 md:px-4 py-2 rounded-full"
                                                     >
                                                         <span className="">
                                                             <i className="icon-play"></i>
@@ -158,7 +158,7 @@ const SlideMaker: React.FC = () => {
                         </div>
                         <div className="flex justify-center absolute bottom-5 left-0 w-full gap-3">
                             <button
-                                className="prev bg-stone-300 rounded-full w-10 h-10 text-xl text-gray-700 hover:bg-red-600 hover:text-white transition"
+                                className="prev bg-stone-300 dark:bg-stone-500 dark:text-gray-100 rounded-full w-10 h-10 text-xl text-gray-700 hover:bg-red-600 dark:hover:bg-red-600 hover:text-white dark:hover:text-gray-200 transition"
                                 onClick={(
                                     e: React.MouseEvent<HTMLButtonElement>
                                 ) => handleClickBtn(e, 'prev')}
@@ -166,7 +166,7 @@ const SlideMaker: React.FC = () => {
                                 <i className="icon-chevron-left"></i>
                             </button>
                             <button
-                                className="next bg-stone-300 rounded-full w-10 h-10 text-xl text-gray-700 hover:bg-red-600 hover:text-white transition"
+                                className="next bg-stone-300 dark:bg-stone-500 dark:text-gray-100 rounded-full w-10 h-10 text-xl text-gray-700 hover:bg-red-600 dark:hover:bg-red-600 hover:text-white dark:hover:text-gray-200 transition"
                                 onClick={(
                                     e: React.MouseEvent<HTMLButtonElement>
                                 ) => handleClickBtn(e, 'next')}

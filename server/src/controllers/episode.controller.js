@@ -60,7 +60,6 @@ EpisodeController.createEpisode = async (req, res) => {
       payload: episode,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -80,7 +79,6 @@ EpisodeController.updateEpisode = async (req, res) => {
       payload: payload,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };

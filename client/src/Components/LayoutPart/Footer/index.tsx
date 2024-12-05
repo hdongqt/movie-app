@@ -5,11 +5,11 @@ import logoFilm from '@/Assets/Logo/logoFilm.png';
 
 const Footer: React.FC = () => {
     return (
-        <footer className="relative bg-slate-100 pr-10 pl-5">
+        <footer className="relative bg-slate-100 dark:bg-slate-800 pr-10 pl-5">
             <div className="flex justify-between pr-10 py-6">
                 <Link to="/" className="h-10 lg:h-12 flex items-center gap-1">
                     <img src={logoFilm} alt="logoFilm" className="h-full" />
-                    <span className="font-extrabold text-xl">
+                    <span className="font-extrabold text-xl dark:text-white">
                         BRONZE<span className="text-red-600">FILM</span>
                     </span>
                 </Link>

@@ -91,12 +91,12 @@ const Persons: React.FC = () => {
 
     const __renderContent = () => {
         return (
-            <div className="w-full flex mt-16">
+            <div className="w-full flex mt-16 dark:bg-slate-900">
                 <div className="w-full lg:w-3/4 px-6 mt-3 pb-5">
                     <div className="flex items-center gap-3">
                         {!isGetLoading && (
                             <>
-                                <p className="flex-1 font-semibold text-lg md:text-xl border-l-4 text-gray-800 border-red-600 pl-2 line-clamp-1 w-full">
+                                <p className="flex-1 dark:text-white font-semibold text-lg md:text-xl border-l-4 text-gray-800 border-red-600 pl-2 line-clamp-1 w-full">
                                     Phim{' '}
                                     <span className="text-red-600">
                                         {personDetail?.name}
@@ -108,7 +108,7 @@ const Persons: React.FC = () => {
                         {isGetLoading && (
                             <>
                                 <div className="h-8 animate-pulse flex-1 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                            </> 
+                            </>
                         )}
                     </div>
                     <div className="mt-8">
@@ -174,7 +174,10 @@ const Persons: React.FC = () => {
                                                             src={
                                                                 movie?.thumbnailPath
                                                             }
-                                                            alt="Poster film"
+                                                            alt="ThumbMovie"
+                                                            width={'100%'}
+                                                            height={'100%'}
+                                                            effect="blur"
                                                             className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
                                                         />
                                                     </div>
@@ -193,10 +196,10 @@ const Persons: React.FC = () => {
                         </InfiniteScroll>
                     </div>
                 </div>
-                <div className="hidden lg:block w-1/4 border-l px-6 border-stone-300">
+                <div className="hidden lg:block w-1/4 border-l px-6 border-stone-300 dark:border-slate-600">
                     <div className="">
                         <p className="mb-5 mt-3">
-                            <span className="text-black relative text-xl font-bold">
+                            <span className="text-black dark:text-white relative text-xl font-bold">
                                 Trending
                                 <span className="w-2/3 h-[3px] bg-red-600 absolute left-0 -bottom-1" />
                             </span>
@@ -217,18 +220,21 @@ const Persons: React.FC = () => {
                                                         src={
                                                             movie?.thumbnailPath
                                                         }
-                                                        alt="loading..."
+                                                        effect="blur"
+                                                        width={'100%'}
+                                                        height={'100%'}
+                                                        alt="ThumbMovie"
                                                         className="absolute w-full h-full object-cover group-hover:scale-125 transition-transform duration-300"
                                                     />
                                                 </div>
                                                 <div className="mt-1 flex-1">
-                                                    <h3 className="font-semibold text-lg line-clamp-1">
+                                                    <h3 className="font-semibold text-lg line-clamp-1 dark:text-white">
                                                         {movie?.vietnameseName}
                                                     </h3>
                                                     <h4 className="line-clamp-1 font-medium text-indigo-800">
                                                         {movie?.originalName}
                                                     </h4>
-                                                    <p className="mb-2 text-stale-600 font-medium">
+                                                    <p className="mb-2 text-stale-600 font-medium dark:text-white">
                                                         {movie?.release ||
                                                             'N/A'}
                                                     </p>
@@ -251,15 +257,18 @@ const Persons: React.FC = () => {
                                 <>
                                     {[1, 2, 3, 4, 5].map((item) => {
                                         return (
-                                            <div className="flex gap-4 animate-pulse">
+                                            <div
+                                                key={`LoadingTrending${item}`}
+                                                className="flex gap-4 animate-pulse"
+                                            >
                                                 <div className="h-48 w-2/5 overflow-hidden rounded-xl group relative">
-                                                    <div className="absolute w-full h-full bg-gray-200" />
+                                                    <div className="absolute w-full h-full bg-gray-200 dark:bg-gray-700" />
                                                 </div>
                                                 <div className="mt-1 flex-1">
-                                                    <span className="h-6 rounded-md inline-block w-full bg-gray-200"></span>
-                                                    <span className="h-6 rounded-md inline-block w-full bg-gray-200"></span>
-                                                    <span className="h-6 rounded-md inline-block w-full bg-gray-200"></span>
-                                                    <span className="bg-gray-200 rounded-md w-12 inline-block h-6"></span>
+                                                    <span className="h-6 rounded-md inline-block w-full bg-gray-200 dark:bg-gray-700"></span>
+                                                    <span className="h-6 rounded-md inline-block w-full bg-gray-200 dark:bg-gray-700"></span>
+                                                    <span className="h-6 rounded-md inline-block w-full bg-gray-200 dark:bg-gray-700"></span>
+                                                    <span className="bg-gray-200 dark:bg-gray-700 rounded-md w-12 inline-block h-6"></span>
                                                 </div>
                                             </div>
                                         );

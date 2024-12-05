@@ -19,7 +19,6 @@ UserController.fetchAllUser = async (req, res) => {
       payload: payload,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -39,7 +38,6 @@ UserController.getUser = async (req, res) => {
       payload: payload,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -66,7 +64,6 @@ UserController.activateUser = async (req, res) => {
       payload: result,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -93,7 +90,6 @@ UserController.deactivateUser = async (req, res) => {
       payload: result,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -113,7 +109,6 @@ UserController.updateProfile = async (req, res) => {
       payload: payload,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -144,7 +139,6 @@ UserController.updatePassword = async (req, res) => {
       message: "Thay đổi mật khẩu thành công",
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -162,7 +156,6 @@ UserController.fetchFavoriteMovies = async (req, res) => {
       payload,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -196,7 +189,6 @@ UserController.addFavorite = async (req, res) => {
       payload: payload,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -223,7 +215,6 @@ UserController.deleteMovieFromFavorites = async (req, res) => {
       payload: payload,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };

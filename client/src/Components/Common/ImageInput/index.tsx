@@ -11,7 +11,7 @@ const INPUT_ACCEPT = '.png,.jpg,.jpeg';
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 const ImageInput: React.FC<PropImageInput> = ({ inputFile, onChangeImage }) => {
-    const inputFileRef = useRef<any>(null);
+    const inputFileRef = useRef<HTMLInputElement | null>(null);
     const [blob, setBlob] = useState('');
 
     useEffect(() => {
@@ -23,7 +23,7 @@ const ImageInput: React.FC<PropImageInput> = ({ inputFile, onChangeImage }) => {
         };
     }, [inputFile]);
 
-    const onFileChange = (newFile: any) => {
+    const onFileChange = (newFile: File | undefined) => {
         if (newFile) {
             let messageError = '';
             if (!ALLOWED_IMAGE.includes(newFile.type)) {
@@ -33,7 +33,7 @@ const ImageInput: React.FC<PropImageInput> = ({ inputFile, onChangeImage }) => {
                 messageError = 'Hình ảnh quá lớn !';
             }
             if (!messageError) {
-                inputFileRef.current && (inputFileRef.current.value = null);
+                inputFileRef?.current && (inputFileRef.current.value = '');
                 onChangeImage(newFile);
             } else {
                 Utils.ToastMessage(messageError, 'error');
@@ -49,7 +49,7 @@ const ImageInput: React.FC<PropImageInput> = ({ inputFile, onChangeImage }) => {
 
     useEffect(() => {
         // Disable open image in new tab
-        const handler = (e: any) => {
+        const handler = (e: Event) => {
             e.preventDefault();
         };
 

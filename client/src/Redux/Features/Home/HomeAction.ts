@@ -14,13 +14,13 @@ const fetchAllMediaHome = createAsyncThunk(
                         page: 1,
                         limit: 15,
                         sortBy: 'createdAt',
-                        searchBy: 'single'
+                        movieType: 'single'
                     }),
                     MovieAPI.fetchMovies({
                         page: 1,
                         limit: 15,
                         sortBy: 'createdAt',
-                        searchBy: 'tv'
+                        movieType: 'tv'
                     }),
                     MovieAPI.fetchMovies({
                         page: 1,

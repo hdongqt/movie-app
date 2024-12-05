@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-import { CollapseMenu, NoDataFound } from '@/Components/Common';
-import Select from 'react-select';
+import { CollapseMenu, NoDataFound, SelectSort } from '@/Components/Common';
 import DefaultLayout from '@/Components/DefaultLayout';
 import { fetchAllMovies } from '@/Redux/Features/Movies/MoviesAction';
 import { RootState, useTypedDispatch } from '@/Redux/Store';
@@ -23,6 +22,7 @@ import Utils from '@/Utils';
 import { ISelect } from '@/Interfaces/Select.interface';
 import { YEAR_SELECT_LIST } from '@/Constants/Lists/Select.list';
 import { ROUTERS } from '@/Constants';
+import { setFiltersSave } from '@/Redux/Features/Movies/MoviesSlice';
 
 const { resetMovieState } = MoviesAction;
 
@@ -39,9 +39,9 @@ const optionTypeMovie: ISelect[] = [
 
 const Movies: React.FC = () => {
     const dispatch = useTypedDispatch();
-
-    const { state } = useLocation();
-
+    const location = useLocation();
+    const { state } = location;
+    const navigate = useNavigate();
     const movieList: any = useSelector(
         (state: RootState) => state.MOVIES.movieLists
     );
@@ -63,7 +63,9 @@ const Movies: React.FC = () => {
     );
     const [filters, setFilters] = useState<IMoviePaginationFilter>(pagination);
     const [isShowMenu, setIsShowMenu] = useState(false);
+
     const buttonClickedRef = useRef(false);
+    const [isFirstRender, setIsFirstRender] = useState(true);
 
     const handleOptionSortChange = (option: ISelect | null) => {
         if (option?.value && option.value !== _.get(pagination, 'sortBy'))
@@ -76,23 +78,31 @@ const Movies: React.FC = () => {
     };
 
     useEffect(() => {
-        if (filters.isFetchNew)
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        dispatch(fetchAllMovies(filters));
-    }, [filters]);
+        if (!isFirstRender) {
+            if (filters.isFetchNew)
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            dispatch(fetchAllMovies(filters));
+        }
+    }, [filters, isFirstRender]);
 
     useEffect(() => {
-        const genreId = state?.genreId;
-        setFilters({
-            ...pagination,
-            page: 1,
-            searchBy: 'all',
-            isFetchNew: true,
-            genre: genreId ? [genreId] : []
-        });
+        if (state) {
+            const { genreId, year, country, movieType } = state;
+            if (state) dispatch(setFiltersSave(null));
+            setFilters({
+                ...pagination,
+                page: 1,
+                year: year || undefined,
+                movieType: movieType || 'all',
+                country: country || undefined,
+                isFetchNew: true,
+                genre: genreId ? [genreId] : []
+            });
+        }
+        setIsFirstRender(false);
         return () => {
             if (!buttonClickedRef.current) dispatch(resetMovieState());
             buttonClickedRef.current = false;
@@ -100,7 +110,7 @@ const Movies: React.FC = () => {
     }, [state]);
 
     useEffect(() => {
-        if (filterSave) setFilters(filterSave);
+        if (!state && filterSave) setFilters(filterSave);
     }, []);
 
     const handleGenreChange = (id: string) => {
@@ -136,19 +146,19 @@ const Movies: React.FC = () => {
 
     const __renderContent = () => {
         return (
-            <div className="w-full flex lg:flex-row flex-col-reverse mt-16">
-                <div className="w-full lg:w-3/4 px-6 mt-6 lg:mt-2 pb-5">
+            <div className="w-full flex lg:flex-row flex-col-reverse mt-16 dark:bg-slate-900 h-full">
+                <div className="w-full lg:w-3/4 px-6 mt-6 lg:mt-2 pb-5 h-full">
                     <div className="flex justify-between">
                         <p className="text-lg uppercase relative py-1.5 bg-red-700 text-white pl-2 rounded-md rounded-r-none w-48">
                             Danh sách phim{' '}
-                            {filters.searchBy === 'all'
+                            {filters.movieType === 'all'
                                 ? ''
-                                : filters.searchBy === 'tv'
+                                : filters.movieType === 'tv'
                                 ? 'bộ'
                                 : 'lẻ'}
                             <span className="absolute left-full top-0 border-red-700 w-0 h-0 border-b-[2.5rem] border-solid border-r-[2.5rem] border-r-transparent"></span>
                         </p>
-                        <div className="border-b flex-1 border-red-300 flex justify-end items-center">
+                        <div className="border-b flex-1 border-red-300 dark:border-red-700 flex justify-end items-center">
                             <Popover
                                 isOpen={isShowMenu}
                                 positions={['bottom', 'left']}
@@ -159,19 +169,19 @@ const Movies: React.FC = () => {
                                 padding={0}
                                 onClickOutside={() => setIsShowMenu(false)}
                                 content={
-                                    <div className="mt-2 bg-white z-50 w-48 gap-1 flex flex-col rounded border border-gray-200 shadow-lg">
+                                    <div className="mt-2 bg-white dark:bg-gray-800 dark:text-white/90 z-50 w-48 gap-1 flex flex-col rounded border border-gray-200 dark:border-gray-700 shadow-lg">
                                         {optionTypeMovie.map((item) => (
                                             <button
                                                 key={item.value}
-                                                className="px-4 py-1.5 hover:bg-indigo-200 font-medium"
+                                                className="px-4 py-1.5 hover:bg-indigo-200 dark:hover:bg-gray-700 font-medium"
                                                 onClick={() => {
                                                     if (
                                                         item.value !==
-                                                        filters.searchBy
+                                                        filters.movieType
                                                     )
                                                         setFilters({
                                                             ...filters,
-                                                            searchBy:
+                                                            movieType:
                                                                 item.value + ''
                                                         });
                                                     setIsShowMenu(false);
@@ -184,12 +194,12 @@ const Movies: React.FC = () => {
                                 }
                             >
                                 <div onClick={() => setIsShowMenu(!isShowMenu)}>
-                                    <span className="flex items-center gap-2 min-w-24 px-3 py-1 bg-sky-700 text-white font-medium rounded-full cursor-pointer group-hover:bg-sky-600">
+                                    <span className="flex items-center gap-2 min-w-24 px-3 py-1 bg-sky-700 dark:bg-blue-800 text-white font-medium rounded-full cursor-pointer group-hover:bg-sky-600">
                                         {
                                             optionTypeMovie.find(
                                                 (item) =>
                                                     item.value ===
-                                                    filters.searchBy
+                                                    filters.movieType
                                             )?.label
                                         }
                                         <span className="text-xl relative -top-1">
@@ -242,10 +252,12 @@ const Movies: React.FC = () => {
                             isLoading={isFetchLoading}
                         >
                             {!isFetchLoading && movieList?.length < 1 && (
-                                <NoDataFound firstClassImg={'h-64'} />
+                                <div className="min-h-full">
+                                    <NoDataFound firstClassImg={'h-64'} />
+                                </div>
                             )}
                             {movieList?.length > 0 && (
-                                <div className="cursor-pointer grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-4">
+                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-4">
                                     {movieList.map(
                                         (movie: IMovie, index: number) => {
                                             return (
@@ -254,16 +266,16 @@ const Movies: React.FC = () => {
                                                     onClick={() => {
                                                         buttonClickedRef.current =
                                                             true;
+                                                        navigate(
+                                                            location.pathname,
+                                                            { replace: true }
+                                                        );
                                                         Utils.redirect(
                                                             `${ROUTERS.FILM}/${movie?.id}`,
                                                             { filters }
                                                         );
                                                     }}
-                                                    // to={`/film/${movie?.id}`}
-                                                    // state={{
-                                                    //     filters: filters
-                                                    // }}
-                                                    className="rounded-lg overflow-hidden relative group shadow-inner"
+                                                    className="cursor-pointer rounded-lg overflow-hidden relative group shadow-inner"
                                                 >
                                                     <div className="overflow-hidden h-80">
                                                         <span
@@ -298,7 +310,10 @@ const Movies: React.FC = () => {
                                                             src={
                                                                 movie?.thumbnailPath
                                                             }
-                                                            alt="Poster film"
+                                                            alt="ThumbMovie"
+                                                            effect="blur"
+                                                            width={'100%'}
+                                                            height={'100%'}
                                                             className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
                                                         />
                                                     </div>
@@ -318,27 +333,23 @@ const Movies: React.FC = () => {
                         </InfiniteScroll>
                     </div>
                 </div>
-                <div className="w-full lg:w-1/4 pt-4 border-l px-6 border-stone-300">
+                <div className="w-full lg:w-1/4 pt-4 border-l px-6 border-stone-300 dark:border-slate-600 min-h-full">
                     <>
                         <CollapseMenu heading="Sắp xếp theo">
-                            <>
-                                <Select
-                                    options={options}
-                                    value={options.find(
-                                        (item) => item.value === filters?.sortBy
-                                    )}
-                                    onChange={(option: ISelect | null) =>
-                                        handleOptionSortChange(option)
-                                    }
-                                    className="mb-3 mt-3"
-                                    menuPosition="fixed"
-                                />
-                            </>
+                            <SelectSort
+                                options={options}
+                                value={options.find(
+                                    (item) => item.value === filters?.sortBy
+                                )}
+                                onChange={(option: ISelect | null) =>
+                                    handleOptionSortChange(option)
+                                }
+                            />
                         </CollapseMenu>
-                        <div className="mt-3">
+                        <div className="my-3">
                             <CollapseMenu heading="Lọc">
                                 <>
-                                    <span className="font-semibold text-lg py-2 block ">
+                                    <span className="font-semibold text-lg py-2 block dark:text-white">
                                         Thể loại
                                     </span>
                                     <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto">
@@ -351,7 +362,7 @@ const Movies: React.FC = () => {
                                                             genre.id
                                                         )
                                                             ? 'bg-gradient-to-r border-transparent from-blue-600 to-sky-600 text-white hover:opacity-85'
-                                                            : 'md:hover:bg-indigo-200 border-stone-400'
+                                                            : 'md:hover:bg-indigo-200 dark:md:hover:bg-slate-500 border-stone-400 dark:text-white'
                                                     }`}
                                                     onClick={() =>
                                                         handleGenreChange(
@@ -364,10 +375,10 @@ const Movies: React.FC = () => {
                                             ))}
                                     </div>
                                     <div className="mt-2 mb-3 px-2">
-                                        <span className="font-semibold text-lg py-2 block ">
+                                        <span className="font-semibold text-lg py-2 block dark:text-white">
                                             Năm phát hành
                                         </span>
-                                        <Select
+                                        <SelectSort
                                             options={YEAR_SELECT_LIST}
                                             value={
                                                 YEAR_SELECT_LIST.find(
@@ -379,8 +390,6 @@ const Movies: React.FC = () => {
                                             onChange={(
                                                 option: ISelect | null
                                             ) => handleOptionYearChange(option)}
-                                            className="mb-3 z-20"
-                                            menuPosition="fixed"
                                         />
                                     </div>
                                 </>

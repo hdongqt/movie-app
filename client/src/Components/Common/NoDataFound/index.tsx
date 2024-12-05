@@ -18,7 +18,9 @@ const NoDataFound: React.FC<INoDataFound> = ({
                     alt="NoData"
                     className={`${firstClassImg} max-h-80`}
                 />
-                <span className="font-bold">Không có bộ phim nào 😞</span>
+                <span className="font-bold dark:text-white/90">
+                    Không có bộ phim nào 😞
+                </span>
             </div>
         </div>
     );

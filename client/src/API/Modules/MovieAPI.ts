@@ -44,7 +44,13 @@ const getRecommendMovies = async () => {
     return APIClient.get(MOVIE.RECOMMEND);
 };
 
-const getTrendingMovies = async ({ page, limit }: any) => {
+const getTrendingMovies = async ({
+    page,
+    limit
+}: {
+    page: number;
+    limit: number;
+}) => {
     return APIClient.get(MOVIE.TRENDING_MOVIE, { params: { page, limit } });
 };
 

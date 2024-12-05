@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Constants } from "../helpers/constants.js";
 
 const { RESPONSE_TYPE } = Constants;
@@ -6,11 +7,18 @@ const responseWithData = (res, statusCode, data) => {
   res.status(statusCode).json(data);
 };
 
-const errorRes = (res) =>
+const errorRes = (res, error) => {
+  if (
+    (error && error instanceof mongoose.CastError) ||
+    error.message.includes("Cast to ObjectId failed for value")
+  ) {
+    return notFound(res, "");
+  }
   responseWithData(res, 500, {
     status: 500,
     message: "Oops! Đã xảy ra lỗi!",
   });
+};
 
 const badRequest = (res, message) =>
   responseWithData(res, 400, {
@@ -45,6 +53,7 @@ const generateError = (type, mess) => {
 };
 
 const buildResponseFailed = (res, error) => {
+  console.log(error);
   const { type, message } = error;
   switch (type) {
     case Constants.RESPONSE_TYPE.BAD_REQUEST:
@@ -60,7 +69,7 @@ const buildResponseFailed = (res, error) => {
       unauthorized(res, message);
       break;
     default:
-      errorRes(res);
+      errorRes(res, error);
   }
 };
 

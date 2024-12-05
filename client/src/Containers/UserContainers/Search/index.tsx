@@ -1,8 +1,8 @@
-import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import _ from 'lodash';
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { CollapseMenu } from '@/Components/Common';
-import Select, { MultiValue } from 'react-select';
 import DefaultLayout from '@/Components/DefaultLayout';
 import {
     fetchSearchMovies,
@@ -12,12 +12,10 @@ import { RootState, useTypedDispatch } from '@/Redux/Store';
 import { useSelector } from 'react-redux';
 import { IMovie } from '@/Interfaces/Movie.interface';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import dayjs from 'dayjs';
 import {
     IMoviePaginationFilter,
     IPaginationFilter
 } from '@/Interfaces/Pagination.interface';
-import _ from 'lodash';
 
 import { SearchActions } from '@/Redux/Features/Search';
 import { Pagination, Skeleton } from '@/Components/Common';
@@ -126,18 +124,18 @@ const SearchMovies: React.FC = () => {
 
     const __renderContent = () => {
         return (
-            <div className="w-full flex flex-col-reverse lg:flex-row mt-16 min-h-screen justify-end lg:justify-normal">
+            <div className="w-full flex flex-col-reverse lg:flex-row mt-16 min-h-screen justify-end lg:justify-normal dark:bg-slate-900">
                 <div className="w-full lg:w-3/4 px-6 mt-4 pb-5">
-                    <div className="border-b pb-2 border-gray-200 flex flex-col-reverse md:flex-row justify-between items-center">
+                    <div className="border-b pb-2 border-gray-200 dark:border-slate-600 flex flex-col-reverse md:flex-row justify-between items-center">
                         {filters.keyword && (
-                            <p className="font-medium text-lg line-clamp-1 mr-5 mt-2 md:mt-0">
+                            <p className="font-medium text-lg line-clamp-1 mr-5 mt-2 md:mt-0 dark:text-white">
                                 Kết quả tìm kiếm cho "{filters.keyword}
                             </p>
                         )}
                         <div className="flex items-center py-1 relative w-full md:w-96 h-11 ml-auto">
                             <input
                                 type="search"
-                                className="block w-full outline-none h-full ps-4 bg-gray-50 border border-gray-400 rounded-full absolute top-0 left-0 "
+                                className="block w-full outline-none h-full ps-4 bg-gray-50 border border-gray-400 rounded-full absolute top-0 left-0 dark:border-slate-600 dark:bg-gray-600 dark:text-white"
                                 value={searchValue}
                                 placeholder="Tìm kiếm phim..."
                                 onChange={handleChangeSearchValue}
@@ -238,7 +236,7 @@ const SearchMovies: React.FC = () => {
                             recommendMovies &&
                             recommendMovies.length > 0 && (
                                 <>
-                                    <p className="text-[22px] font-medium border-l-4 border-red-600 pl-2 mb-5">
+                                    <p className="text-[22px] font-medium border-l-4 border-red-600 pl-2 mb-5 dark:text-white">
                                         Có thể bạn muốn xem
                                     </p>
                                     <div className="flex flex-col gap-5 mt-4">
@@ -316,22 +314,22 @@ const SearchMovies: React.FC = () => {
                         </div>
                     )}
                 </div>
-                <div className="w-full lg:w-1/4 pt-4 border-l px-6 border-stone-300">
+                <div className="w-full lg:w-1/4 pt-4 border-l px-6 border-stone-300 dark:border-slate-600">
                     <>
                         <CollapseMenu heading="Tìm kiếm theo">
                             <div className="flex lg:flex-col gap-3 my-3 justify-center">
                                 {options.map((op) => (
                                     <button
-                                        className={`p-2 w-28 lg:w-auto outline-none border rounded-md font-medium transition ${
-                                            op.value === filters.searchBy
+                                        className={`p-2 w-28 lg:w-auto outline-none border rounded-md dark:border-slate-500 font-medium transition ${
+                                            op.value === filters.movieType
                                                 ? 'bg-red-600 text-white pointer-events-none'
-                                                : 'hover:bg-red-600 hover:text-white duration-200'
+                                                : 'hover:bg-red-600 hover:text-white duration-200 dark:text-white'
                                         }`}
                                         key={`type${op.value}`}
                                         onClick={() =>
                                             setFilters({
                                                 ...filters,
-                                                searchBy: op.value,
+                                                movieType: op.value,
                                                 page: 1
                                             })
                                         }

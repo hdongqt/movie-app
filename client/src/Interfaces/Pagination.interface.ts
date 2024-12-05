@@ -27,6 +27,8 @@ export interface IPaginationMeta {
 export interface IMoviePaginationFilter extends IPaginationFilter {
     isFetchNew?: boolean;
     genre?: string[];
+    country?: string;
+    movieType?: string;
 }
 
 export interface IPersonPaginationFilter extends IPaginationFilter {

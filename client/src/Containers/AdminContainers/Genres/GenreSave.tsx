@@ -1,24 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
 import _ from 'lodash';
+import React, { useEffect, useRef } from 'react';
 import DefaultLayout from '@/Components/DefaultLayout';
-import Table from '@/Components/Common/Table';
-import Select, { GroupBase, MultiValue, OptionsOrGroups } from 'react-select';
 import { useTypedDispatch } from '../../../Redux/Store';
 
 import { useSelector } from 'react-redux';
 import { RootState } from '@/Redux/Store';
-import { MOVIES_MANAGEMENT_TABLE_HEADER } from '@/Constants/Tables/MoviesManagement.table';
-import { DEFAULT_CONFIRM_DIALOG, ENUMS, ROUTERS } from '@/Constants';
-import { IMenuTableClick } from '@/Interfaces/Table.interface';
-import { IMovie } from '@/Interfaces/Movie.interface';
-import { Dialogs, ImageInput, TagInput } from '@/Components/Common';
-import { IConfirmDialog } from '@/Interfaces/ConfirmDialog.interface';
+import { ROUTERS } from '@/Constants';
 import { Link, useLocation } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { YEAR_SELECT_LIST } from '@/Constants/Lists/Select.list';
 import { GenresManagementAction } from '@/Redux/Features/GenresManagement';
-import { ISelect } from '@/Interfaces/Select.interface';
 import Utils from '@/Utils';
 import { IGenreSave } from '@/Interfaces/Genre.interface';
 

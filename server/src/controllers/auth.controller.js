@@ -30,7 +30,6 @@ AuthController.SignUp = async (req, res) => {
       message: "Đăng ký tài khoản thành công",
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -77,7 +76,6 @@ AuthController.SignIn = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -121,7 +119,6 @@ AuthController.GetInfo = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };

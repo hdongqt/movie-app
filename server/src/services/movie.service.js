@@ -16,7 +16,7 @@ const MovieService = {};
 MovieService.Movie = Movie;
 
 MovieService.fetchAllMovie = async (paginationOptions, params) => {
-  const { status, genre, searchBy, sortBy, year, keyword } = params;
+  const { status, genre, movieType, country, sortBy, year, keyword } = params;
   const matchOption = {};
   if (genre) {
     matchOption["genres.id"] = {
@@ -31,8 +31,8 @@ MovieService.fetchAllMovie = async (paginationOptions, params) => {
   }
   if (status) matchOption.status = status;
   else matchOption.status = { $ne: "terminated" };
-  if (searchBy) {
-    switch (searchBy) {
+  if (movieType) {
+    switch (movieType) {
       case MOVIE_TYPE.SINGLE:
         matchOption.movieType = MOVIE_TYPE.SINGLE;
         break;
@@ -42,6 +42,11 @@ MovieService.fetchAllMovie = async (paginationOptions, params) => {
       default:
         break;
     }
+  }
+
+  if (country) {
+    matchOption["countries"] =
+      mongoose.Types.ObjectId.createFromHexString(country);
   }
   if (keyword)
     matchOption.$or = [
@@ -248,10 +253,12 @@ MovieService.getMovieForUser = async (idMovie) => {
     .populate({
       path: "genres",
       select: "-movies",
+      match: { status: "active" },
     })
     .populate({
       path: "countries",
       select: "-movies",
+      match: { status: "active" },
     })
     .populate({
       path: "episodes",

@@ -3,7 +3,7 @@ const ADMIN_ROUTER_ROOT = '/admin';
 
 const USER_ROUTERS = {
     FORBIDDEN: '/forbidden',
-    NOT_FOUND: '*',
+    NOT_FOUND: '/not-found',
     AUTH: '/auth',
     HOME: USER_ROUTER_ROOT,
     FILM: '/film',

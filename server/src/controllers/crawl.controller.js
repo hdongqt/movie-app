@@ -37,7 +37,6 @@ const handleCrawl = async (page) => {
       return result;
     }
   } catch (error) {
-    console.log(error);
     if (crawlItem) {
       await CrawlService.updateCrawl({
         id: crawlItem._id,
@@ -81,7 +80,6 @@ CrawlController.fetchAllCrawls = async (req, res) => {
       payload: payload,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };
@@ -100,7 +98,6 @@ CrawlController.getCrawl = async (req, res) => {
       payload: payload,
     });
   } catch (error) {
-    console.log(error);
     ResponseHandler.buildResponseFailed(res, error);
   }
 };

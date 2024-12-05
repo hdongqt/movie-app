@@ -19,21 +19,20 @@ const Skeleton: React.FC<ISkeleton> = ({
         heightList = [...heightList, ...heightList.slice(0, countAdd)];
     }
     return (
-        <div className="animate-pulse">
-            <ul className="space-y-3">
-                {_.range(numberAdd).map((item) => {
-                    return (
-                        <li
-                            key={`skeleton${item}`}
-                            className={`w-full bg-zinc-200 rounded-md dark:bg-gray-700`}
-                            style={{
-                                height: heightRow || heightList[item] + 'px'
-                            }}
-                        ></li>
-                    );
-                })}
-            </ul>
-        </div>
+        <ul className="space-y-3">
+            {_.range(numberAdd).map((item) => {
+                return (
+                    <li
+                        key={`skeleton${item}`}
+                        className={`w-full animate-pulse bg-zinc-200 rounded-md dark:bg-gray-700`}
+                        style={{
+                            height: heightRow || heightList[item] + 'px',
+                            animationDelay: `${item * 0.15}s`
+                        }}
+                    ></li>
+                );
+            })}
+        </ul>
     );
 };
 

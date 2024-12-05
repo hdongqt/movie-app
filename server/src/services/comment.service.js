@@ -34,7 +34,7 @@ CommentService.fetchAllComment = async (paginationOptions, payload) => {
     select: select,
     sortBy: sortBy,
     populate: [
-      { path: "user", select: "-salt -password -favorites" },
+      { path: "user", select: "displayName id status" },
       {
         path: "replies",
         select: "-replies",
@@ -116,17 +116,35 @@ CommentService.updateCommentStatus = async (Comment, status) => {
 CommentService.createComments = async (listComments) => {
   const session = TransactionService.getSession();
   if (listComments) {
-    let CommentIds = [];
-    for (const CommentName of listComments) {
-      let Comment =
+    let commentIds = [];
+    for (const commentName of listComments) {
+      let comment =
         (await Comment.findOne({
-          name: { $regex: new RegExp("^" + CommentName + "$", "i") },
-        })) || (await Comment.create([{ name: CommentName }], { session }))[0];
-      CommentIds.push(Comment._id);
+          name: { $regex: new RegExp("^" + commentName + "$", "i") },
+        })) || (await Comment.create([{ name: commentName }], { session }))[0];
+      commentIds.push(comment._id);
     }
-    return CommentIds;
+    return commentIds;
   }
   return [];
+};
+
+CommentService.terminatedComment = async (comment) => {
+  const session = TransactionService.getSession();
+  if (!session) {
+    throw new Error("Transaction không tồn tại");
+  }
+  if (comment.replies.length > 0) {
+    await Comment.updateMany(
+      { _id: { $in: comment.replies } },
+      { $set: { status: Constants.STATUS.INACTIVE } },
+      { session, runValidators: true }
+    );
+  }
+  Object.assign(comment, {
+    status: Constants.STATUS.INACTIVE,
+  });
+  return await comment.save({ session });
 };
 
 CommentService.getIdOfListName = async (listNames) => {

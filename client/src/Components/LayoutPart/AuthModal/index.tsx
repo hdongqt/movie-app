@@ -22,13 +22,13 @@ const AuthModal: React.FC = () => {
     const isActionLoading: boolean = useSelector((state: RootState) =>
         _.get(state.AUTH, 'isActionLoading')
     );
-    const isError: any = useSelector((state: RootState) =>
+    const isError: boolean = useSelector((state: RootState) =>
         _.get(state.AUTH, 'isError')
     );
-    const message: any = useSelector((state: RootState) =>
+    const message: string = useSelector((state: RootState) =>
         _.get(state.AUTH, 'message')
     );
-    const isShowModal: any = useSelector(
+    const isShowModal: boolean = useSelector(
         (state: RootState) => state.AUTH.isShowModalAuth
     );
 
@@ -84,11 +84,11 @@ const AuthModal: React.FC = () => {
                     ></div>
                     <div
                         ref={modalContentRef}
-                        className="auth-modal zoom-in relative px-8 md:px-20 py-8 rounded-xl w-[95%] md:w-[600px] max-h-[95%] bg-white overflow-y-auto shadow-lg"
+                        className="auth-modal zoom-in relative px-8 md:px-20 py-8 rounded-xl w-[95%] md:w-[600px] max-h-[95%] bg-white dark:bg-slate-900 overflow-y-auto shadow-lg"
                     >
                         <button
                             className="absolute top-1 right-1 w-10 h-10 font-bold text-3xl rounded-full transition
-             text-gray-700 hover:text-red-600 hover:bg-gray-100"
+             text-gray-700 hover:text-red-600 hover:bg-gray-100 dark:hover:bg-gray-500"
                             onClick={handleCloseAuth}
                         >
                             ×
@@ -99,7 +99,7 @@ const AuthModal: React.FC = () => {
                             <SignUpForm changeToSignIn={changeToSignIn} />
                         )}
                         {isError && (
-                            <div className="bg-red-50 flex items-center px-2.5 py-1.5 border border-red-500 rounded mt-2">
+                            <div className="bg-red-50 dark:bg-gray-400 flex items-center px-2.5 py-1.5 border border-red-500 dark:border-red-700 rounded mt-2">
                                 <span className="text-xl text-red-600 w-6 h-6 flex items-center justify-center text-center rounded-full">
                                     <i className="icon-info-sign"></i>
                                 </span>
@@ -108,7 +108,7 @@ const AuthModal: React.FC = () => {
                                 </span>
                             </div>
                         )}
-                        <p className="text-center mt-3">
+                        <p className="text-center mt-3 dark:text-white/80">
                             Bạn{' '}
                             {formAction === FormActionType.SIGN_IN
                                 ? 'chưa'
@@ -118,7 +118,7 @@ const AuthModal: React.FC = () => {
                                 className={`font-bold transition-colors 
                                 ${
                                     isActionLoading
-                                        ? 'pointer-events-none text-gray-500'
+                                        ? 'pointer-events-none text-gray-500 dark:text-gray-100'
                                         : 'text-orange-600 hover:text-orange-500 cursor-pointer'
                                 }
                                 `}
