@@ -519,7 +519,7 @@ const MediaDetail: React.FC = () => {
                                             <i className="icon-star pl-2"></i>
                                         </span>
                                     </div>
-                                    <div className="absolute px-3 md:px-0 left-2 md:left-16 -bottom-16 right-2 md:right-16 rounded bg-white dark:bg-slate-900/90 shadow-2xl flex items-center gap-8 border dark:border-slate-600">
+                                    <div className="absolute left-2 md:left-16 -bottom-16 right-2 md:right-16 rounded bg-white dark:bg-slate-900/90 shadow-2xl flex items-center gap-8 border dark:border-slate-600">
                                         <LazyLoadImage
                                             src={movieDetail?.thumbnailPath}
                                             alt="loading"

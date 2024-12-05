@@ -33,7 +33,7 @@ export const MoviesSlice = createSlice({
         setMoviesPagination: (state, action) => {
             return { ...state, pagination: action.payload };
         },
-        resetMovieState: (state) => {
+        resetMovieState: () => {
             return { ...initialState };
         },
         setFiltersSave: (state, action) => {
