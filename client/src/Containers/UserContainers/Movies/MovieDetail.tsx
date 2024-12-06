@@ -79,7 +79,7 @@ const MediaDetail: React.FC = () => {
         _.get(state.COMMENTS, 'isActionLoading')
     );
 
-    const isWatch = useMatch({ path: '/film/:id/watch' });
+    const isWatch = useMatch({ path: 'ROUTERS.FILM/:id/watch' });
 
     const history = useNavigate();
 
@@ -151,7 +151,7 @@ const MediaDetail: React.FC = () => {
     const handlePlayMovie = (video: VideoPlayState) => {
         setVideoPlay(video);
         setUrlPlaying(video?.path?.[0]);
-        !isWatch && history('/film/' + movieDetail?.id + '/watch');
+        !isWatch && history('ROUTERS.FILM/' + movieDetail?.id + '/watch');
     };
 
     const handleClickFavorite = (id?: string) => {
@@ -519,14 +519,14 @@ const MediaDetail: React.FC = () => {
                                             <i className="icon-star pl-2"></i>
                                         </span>
                                     </div>
-                                    <div className="absolute left-2 md:left-16 -bottom-16 right-2 md:right-16 rounded bg-white dark:bg-slate-900/90 shadow-2xl flex items-center gap-8 border dark:border-slate-600">
+                                    <div className="absolute left-2 md:left-16 -bottom-16 right-2 md:right-16 rounded bg-white dark:bg-slate-900/90 shadow-2xl flex items-center md:gap-8 border dark:border-slate-600">
                                         <LazyLoadImage
                                             src={movieDetail?.thumbnailPath}
                                             alt="loading"
                                             effect="blur"
                                             className="hidden md:block ml-4 self-center w-40 h-48 object-fill rounded-lg shadow-md border border-gray-300 dark:border-gray-400 shadow-gray-700"
                                         />
-                                        <div className="text-white flex-1">
+                                        <div className="text-white flex-1 px-3 md:px-0">
                                             <h3 className="name text-2xl md:text-3xl font-bold text-[#ff0000] line-clamp-1 pr-12 md:pr-0 mt-2.5">
                                                 {movieDetail?.vietnameseName}
                                             </h3>
@@ -971,7 +971,7 @@ const MediaDetail: React.FC = () => {
                                     <Link
                                         key={`similar${movie.id}`}
                                         className="flex gap-4 group hover:opacity-90 transition"
-                                        to={`/film/${movie?.id}`}
+                                        to={`${ROUTERS.FILM}/${movie?.id}`}
                                     >
                                         <div className="h-48 w-2/5 overflow-hidden rounded-xl group-hover:scale-105 transition duration-300 relative">
                                             <LazyLoadImage

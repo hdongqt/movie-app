@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { IMovie, TMovieType } from '@/Interfaces/Movie.interface';
 import dayjs from 'dayjs';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { ROUTERS } from '@/Constants';
 const { fetchAllMediaHome, getTrending } = HomeActions;
 const Home: React.FC = () => {
     const dispatch = useTypedDispatch();
@@ -97,7 +98,7 @@ const Home: React.FC = () => {
                                         <Link
                                             key={`movieHome${index}`}
                                             className="flex gap-4 group hover:opacity-90 transition"
-                                            to={`/film/${movie?.id}`}
+                                            to={`${ROUTERS.FILM}/${movie?.id}`}
                                         >
                                             <div className="h-48 w-2/5 overflow-hidden rounded-xl relative group-hover:scale-105 transition duration-300">
                                                 <LazyLoadImage

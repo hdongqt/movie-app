@@ -125,6 +125,11 @@ const UserHeader: React.FC = () => {
                             <NavLink
                                 to={setting.value}
                                 key={`menu${setting?.value}`}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    Utils.redirect(setting.value);
+                                }}
                                 className={({ isActive }) => {
                                     return `relative px-3.5 py-1 text-center min-w-20 flex items-center justify-center gap-1
                                         transition rounded-full

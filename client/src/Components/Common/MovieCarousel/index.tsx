@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
+import { ROUTERS } from '@/Constants';
 interface IMovieSwipper {
     movies: IMovie[];
     mediaHeading?: string;
@@ -26,7 +27,7 @@ const MovieCarousel: React.FC<IMovieSwipper> = ({
                 <Link
                     className="flex group cursor-pointer h-[350px]"
                     key={`${movie?.id}${index}`}
-                    to={`/film/${movie?.id}`}
+                    to={`${ROUTERS.FILM}/${movie?.id}`}
                 >
                     <div className="rounded-lg overflow-hidden w-full h-full relative">
                         <div

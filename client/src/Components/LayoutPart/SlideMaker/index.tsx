@@ -10,6 +10,7 @@ import dayjs from 'dayjs';
 import './SlideMaker.css';
 import { IMovie } from '@/Interfaces/Movie.interface';
 import { Skeleton } from '@/Components/Common';
+import { ROUTERS } from '@/Constants';
 
 const { fetchAllSlides } = SlideMakerActions;
 interface CustomCSSProperties extends CSSProperties {
@@ -140,7 +141,7 @@ const SlideMaker: React.FC = () => {
                                                 </div>
                                                 <div className="mt-4 lg:mt-10 btnGroup">
                                                     <Link
-                                                        to={`/film/${item?.id}`}
+                                                        to={`${ROUTERS.FILM}/${item?.id}`}
                                                         className="inline-flex group gap-3 bg-red-600 border-2 border-transparent hover:border-white dark:hover:border-gray-200 transition duration-300 justify-center items-center px-3.5 md:px-4 py-2 rounded-full"
                                                     >
                                                         <span className="">

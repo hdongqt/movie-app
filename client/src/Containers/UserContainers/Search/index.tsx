@@ -19,6 +19,7 @@ import {
 
 import { SearchActions } from '@/Redux/Features/Search';
 import { Pagination, Skeleton } from '@/Components/Common';
+import { ROUTERS } from '@/Constants';
 
 const { resetSearchState, setHistorySearch } = SearchActions;
 
@@ -118,7 +119,7 @@ const SearchMovies: React.FC = () => {
     };
 
     const handleClickMovie = (id: string) => {
-        navigate(`/film/${id}`);
+        navigate(`${ROUTERS.FILM}/${id}`);
         dispatch(setHistorySearch(filters));
     };
 
@@ -247,7 +248,7 @@ const SearchMovies: React.FC = () => {
                                             (movie: IMovie) => {
                                                 return (
                                                     <Link
-                                                        to={`/film/${movie.id}`}
+                                                        to={`${ROUTERS.FILM}/${movie.id}`}
                                                         className="search-recommend-item items-center md:items-start py-2 pl-2 pr-3 flex 
                                                         gap-6 rounded-lg bg-no-repeat bg-cover hover:opacity-85 
                                                         transition relative overflow-hidden"

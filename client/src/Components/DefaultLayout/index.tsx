@@ -26,7 +26,7 @@ const DefaultLayout: React.FC<ILayout> = (props: ILayout) => {
                                 name="description"
                                 content={`${
                                     helmet?.description ||
-                                    'Xem phim hay, phim hot, miễn phí, không thương mại, phim không quảng cáo'
+                                    'Bronze Film, Xem phim hay, phim hot, miễn phí, không thương mại, phim không quảng cáo, xem phim Bronze phim'
                                 }`}
                             />
                         </Helmet>
@@ -45,7 +45,7 @@ const DefaultLayout: React.FC<ILayout> = (props: ILayout) => {
                                 name="description"
                                 content={`${
                                     helmet?.description ||
-                                    'Xem phim hay, phim hot, miễn phí, không thương mại, phim không quảng cáo'
+                                    'Bronze Film, Xem phim hay, phim hot, miễn phí, không thương mại, phim không quảng cáo, xem phim Bronze phim'
                                 }`}
                             />
                         </Helmet>

@@ -32,6 +32,7 @@ import {
 } from '@/Redux/Features/Persons/PersonsAction';
 import Urls from '@/Constants/Urls';
 import { MoviesAction } from '@/Redux/Features/Movies';
+import { ROUTERS } from '@/Constants';
 const { resetMovieState } = MoviesAction;
 
 const Persons: React.FC = () => {
@@ -138,7 +139,7 @@ const Persons: React.FC = () => {
                                             return (
                                                 <Link
                                                     key={movie?.id + index}
-                                                    to={`/film/${movie?.id}`}
+                                                    to={`${ROUTERS.FILM}/${movie?.id}`}
                                                     className="rounded-lg overflow-hidden relative group shadow-inner"
                                                 >
                                                     <div className="overflow-hidden h-80">
@@ -213,7 +214,7 @@ const Persons: React.FC = () => {
                                             <Link
                                                 key={`trendMovies${index}`}
                                                 className="flex gap-4 group hover:opacity-90 transition"
-                                                to={`/film/${movie.id}`}
+                                                to={`${ROUTERS.FILM}/${movie.id}`}
                                             >
                                                 <div className="h-48 w-2/5 overflow-hidden rounded-xl group relative">
                                                     <LazyLoadImage
