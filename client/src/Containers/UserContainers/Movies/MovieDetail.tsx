@@ -79,8 +79,7 @@ const MediaDetail: React.FC = () => {
         _.get(state.COMMENTS, 'isActionLoading')
     );
 
-    const isWatch = useMatch({ path: 'ROUTERS.FILM/:id/watch' });
-
+    const isWatch = useMatch({ path: `${ROUTERS.FILM}/:id/watch` });
     const history = useNavigate();
 
     const formComment = useFormik({
