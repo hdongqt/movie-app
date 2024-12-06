@@ -124,7 +124,7 @@ const SearchMovies: React.FC = () => {
 
     const __renderContent = () => {
         return (
-            <div className="w-full flex flex-col-reverse lg:flex-row mt-16 min-h-screen justify-end lg:justify-normal dark:bg-slate-900">
+            <div className="w-full flex flex-col-reverse lg:flex-row pt-16 min-h-screen justify-end lg:justify-normal dark:bg-slate-900">
                 <div className="w-full lg:w-3/4 px-6 mt-4 pb-5">
                     <div className="border-b pb-2 border-gray-200 dark:border-slate-600 flex flex-col-reverse md:flex-row justify-between items-center">
                         {filters.keyword && (

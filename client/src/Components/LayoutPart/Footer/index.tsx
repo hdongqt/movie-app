@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import logoFilm from '@/Assets/Logo/logoFilm.png';

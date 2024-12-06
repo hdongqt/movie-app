@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-
 import { CollapseMenu, NoDataFound, SelectSort } from '@/Components/Common';
 import DefaultLayout from '@/Components/DefaultLayout';
 import { fetchAllMovies } from '@/Redux/Features/Movies/MoviesAction';
@@ -23,6 +22,7 @@ import { ISelect } from '@/Interfaces/Select.interface';
 import { YEAR_SELECT_LIST } from '@/Constants/Lists/Select.list';
 import { ROUTERS } from '@/Constants';
 import { setFiltersSave } from '@/Redux/Features/Movies/MoviesSlice';
+import { title } from 'process';
 
 const { resetMovieState } = MoviesAction;
 
@@ -150,7 +150,7 @@ const Movies: React.FC = () => {
 
     const __renderContent = () => {
         return (
-            <div className="w-full flex lg:flex-row flex-col-reverse mt-16 dark:bg-slate-900 h-full">
+            <div className="w-full flex lg:flex-row flex-col-reverse pt-16 dark:bg-slate-900 h-full">
                 <div className="w-full lg:w-3/4 px-6 mt-6 lg:mt-2 pb-5 h-full">
                     <div className="flex justify-between">
                         <p className="text-lg uppercase relative py-1.5 bg-red-700 text-white pl-2 rounded-md rounded-r-none min-w-48">
@@ -273,7 +273,9 @@ const Movies: React.FC = () => {
                                                             true;
                                                         navigate(
                                                             location.pathname,
-                                                            { replace: true }
+                                                            {
+                                                                replace: true
+                                                            }
                                                         );
                                                         Utils.redirect(
                                                             `${ROUTERS.FILM}/${movie?.id}`,
@@ -408,6 +410,23 @@ const Movies: React.FC = () => {
         );
     };
 
-    return <DefaultLayout portalFor="USER" children={__renderContent()} />;
+    return (
+        <DefaultLayout
+            portalFor="USER"
+            helmet={{
+                title: `Bronze Film: Danh sách phim 
+        ${
+            filters.movieType === 'all'
+                ? ''
+                : filters.movieType === 'tv'
+                ? ' bộ'
+                : ' lẻ'
+        }
+            ${state?.country?.name || ''}
+       `
+            }}
+            children={__renderContent()}
+        />
+    );
 };
 export default Movies;

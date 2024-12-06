@@ -431,7 +431,7 @@ const MediaDetail: React.FC = () => {
             role: 'creator'
         });
         return (
-            <div className="w-full flex flex-col lg:flex-row mt-16 dark:bg-slate-900">
+            <div className="w-full flex flex-col lg:flex-row pt-16 dark:bg-slate-900">
                 <div className="w-full lg:w-3/4 px-6 pb-5">
                     {isGetLoading && (
                         <div className="relative -translate-y-2">
@@ -1029,6 +1029,23 @@ const MediaDetail: React.FC = () => {
             </div>
         );
     };
-    return <DefaultLayout portalFor="USER" children={__renderContent()} />;
+    return (
+        <DefaultLayout
+            portalFor="USER"
+            helmet={{
+                title: `${
+                    movieDetail?.vietnameseName
+                        ? `Xem phim: ${movieDetail.vietnameseName}`
+                        : ''
+                }`,
+                description: `${
+                    movieDetail
+                        ? `Xem phim ${movieDetail?.vietnameseName}, ${movieDetail?.originalName}`
+                        : ''
+                }`
+            }}
+            children={__renderContent()}
+        />
+    );
 };
 export default MediaDetail;

@@ -65,7 +65,7 @@ const Favorites: React.FC = () => {
 
     const __renderContent = () => {
         return (
-            <div className="w-full mt-16 px-6 pb-5 dark:bg-slate-900">
+            <div className="w-full pt-16 px-6 pb-5 dark:bg-slate-900">
                 <div className="flex justify-between pt-5">
                     <p className="text-lg uppercase relative py-1.5 bg-red-700 text-white pl-2 rounded-md rounded-r-none w-max">
                         Danh sách phim yêu thích

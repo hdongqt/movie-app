@@ -756,7 +756,7 @@ const MovieSave: React.FC = () => {
                         </button>
                     </div>
                     {(isGetLoading || isActionLoading) && (
-                        <div className="fixed ml-72 mt-16 z-50 inset-0 flex items-start justify-center bg-[#ffffff4d]">
+                        <div className="fixed ml-72 pt-16 z-50 inset-0 flex items-start justify-center bg-[#ffffff4d]">
                             <span className="mt-52 inline-block border-gray-300 h-10 w-10 animate-spin rounded-full border-4 border-t-blue-600" />
                         </div>
                     )}

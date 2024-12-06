@@ -91,7 +91,7 @@ const Persons: React.FC = () => {
 
     const __renderContent = () => {
         return (
-            <div className="w-full flex mt-16 dark:bg-slate-900">
+            <div className="w-full flex pt-16 dark:bg-slate-900">
                 <div className="w-full lg:w-3/4 px-6 mt-3 pb-5">
                     <div className="flex items-center gap-3">
                         {!isGetLoading && (

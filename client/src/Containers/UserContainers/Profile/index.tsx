@@ -92,7 +92,7 @@ const Profile: React.FC = () => {
 
     const __renderContent = () => {
         return (
-            <div className="w-full mt-16 px-6 pb-5">
+            <div className="w-full pt-16 px-6 pb-5">
                 <div className="px-4 w-full md:w-3/5 mx-auto">
                     <h2 className="text-2xl pt-5 font-semibold">
                         Cài đặt tài khoản

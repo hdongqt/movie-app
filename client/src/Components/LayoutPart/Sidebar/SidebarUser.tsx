@@ -180,17 +180,21 @@ const SidebarUser = () => {
                 <div className="flex justify-center">
                     <button
                         onClick={handleChangeTheme}
-                        className="px-4 py-1.5 border border-gray-300 rounded-lg flex items-center gap-2 transition dark:text-white hover:border-gray-400 hover:bg-sky-50 dark:hover:bg-slate-700"
+                        className="px-4 py-1.5 border border-gray-300 rounded-lg flex items-center gap-2 transition dark:text-white hover:border-gray-400 hover:bg-sky-50 dark:hover:bg-slate-600"
                     >
                         {themeMode === 'dark' ? (
                             <>
                                 <i className="icon-sun text-xl"></i>
-                                <span className="font-medium">Light mode</span>
+                                <span className="font-medium">
+                                    Giao diện sáng
+                                </span>
                             </>
                         ) : (
                             <>
                                 <i className="icon-moon text-xl"></i>
-                                <span className="font-medium">Dark mode</span>
+                                <span className="font-medium">
+                                    Giao diện tối
+                                </span>
                             </>
                         )}
                     </button>
