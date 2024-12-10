@@ -1,4 +1,3 @@
-import jsonwebtoken from "jsonwebtoken";
 import { Constants } from "../helpers/constants.js";
 import UserService from "../services/user.service.js";
 import ResponseHandler from "../handlers/response.handler.js";
@@ -34,4 +33,16 @@ const auth = async (req, res, next) => {
   next();
 };
 
-export default { auth };
+const checkIsAdmin = async (req, res, next) => {
+  await auth(req, res, async () => {
+    if (req?.user && req.user.role !== "admin") {
+      return ResponseHandler.buildResponseFailed(res, {
+        type: Constants.RESPONSE_TYPE.FORBIDDEN,
+        message: "Không có quyền truy cập",
+      });
+    }
+    next();
+  });
+};
+
+export default { auth, checkIsAdmin };

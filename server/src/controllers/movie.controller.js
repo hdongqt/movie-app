@@ -1,9 +1,8 @@
+import _ from "lodash";
 import ResponseHandler from "../handlers/response.handler.js";
 import MovieService from "./../services/movie.service.js";
 import { Constants } from "../helpers/constants.js";
 import COMMON_HELPERS from "../helpers/common.js";
-import _ from "lodash";
-import MovieCrawlService from "../services/crawl/movie.crawl.service.js";
 import TransactionService from "../services/transaction.service.js";
 
 const { RESPONSE_TYPE, STATUS } = Constants;

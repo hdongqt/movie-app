@@ -25,8 +25,16 @@ router.delete(
   TokenMiddleware.auth,
   UserController.deleteMovieFromFavorites
 );
-router.get("/:id", UserController.getUser);
-router.put("/activate/:id", UserController.activateUser);
-router.put("/deactivate/:id", UserController.deactivateUser);
+router.get("/:id", TokenMiddleware.checkIsAdmin, UserController.getUser);
+router.put(
+  "/activate/:id",
+  TokenMiddleware.checkIsAdmin,
+  UserController.activateUser
+);
+router.put(
+  "/deactivate/:id",
+  TokenMiddleware.checkIsAdmin,
+  UserController.deactivateUser
+);
 
 export default router;

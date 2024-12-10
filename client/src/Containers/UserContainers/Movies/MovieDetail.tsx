@@ -150,7 +150,7 @@ const MediaDetail: React.FC = () => {
     const handlePlayMovie = (video: VideoPlayState) => {
         setVideoPlay(video);
         setUrlPlaying(video?.path?.[0]);
-        !isWatch && history('ROUTERS.FILM/' + movieDetail?.id + '/watch');
+        !isWatch && history(`${ROUTERS.FILM}/${movieDetail?.id}/watch`);
     };
 
     const handleClickFavorite = (id?: string) => {

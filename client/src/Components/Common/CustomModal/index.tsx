@@ -51,12 +51,14 @@ const CustomModal: React.FC<CustomModalProps> = ({
                 if (!isLoading && e.target === e.currentTarget) onClose();
             }}
         >
-            <div className="w-full sm:w-auto bg-white rounded-lg shadow-lg custom-modal-content relative">
+            <div className="w-full sm:w-auto bg-white dark:bg-slate-900 rounded-lg shadow-lg custom-modal-content relative">
                 <div className="border-b px-6 py-2 pr-1 flex justify-between items-center">
-                    <h2 className="text-lg font-semibold">{title}</h2>
+                    <h2 className="text-lg font-semibold dark:text-white cursor-default">
+                        {title}
+                    </h2>
                     <button
                         className="w-10 h-10 font-bold text-2xl rounded-full transition
-             text-gray-700 hover:text-red-600 hover:bg-gray-100"
+             text-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 hover:text-red-600 hover:bg-gray-100"
                         onClick={onClose}
                     >
                         ×

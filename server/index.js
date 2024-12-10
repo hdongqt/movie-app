@@ -36,11 +36,13 @@ const cronCrawl = cron.schedule("0 0 * * *", async () => {
         return this;
       },
       send: function () {},
+      json: function () {},
     };
 
     await CrawlController.createCrawl(req, res);
+    console.log("Data crawling in progress");
   } catch (error) {
-    console.error("Cron job thất bại:", error);
+    console.error("Crawl error: ", error);
   }
 });
 

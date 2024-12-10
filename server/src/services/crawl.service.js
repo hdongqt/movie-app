@@ -1,10 +1,6 @@
-import ResponseHandler from "../handlers/response.handler.js";
 import Crawl from "../models/crawl.model.js";
-import { Constants } from "../helpers/constants.js";
 import _ from "lodash";
 import COMMON_HELPERS from "../helpers/common.js";
-// import mongoose from "mongoose";
-const { RESPONSE_TYPE, MOVIE_TYPE } = Constants;
 const CrawlService = {};
 
 CrawlService.Crawl = Crawl;

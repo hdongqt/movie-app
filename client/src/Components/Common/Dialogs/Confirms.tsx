@@ -39,7 +39,7 @@ const Confirm = (props: {
                 }
             ]}
         >
-            <p className="text-lg text-gray-700 font-medium min-w-72">
+            <p className="text-lg text-gray-700 dark:text-white/80 font-medium min-w-72">
                 {confirm?.message}
             </p>
         </CustomModal>

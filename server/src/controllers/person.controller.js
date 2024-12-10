@@ -1,7 +1,7 @@
 import ResponseHandler from "../handlers/response.handler.js";
 import PersonService from "../services/person.service.js";
 import { Constants } from "../helpers/constants.js";
-const { RESPONSE_TYPE, STATUS } = Constants;
+const { RESPONSE_TYPE } = Constants;
 
 const PeopleController = {};
 

@@ -1,12 +1,7 @@
-import ResponseHandler from "../handlers/response.handler.js";
-import { Constants } from "../helpers/constants.js";
 import _ from "lodash";
 import Person from "../models/person.model.js";
-import COMMON_HELPERS from "../helpers/common.js";
 import mongoose from "mongoose";
-import axios from "axios";
 import TransactionService from "./transaction.service.js";
-const { RESPONSE_TYPE, MOVIE_TYPE } = Constants;
 const PersonService = {};
 
 PersonService.getPerson = async (idMovie) => {

@@ -1,9 +1,10 @@
 import express from "express";
 import CrawlController from "../controllers/crawl.controller.js";
+import TokenMiddleware from "../middlewares/token.middleware.js";
 import { body } from "express-validator";
 const router = express.Router({ mergeParams: true });
 
-router.get("/", CrawlController.fetchAllCrawls);
+router.get("/", TokenMiddleware.checkIsAdmin, CrawlController.fetchAllCrawls);
 router.post(
   "/",
   [
@@ -15,6 +16,6 @@ router.post(
   ],
   CrawlController.createCrawl
 );
-router.get("/:id", CrawlController.getCrawl);
+router.get("/:id", TokenMiddleware.checkIsAdmin, CrawlController.getCrawl);
 
 export default router;

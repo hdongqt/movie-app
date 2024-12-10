@@ -48,12 +48,10 @@ const generateError = (type, mess) => {
   const err = new Error();
   err.type = type;
   if (mess) err.message = mess;
-  console.log(err);
   return err;
 };
 
 const buildResponseFailed = (res, error) => {
-  console.log(error);
   const { type, message } = error;
   switch (type) {
     case Constants.RESPONSE_TYPE.BAD_REQUEST:

@@ -1,14 +1,14 @@
+import _ from "lodash";
 import userModel from "../models/user.model.js";
 import jsonwebtoken from "jsonwebtoken";
 import ResponseHandler from "../handlers/response.handler.js";
 
 import { Constants } from "../helpers/constants.js";
 import COMMON_HELPERS from "../helpers/common.js";
-import _ from "lodash";
 import UserService from "./../services/user.service.js";
 import TokenService from "../services/token.service.js";
 
-const { RESPONSE_TYPE, STATUS } = Constants;
+const { RESPONSE_TYPE } = Constants;
 
 const AuthController = {};
 

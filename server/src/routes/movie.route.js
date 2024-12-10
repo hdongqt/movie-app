@@ -21,18 +21,28 @@ router.delete("/terminated/:id", MovieController.terminatedMovie);
 router.get("/get-for-admin", MovieController.fetchAllMoviesForAdmin);
 router.get(
   "/get-for-admin/:id",
-  TokenMiddleware.auth,
+  TokenMiddleware.checkIsAdmin,
   MovieController.getMovie
 );
 router.get("/:id", MovieController.getMovie);
 router.post(
   "/",
-  [multerUpload.any(), createMovieValidation, RequestHandler.validate],
+  [
+    multerUpload.any(),
+    TokenMiddleware.checkIsAdmin,
+    createMovieValidation,
+    RequestHandler.validate,
+  ],
   MovieController.createMovie
 );
 router.put(
   "/:id",
-  [multerUpload.any(), updateMovieValidation, RequestHandler.validate],
+  [
+    multerUpload.any(),
+    TokenMiddleware.checkIsAdmin,
+    updateMovieValidation,
+    RequestHandler.validate,
+  ],
   MovieController.updateMovie
 );
 

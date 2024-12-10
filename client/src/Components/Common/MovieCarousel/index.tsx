@@ -46,7 +46,7 @@ const MovieCarousel: React.FC<IMovieSwipper> = ({
                         <div className="group-hover:opacity-0 transition rounded-r-none absolute top-2 right-0 flex gap-1 bg-blue-600 py-1 px-3 rounded-md text-white text-sm">
                             <span>{movie?.release || 'N/A'}</span>
                         </div>
-                        <div className="group-hover:blur-sm transition group-hover:scale-110 duration-200">
+                        <div className="group-hover:blur-sm transition w-full h-full group-hover:scale-110 duration-200">
                             <LazyLoadImage
                                 src={movie?.thumbnailPath}
                                 alt="ThumbMovie"

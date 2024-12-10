@@ -2,7 +2,6 @@ import ResponseHandler from "../handlers/response.handler.js";
 import { Constants } from "../helpers/constants.js";
 import _ from "lodash";
 import User from "../models/user.model.js";
-import Movie from "../models/movie.model.js";
 import COMMON_HELPERS from "../helpers/common.js";
 const UserService = {};
 const { RESPONSE_TYPE } = Constants;

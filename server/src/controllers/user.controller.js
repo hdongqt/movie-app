@@ -196,7 +196,6 @@ UserController.addFavorite = async (req, res) => {
 UserController.deleteMovieFromFavorites = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
     const user = await UserService.User.findById(req?.user?.id);
     if (!user) {
       return ResponseHandler.buildResponseFailed(res, {
