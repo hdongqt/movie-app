@@ -22,7 +22,6 @@ const AdminHeader = () => {
         >
             <section className="flex items-center">
                 <button
-                    aria-controls="sidebar"
                     onClick={(e) => {
                         e.stopPropagation();
                         dispatch(

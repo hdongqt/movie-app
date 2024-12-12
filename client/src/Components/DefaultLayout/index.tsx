@@ -4,6 +4,8 @@ import AdminLayout from './AdminLayout';
 import { IHelmet } from '@/Interfaces/Helmet.interface';
 import { Helmet } from 'react-helmet';
 
+import OgImage from '@/Assets/OgImage/og-image.png';
+
 type PORTAL_TYPE = 'USER' | 'ADMIN';
 interface ILayout {
     helmet?: IHelmet;
@@ -48,6 +50,7 @@ const DefaultLayout: React.FC<ILayout> = (props: ILayout) => {
                                     'Bronze Film, Xem phim hay, phim hot, miễn phí, không thương mại, phim không quảng cáo, xem phim Bronze phim'
                                 }`}
                             />
+                            <meta property="og:image" content={OgImage} />
                         </Helmet>
                         <UserLayout children={children} />
                     </>

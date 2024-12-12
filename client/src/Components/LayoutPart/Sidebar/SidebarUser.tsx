@@ -170,7 +170,6 @@ const SidebarUser = () => {
                         onClick={() =>
                             dispatch(setSidebarUserOpen(!sidebarUserOpen))
                         }
-                        aria-controls="sidebar"
                         aria-expanded={sidebarUserOpen}
                         className="lg:hidden text-4xl text-gray-800 flex items-center justify-center w-9 h-9 text-center rounded-full transition hover:bg-gray-200 hover:text-red-600 dark:text-white dark:hover:bg-slate-700"
                     >

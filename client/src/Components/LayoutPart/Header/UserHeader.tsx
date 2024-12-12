@@ -245,7 +245,6 @@ const UserHeader: React.FC = () => {
         <header className="header w-full bg-white h-16 shadow text-black flex justify-between items-center fixed left-0 top-0 px-3 lg:px-5 z-50 dark:bg-slate-900/95 dark:shadow-gray-700">
             <section className="flex items-center">
                 <button
-                    aria-controls="sidebar"
                     onClick={(e) => {
                         e.stopPropagation();
                         dispatch(
