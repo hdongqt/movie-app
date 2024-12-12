@@ -50,7 +50,10 @@ const DefaultLayout: React.FC<ILayout> = (props: ILayout) => {
                                     'Bronze Film, Xem phim hay, phim hot, miễn phí, không thương mại, phim không quảng cáo, xem phim Bronze phim'
                                 }`}
                             />
-                            <meta property="og:image" content={OgImage} />
+                            <meta
+                                property="og:image"
+                                content="https://bronzefilm.vercel.app/static/media/og-image.ef4de47c0319e96ee4af.png"
+                            />
                         </Helmet>
                         <UserLayout children={children} />
                     </>
