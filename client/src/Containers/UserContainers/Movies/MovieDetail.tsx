@@ -525,17 +525,17 @@ const MediaDetail: React.FC = () => {
                                             effect="blur"
                                             className="hidden md:block ml-4 self-center w-40 h-48 object-fill rounded-lg shadow-md border border-gray-300 dark:border-gray-400 shadow-gray-700"
                                         />
-                                        <div className="text-white flex-1 px-3 md:px-0">
-                                            <h3 className="name text-2xl md:text-3xl font-bold text-[#ff0000] line-clamp-1 pr-12 md:pr-0 mt-2.5">
+                                        <div className="text-white flex-1 px-0 sm:px-3">
+                                            <h3 className="name text-2xl md:text-3xl font-bold text-[#ff0000] line-clamp-1 pr-12 md:pr-0 mt-2.5 ml-3 sm:ml-0">
                                                 {movieDetail?.vietnameseName}
                                             </h3>
-                                            <h4 className="name text-lg text-gray-700 dark:text-gray-100/80 capitalize font-bold line-clamp-1">
+                                            <h4 className="name text-lg text-gray-700 dark:text-gray-100/80 capitalize font-bold line-clamp-1 ml-3 sm:ml-0">
                                                 {movieDetail?.originalName}
                                                 {movieDetail?.release
                                                     ? ` (${movieDetail.release})`
                                                     : ''}
                                             </h4>
-                                            <div className="flex gap-2 mt-2 md:mt-5 flex-wrap gap-y-2">
+                                            <div className="flex gap-2 mt-2 md:mt-5 flex-wrap gap-y-2 ml-3 sm:ml-0">
                                                 {movieDetail?.genres &&
                                                     movieDetail?.genres.map(
                                                         (genre: any) => {
@@ -564,7 +564,7 @@ const MediaDetail: React.FC = () => {
                                                         }
                                                     )}
                                             </div>
-                                            <div className="flex justify-center md:justify-end gap-3 mt-4 md:mt-8 py-3 pr-3">
+                                            <div className="flex justify-center md:justify-end gap-3 mt-4 md:mt-8 py-3">
                                                 <Link
                                                     to={'watch'}
                                                     className="outline-none flex px-3 py-6 items-center gap-3 rounded-full bg-red-600 hover:bg-red-700 transition h-10 relative"
