@@ -4,8 +4,6 @@ import AdminLayout from './AdminLayout';
 import { IHelmet } from '@/Interfaces/Helmet.interface';
 import { Helmet } from 'react-helmet';
 
-import OgImage from '@/Assets/OgImage/og-image.png';
-
 type PORTAL_TYPE = 'USER' | 'ADMIN';
 interface ILayout {
     helmet?: IHelmet;
@@ -52,8 +50,22 @@ const DefaultLayout: React.FC<ILayout> = (props: ILayout) => {
                             />
                             <meta
                                 property="og:image"
-                                content="https://bronzefilm.vercel.app/static/media/og-image.ef4de47c0319e96ee4af.png"
+                                content="https://i.ibb.co/9tXCC1D/Gemini-Generated-Image-b7z5hpb7z5hpb7z5.png"
                             />
+                            <meta
+                                property="og:url"
+                                content="https://bronzefilm.vercel.app/"
+                            />
+                            <meta
+                                property="og:image:type"
+                                content="image/png"
+                            />
+                            <meta property="og:image:width" content="300" />
+                            <meta property="og:image:height" content="300" />
+                            <meta
+                                property="og:image:alt"
+                                content="Bronze Film"
+                            ></meta>
                         </Helmet>
                         <UserLayout children={children} />
                     </>
