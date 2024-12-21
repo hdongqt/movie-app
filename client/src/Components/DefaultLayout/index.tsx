@@ -45,27 +45,9 @@ const DefaultLayout: React.FC<ILayout> = (props: ILayout) => {
                                 name="description"
                                 content={`${
                                     helmet?.description ||
-                                    'Bronze Film, Xem phim hay, phim hot, miễn phí, không thương mại, phim không quảng cáo, xem phim Bronze phim'
+                                    'Bronze Film, BronzeFilm Vercel, Phim, Xem phim hay, phim hot, miễn phí, không thương mại, phim không quảng cáo, xem phim Bronze phim'
                                 }`}
                             />
-                            <meta
-                                property="og:image"
-                                content="https://i.ibb.co/9tXCC1D/Gemini-Generated-Image-b7z5hpb7z5hpb7z5.png"
-                            />
-                            <meta
-                                property="og:url"
-                                content="https://bronzefilm.vercel.app/"
-                            />
-                            <meta
-                                property="og:image:type"
-                                content="image/png"
-                            />
-                            <meta property="og:image:width" content="300" />
-                            <meta property="og:image:height" content="300" />
-                            <meta
-                                property="og:image:alt"
-                                content="Bronze Film"
-                            ></meta>
                         </Helmet>
                         <UserLayout children={children} />
                     </>
