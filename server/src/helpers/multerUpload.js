@@ -19,10 +19,10 @@ const storage = new CloudinaryStorage({
       transformation: [{ quality: 80, fetch_format: "webp" }],
     };
   },
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5mb
+  limits: { fileSize: 10 * 1024 * 1024 }, // 5mb
 });
 
-const convertLinkToWebp = async (url) => {
+const optimizeImage = async (url) => {
   if (!url) return null;
   try {
     const uploadResponse = await cloudinary.uploader.upload(url, {
@@ -33,9 +33,9 @@ const convertLinkToWebp = async (url) => {
     return uploadResponse.secure_url || null;
   } catch (error) {
     console.error("Error processing the image:", error);
-    throw error;
+    return url;
   }
 };
 
-export { convertLinkToWebp };
+export { optimizeImage };
 export default multer({ storage: storage });

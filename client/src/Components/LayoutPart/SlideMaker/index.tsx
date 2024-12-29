@@ -58,7 +58,7 @@ const SlideMaker: React.FC = () => {
         <>
             {isFetchLoading && <Skeleton heightRow={385} />}
             {!isFetchLoading && (
-                <div className="w-full overflow-hidden h-[300px] lg:h-[400px] pt-1">
+                <div className="w-full rounded-lg overflow-hidden h-[300px] lg:h-[400px] pt-1">
                     <div className="container-slide">
                         <div className="slide">
                             {mediaSlides &&
@@ -159,7 +159,7 @@ const SlideMaker: React.FC = () => {
                         </div>
                         <div className="flex justify-center absolute bottom-5 left-0 w-full gap-3">
                             <button
-                                className="prev bg-stone-300 dark:bg-stone-500 dark:text-gray-100 rounded-full w-10 h-10 text-xl text-gray-700 hover:bg-red-600 dark:hover:bg-red-600 hover:text-white dark:hover:text-gray-200 transition"
+                                className="prev bg-stone-300 dark:bg-red-600 dark:text-gray-100 rounded-full w-10 h-10 text-xl text-gray-700 hover:bg-red-600 dark:hover:bg-red-700 hover:text-white dark:hover:text-gray-200 transition"
                                 onClick={(
                                     e: React.MouseEvent<HTMLButtonElement>
                                 ) => handleClickBtn(e, 'prev')}
@@ -167,7 +167,7 @@ const SlideMaker: React.FC = () => {
                                 <i className="icon-chevron-left"></i>
                             </button>
                             <button
-                                className="next bg-stone-300 dark:bg-stone-500 dark:text-gray-100 rounded-full w-10 h-10 text-xl text-gray-700 hover:bg-red-600 dark:hover:bg-red-600 hover:text-white dark:hover:text-gray-200 transition"
+                                className="next bg-stone-300 dark:bg-stone-500 dark:text-gray-100 rounded-full w-10 h-10 text-xl text-gray-700 hover:bg-red-600 dark:hover:bg-red-700 hover:text-white dark:hover:text-gray-200 transition"
                                 onClick={(
                                     e: React.MouseEvent<HTMLButtonElement>
                                 ) => handleClickBtn(e, 'next')}

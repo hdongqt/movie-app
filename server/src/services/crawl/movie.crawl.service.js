@@ -5,7 +5,7 @@ import axios from "axios";
 import TransactionService from "../transaction.service.js";
 import MovieService from "../movie.service.js";
 import PersonService from "../person.service.js";
-import { convertLinkToWebp } from "../../helpers/multerUpload.js";
+import { optimizeImage } from "../../helpers/multerUpload.js";
 const { handleSpecialChars } = COMMON_HELPERS;
 
 const MovieCrawlService = {};
@@ -74,10 +74,8 @@ MovieCrawlService.getDetailMovie = async (slug) => {
         };
       })
     : [];
-  const thumbHandler = await convertLinkToWebp(
-    _.get(data, "movie.thumb_url", "")
-  );
-  const posterHandler = await convertLinkToWebp(
+  const thumbHandler = await optimizeImage(_.get(data, "movie.thumb_url", ""));
+  const posterHandler = await optimizeImage(
     _.get(data, "movie.poster_url", "")
   );
   return {

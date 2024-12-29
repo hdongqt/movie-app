@@ -1,6 +1,5 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '@/Assets/Logo/logoFilm.png';
 import Utils from '@/Utils';
 import { RootState, useTypedDispatch } from '@/Redux/Store';
@@ -170,7 +169,6 @@ const SidebarUser = () => {
                         onClick={() =>
                             dispatch(setSidebarUserOpen(!sidebarUserOpen))
                         }
-                        aria-expanded={sidebarUserOpen}
                         className="lg:hidden text-4xl text-gray-800 flex items-center justify-center w-9 h-9 text-center rounded-full transition hover:bg-gray-200 hover:text-red-600 dark:text-white dark:hover:bg-slate-700"
                     >
                         ×

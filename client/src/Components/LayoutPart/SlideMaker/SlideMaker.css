@@ -1,6 +1,5 @@
 .container-slide {
     @apply relative w-full h-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded overflow-hidden;
-    background: #f5f5f5;
 }
 
 .slide .item {
