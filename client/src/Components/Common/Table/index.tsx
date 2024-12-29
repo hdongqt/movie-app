@@ -44,11 +44,11 @@ const Table: React.FC<TableProps> = ({
                                 columns.map((column, index) => (
                                     <th
                                         key={`header${column.key}${index}`}
-                                        style={{
-                                            width: column?.width
-                                                ? `${column.width}px`
-                                                : 'auto'
-                                        }}
+                                        // style={{
+                                        //     width: column?.width
+                                        //         ? `${column.width}px`
+                                        //         : 'auto'
+                                        // }}
                                         className={`${
                                             column?.classHeaderFirst
                                                 ? column.classHeaderFirst + ' '
@@ -85,6 +85,11 @@ const Table: React.FC<TableProps> = ({
                                         columns.map((column, colIndex) => (
                                             <td
                                                 key={`table${column.key}${colIndex}`}
+                                                style={{
+                                                    width: column?.width
+                                                        ? `${column.width}px`
+                                                        : 'auto'
+                                                }}
                                                 className={`${
                                                     column?.classRowFirst
                                                         ? column.classRowFirst +
@@ -92,12 +97,20 @@ const Table: React.FC<TableProps> = ({
                                                         : ''
                                                 }py-4 px-4`}
                                             >
-                                                {column.render
-                                                    ? column.render(
-                                                          row,
-                                                          menuClick
-                                                      )
-                                                    : row[column.key]}
+                                                <div
+                                                    style={{
+                                                        width: column?.width
+                                                            ? `${column.width}px`
+                                                            : 'auto'
+                                                    }}
+                                                >
+                                                    {column.render
+                                                        ? column.render(
+                                                              row,
+                                                              menuClick
+                                                          )
+                                                        : row[column.key]}
+                                                </div>
                                             </td>
                                         ))}
                                 </tr>

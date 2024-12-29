@@ -118,8 +118,8 @@ const SearchMovies: React.FC = () => {
         });
     };
 
-    const handleClickMovie = (id: string) => {
-        navigate(`${ROUTERS.FILM}/${id}`);
+    const handleClickMovie = (slug: string) => {
+        navigate(`${ROUTERS.FILM}/${slug}`);
         dispatch(setHistorySearch(filters));
     };
 
@@ -178,7 +178,7 @@ const SearchMovies: React.FC = () => {
                                                     key={movie?.id + index}
                                                     onClick={() =>
                                                         handleClickMovie(
-                                                            movie?.id
+                                                            movie?.url
                                                         )
                                                     }
                                                     className="cursor-pointer rounded-lg overflow-hidden relative group shadow-inner"
@@ -248,7 +248,7 @@ const SearchMovies: React.FC = () => {
                                             (movie: IMovie) => {
                                                 return (
                                                     <Link
-                                                        to={`${ROUTERS.FILM}/${movie.id}`}
+                                                        to={`${ROUTERS.FILM}/${movie.url}`}
                                                         className="search-recommend-item items-center md:items-start py-2 pl-2 pr-3 flex 
                                                         gap-6 rounded-lg bg-no-repeat bg-cover hover:opacity-85 
                                                         transition relative overflow-hidden"

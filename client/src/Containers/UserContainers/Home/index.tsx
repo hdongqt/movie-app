@@ -98,7 +98,7 @@ const Home: React.FC = () => {
                                         <Link
                                             key={`movieHome${index}`}
                                             className="flex gap-4 group hover:opacity-90 transition"
-                                            to={`${ROUTERS.FILM}/${movie?.id}`}
+                                            to={`${ROUTERS.FILM}/${movie?.url}`}
                                         >
                                             <div className="h-48 w-2/5 overflow-hidden rounded-xl relative group-hover:scale-105 transition duration-300">
                                                 <LazyLoadImage

@@ -21,8 +21,9 @@ const STATUS_COMMON: any = {
 const GENRES_MANAGEMENT_TABLE_HEADER: ITableColumn[] = [
     {
         key: 'name',
-        header: 'Tên thể loại'
+        header: 'Tên thể loại',
         // classRowFirst: 'text-sm'
+        width: 150
     },
     {
         key: '',

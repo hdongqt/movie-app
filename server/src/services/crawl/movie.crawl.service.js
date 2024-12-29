@@ -5,6 +5,7 @@ import axios from "axios";
 import TransactionService from "../transaction.service.js";
 import MovieService from "../movie.service.js";
 import PersonService from "../person.service.js";
+import { convertLinkToWebp } from "../../helpers/multerUpload.js";
 const { handleSpecialChars } = COMMON_HELPERS;
 
 const MovieCrawlService = {};
@@ -73,14 +74,20 @@ MovieCrawlService.getDetailMovie = async (slug) => {
         };
       })
     : [];
+  const thumbHandler = await convertLinkToWebp(
+    _.get(data, "movie.thumb_url", "")
+  );
+  const posterHandler = await convertLinkToWebp(
+    _.get(data, "movie.poster_url", "")
+  );
   return {
     movieType: _.get(data, "movie.tmdb.type") === "movie" ? "single" : "tv",
     originalName: _.get(data, "movie.origin_name", ""),
     vietnameseName: _.get(data, "movie.name", ""),
     overview: handleSpecialChars(_.get(data, "movie.content", "")),
     release: _.get(data, "movie.year", new Date().getFullYear()),
-    thumbnailPath: _.get(data, "movie.thumb_url", ""),
-    posterPath: _.get(data, "movie.poster_url", ""),
+    thumbnailPath: thumbHandler,
+    posterPath: posterHandler,
     totalRating: _.get(data, "movie.tmdb.vote_count", 0),
     averageRating: _.get(data, "movie.tmdb.vote_average", 0),
     countries: data?.movie

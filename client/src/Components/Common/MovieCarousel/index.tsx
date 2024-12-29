@@ -27,7 +27,7 @@ const MovieCarousel: React.FC<IMovieSwipper> = ({
                 <Link
                     className="flex group cursor-pointer h-[350px]"
                     key={`${movie?.id}${index}`}
-                    to={`${ROUTERS.FILM}/${movie?.id}`}
+                    to={`${ROUTERS.FILM}/${movie?.url}`}
                 >
                     <div className="rounded-lg overflow-hidden w-full h-full relative">
                         <div

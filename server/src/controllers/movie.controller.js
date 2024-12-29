@@ -71,13 +71,28 @@ MovieController.getRecommendMovie = async (__, res) => {
   }
 };
 
-MovieController.getMovie = async (req, res) => {
+MovieController.getMovieForUser = async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const payload = await MovieService.getMovieForUser(slug);
+    if (!payload) {
+      return ResponseHandler.buildResponseFailed(res, {
+        type: RESPONSE_TYPE.NOT_FOUND,
+        message: "Phim không tồn tại",
+      });
+    }
+    ResponseHandler.buildResponseSuccess(res, RESPONSE_TYPE.OK, {
+      payload: payload,
+    });
+  } catch (error) {
+    ResponseHandler.buildResponseFailed(res, error);
+  }
+};
+
+MovieController.getMovieForAdmin = async (req, res) => {
   try {
     const { id } = req.params;
-    const payload =
-      req?.user && req.user.role === Constants.ROLE.ADMIN
-        ? await MovieService.getMovieForAdmin(id)
-        : await MovieService.getMovieForUser(id);
+    const payload = await MovieService.getMovieForAdmin(id);
     if (!payload) {
       return ResponseHandler.buildResponseFailed(res, {
         type: RESPONSE_TYPE.NOT_FOUND,

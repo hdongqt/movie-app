@@ -6,7 +6,7 @@ const CRAWL_TABLE_HEADER: ITableColumn[] = [
     {
         key: '',
         header: 'Bắt đầu',
-        width: 250,
+        width: 150,
         render: (data: any) => (
             <span className="inline-block min-w-32">
                 {data?.createdAt && Utils.formatDateTime(data.createdAt)}
@@ -16,7 +16,7 @@ const CRAWL_TABLE_HEADER: ITableColumn[] = [
     {
         key: '',
         header: 'Kết thúc',
-        width: 250,
+        width: 150,
         render: (data: any) => (
             <span className="inline-block min-w-32">
                 {data?.finishedAt && Utils.formatDateTime(data.finishedAt)}
@@ -28,6 +28,7 @@ const CRAWL_TABLE_HEADER: ITableColumn[] = [
         header: 'Trạng thái',
         classHeaderFirst: 'text-center',
         classRowFirst: 'text-center',
+        width: 150,
         render: (data: any) => (
             <span
                 className={`text-sm inline-block min-w-32 md:min-w-24 lg:min-w-16 text-center font-medium text-white px-2 py-1 rounded-full first-letter:uppercase ${

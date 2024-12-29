@@ -7,7 +7,7 @@ const USER_ROUTERS = {
     AUTH: '/auth',
     HOME: USER_ROUTER_ROOT,
     FILM: '/film',
-    FILM_DETAIL: '/film/:id',
+    FILM_DETAIL: '/film/:slug',
     SEARCH: '/search',
     GENRES: '/genres',
     FAVORITES: '/favorites',

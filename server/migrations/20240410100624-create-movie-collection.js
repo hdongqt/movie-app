@@ -8,11 +8,11 @@ import Comment from "../src/models/comment.model.js";
 
 const seedData = async () => {
   const user = new User({
-    email: "test@gmail.com",
-    displayName: "Test",
-    role: "user",
+    email: "admin@gmail.com",
+    displayName: "Admin",
+    role: "admin",
   });
-  user.setPassword("123456");
+  user.setPassword("12345678");
   await user.save();
 };
 

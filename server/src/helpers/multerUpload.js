@@ -15,10 +15,26 @@ const storage = new CloudinaryStorage({
     return {
       folder: "movies",
       public_id: COMMON_HELPERS.convertToSlug(file.originalname.split(".")[0]),
-      resource_type: "auto", // keep type file
+      resource_type: "auto",
+      transformation: [{ quality: 80, fetch_format: "webp" }],
     };
   },
-  limits: { fileSize: 5 * 1024 * 1024 }, //limit size 5mb
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5mb
 });
 
+const convertLinkToWebp = async (url) => {
+  if (!url) return null;
+  try {
+    const uploadResponse = await cloudinary.uploader.upload(url, {
+      resource_type: "image",
+      transformation: [{ quality: 80, fetch_format: "webp" }],
+    });
+    return uploadResponse.secure_url || null;
+  } catch (error) {
+    console.error("Error processing the image:", error);
+    throw error;
+  }
+};
+
+export { convertLinkToWebp };
 export default multer({ storage: storage });

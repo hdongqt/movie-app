@@ -41,9 +41,9 @@ interface VideoPlayState {
 
 const MediaDetail: React.FC = () => {
     const dispatch = useTypedDispatch();
-    const { id } = useParams();
-    const { isMobile } = useCurrentViewportView();
+    const { slug } = useParams();
     const { state } = useLocation();
+    const { isMobile } = useCurrentViewportView();
     const isGetLoading: boolean = useSelector((state: RootState) =>
         _.get(state.MOVIES, 'isGetLoading')
     );
@@ -94,10 +94,10 @@ const MediaDetail: React.FC = () => {
         }),
         onSubmit: async (values, { resetForm }) => {
             setIsCommentClick(true);
-            if (id) {
+            if (movieDetail) {
                 const resultAction = await dispatch(
                     createComment({
-                        movieId: id,
+                        movieId: movieDetail.id,
                         content: values.comment
                     })
                 );
@@ -124,11 +124,11 @@ const MediaDetail: React.FC = () => {
                 .max(250, 'Nội dung bình luận không được vượt quá 250 kí tự')
         }),
         onSubmit: async (values, { resetForm }) => {
-            if (id) {
+            if (movieDetail) {
                 const resultAction = await dispatch(
                     createComment({
                         parentId: values.parentId || undefined,
-                        movieId: id,
+                        movieId: movieDetail.id,
                         content: values.replyComment
                     })
                 );
@@ -184,15 +184,8 @@ const MediaDetail: React.FC = () => {
     };
 
     useEffect(() => {
-        if (id) {
-            dispatch(getMovie(id));
-            dispatch(
-                fetchAllCommentOfMovie({
-                    ...paginationComment,
-                    movieId: id,
-                    isFetchNew: true
-                })
-            );
+        if (slug) {
+            dispatch(getMovie(slug));
         }
         if (state) {
             dispatch(setFiltersSave(state.filters));
@@ -200,7 +193,19 @@ const MediaDetail: React.FC = () => {
         return () => {
             dispatch(resetCommentsState());
         };
-    }, [id, state]);
+    }, [slug, state]);
+
+    useEffect(() => {
+        if (movieDetail) {
+            dispatch(
+                fetchAllCommentOfMovie({
+                    ...paginationComment,
+                    movieId: movieDetail.id,
+                    isFetchNew: true
+                })
+            );
+        }
+    }, [movieDetail]);
 
     useEffect(() => {
         if (isWatch && movieDetail && !videoPlay) {
@@ -576,9 +581,12 @@ const MediaDetail: React.FC = () => {
                                                 </Link>
                                                 <button
                                                     type="button"
-                                                    onClick={() =>
-                                                        handleClickFavorite(id)
-                                                    }
+                                                    onClick={() => {
+                                                        if (movieDetail)
+                                                            handleClickFavorite(
+                                                                movieDetail.id
+                                                            );
+                                                    }}
                                                     className={`outline-none flex px-3 py-6 items-center gap-3 rounded-full transition h-10 relative 
                                                     ${
                                                         isActionLoading
@@ -915,13 +923,13 @@ const MediaDetail: React.FC = () => {
                                 <button
                                     className="hover:bg-sky-600 border border-sky-600 transition text-sky-600 hover:text-white px-2 py-1.5 rounded-md"
                                     onClick={() =>
-                                        id &&
+                                        movieDetail &&
                                         dispatch(
                                             fetchAllCommentOfMovie({
                                                 ...paginationComment,
                                                 page:
                                                     paginationComment.page + 1,
-                                                movieId: id,
+                                                movieId: movieDetail.id,
                                                 isFetchNew: false
                                             })
                                         )
@@ -970,7 +978,7 @@ const MediaDetail: React.FC = () => {
                                     <Link
                                         key={`similar${movie.id}`}
                                         className="flex gap-4 group hover:opacity-90 transition"
-                                        to={`${ROUTERS.FILM}/${movie?.id}`}
+                                        to={`${ROUTERS.FILM}/${movie?.url}`}
                                     >
                                         <div className="h-48 w-2/5 overflow-hidden rounded-xl group-hover:scale-105 transition duration-300 relative">
                                             <LazyLoadImage

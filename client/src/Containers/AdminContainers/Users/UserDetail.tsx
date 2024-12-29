@@ -76,7 +76,7 @@ const UserDetail: React.FC = () => {
     const __renderContent = () => {
         return (
             <>
-                <div className="flex gap-2 items-center border-b pb-2 border-gray-300 justify-between">
+                <div className="flex flex-col md:flex-row gap-2 items-center border-b pb-2 border-gray-300 justify-between">
                     <h2 className="text-3xl font-medium text-slate-800">
                         Chi tiết người dùng
                     </h2>
@@ -188,7 +188,7 @@ const UserDetail: React.FC = () => {
                         </Link>
                     </div>
                     {(isGetLoading || isActionLoading) && (
-                        <div className="fixed ml-72 mt-16 z-50 inset-0 flex items-start justify-center bg-[#ffffff4d]">
+                        <div className="fixed md:ml-72 mt-16 z-50 inset-0 flex items-start justify-center bg-[#ffffff4d]">
                             <span className="mt-52 inline-block border-gray-300 h-10 w-10 animate-spin rounded-full border-4 border-t-blue-600" />
                         </div>
                     )}

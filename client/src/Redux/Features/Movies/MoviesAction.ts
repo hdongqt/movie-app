@@ -35,17 +35,17 @@ const getMovie = createAsyncThunk(
     'Movies/getMovie',
     async (payload: string, thunkApi) => {
         try {
-            const [resultDetail, resultSimilar] = await Promise.all([
-                MovieAPI.getMovie(payload),
-                MovieAPI.getSimilarMovies(payload)
-            ]);
+            const resultDetail = await MovieAPI.getMovie(payload);
+            const resultSimilar = await MovieAPI.getSimilarMovies(
+                _.get(resultDetail, 'payload.id', '')
+            );
             return {
                 movieDetail: _.get(resultDetail, 'payload', null),
                 similarMovies: _.get(resultSimilar, 'payload', [])
             };
         } catch (error: any) {
-            if (error?.status === 404) Utils.redirect(ROUTERS.NOT_FOUND);
-            else Utils.ToastMessage(error.message, 'error');
+            // if (error?.status === 404) Utils.redirect(ROUTERS.NOT_FOUND);
+            // else Utils.ToastMessage(error.message, 'error');
             return thunkApi.rejectWithValue(error.message);
         }
     }

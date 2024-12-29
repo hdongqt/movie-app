@@ -21,7 +21,8 @@ const STATUS_COMMON: any = {
 const USERS_MANAGEMENT_TABLE_HEADER: ITableColumn[] = [
     {
         key: 'displayName',
-        header: 'Tên'
+        header: 'Tên',
+        width: 150
         // classRowFirst: 'text-sm'
     },
     {

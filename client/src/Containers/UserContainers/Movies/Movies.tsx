@@ -278,8 +278,10 @@ const Movies: React.FC = () => {
                                                             }
                                                         );
                                                         Utils.redirect(
-                                                            `${ROUTERS.FILM}/${movie?.id}`,
-                                                            { filters }
+                                                            `${ROUTERS.FILM}/${movie?.url}`,
+                                                            {
+                                                                filters
+                                                            }
                                                         );
                                                     }}
                                                     className="cursor-pointer rounded-lg overflow-hidden relative group shadow-inner"

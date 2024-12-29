@@ -243,9 +243,9 @@ MovieService.getSimilarMovie = async (id) => {
   return [];
 };
 
-MovieService.getMovieForUser = async (idMovie) => {
+MovieService.getMovieForUser = async (slug) => {
   const movie = await Movie.findOne({
-    _id: idMovie,
+    url: slug,
     status: { $ne: "terminated" },
   })
     .populate({

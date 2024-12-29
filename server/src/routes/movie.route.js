@@ -22,9 +22,9 @@ router.get("/get-for-admin", MovieController.fetchAllMoviesForAdmin);
 router.get(
   "/get-for-admin/:id",
   TokenMiddleware.checkIsAdmin,
-  MovieController.getMovie
+  MovieController.getMovieForAdmin
 );
-router.get("/:id", MovieController.getMovie);
+router.get("/:slug", MovieController.getMovieForUser);
 router.post(
   "/",
   [

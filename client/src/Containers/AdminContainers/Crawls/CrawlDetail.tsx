@@ -26,7 +26,7 @@ const MediaDetail: React.FC = () => {
     const __renderContent = () => {
         return (
             <>
-                <div className="flex gap-2 items-center  border-b pb-2 border-gray-300 justify-between">
+                <div className="flex flex-col md:flex-row gap-2 items-center  border-b pb-2 border-gray-300 justify-between">
                     <h2 className="text-3xl font-medium text-slate-800">
                         Chi tiết Crawl
                     </h2>
@@ -38,7 +38,7 @@ const MediaDetail: React.FC = () => {
                         <span className="text-slate-800 text-sm">
                             <i className="icon-arrow-left"></i>
                         </span>
-                        Trở về Crawl
+                        Crawl
                     </Link>
                 </div>
                 <div className="mt-8 relative">

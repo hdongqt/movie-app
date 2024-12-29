@@ -12,8 +12,8 @@ const fetchMoviesForAdmin = async (payload: IMoviePaginationFilter) => {
     return APIClient.get(MOVIE.FOR_ADMIN, { params: payload });
 };
 
-const getMovie = async (id: string) => {
-    return APIClient.get(`${MOVIE.ROOT}/${id}`);
+const getMovie = async (slug: string) => {
+    return APIClient.get(`${MOVIE.ROOT}/${slug}`);
 };
 
 const getMovieForAdmin = async (id: string) => {

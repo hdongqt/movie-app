@@ -139,7 +139,7 @@ const Persons: React.FC = () => {
                                             return (
                                                 <Link
                                                     key={movie?.id + index}
-                                                    to={`${ROUTERS.FILM}/${movie?.id}`}
+                                                    to={`${ROUTERS.FILM}/${movie?.url}`}
                                                     className="rounded-lg overflow-hidden relative group shadow-inner"
                                                 >
                                                     <div className="overflow-hidden h-80">

@@ -30,18 +30,20 @@ const MOVIES_MANAGEMENT_TABLE_HEADER: ITableColumn[] = [
     {
         key: 'originalName',
         header: 'Tên quốc tế',
+        width: 150,
         classRowFirst: 'text-sm'
     },
     {
         key: 'vietnameseName',
         header: 'Tên việt nam',
+        width: 150,
         classRowFirst: 'text-sm'
     },
     {
         key: '',
         header: 'Thể loại',
-        width: 120,
         classRowFirst: 'text-sm font-medium',
+        width: 70,
         render: (data: any) => (
             <span className="inline-block">
                 {data?.movieType && data.movieType === 'tv'
@@ -54,7 +56,7 @@ const MOVIES_MANAGEMENT_TABLE_HEADER: ITableColumn[] = [
         key: 'release',
         classHeaderFirst: 'text-center',
         classRowFirst: 'text-sm text-center',
-        width: 120,
+        width: 100,
         header: 'Phát hành'
     },
     {

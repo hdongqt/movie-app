@@ -34,6 +34,7 @@ export interface IMovie {
     status: string;
     createdAt: string;
     updatedAt: string;
+    url: string;
 }
 
 export interface IMovieSave {
