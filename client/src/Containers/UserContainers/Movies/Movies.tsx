@@ -315,7 +315,7 @@ const Movies: React.FC = () => {
                                                                     'N/A'}
                                                             </span>
                                                         </span>
-                                                        <div className="group-hover:scale-110 transition duration-300">
+                                                        <div className="group-hover:scale-110 transition duration-300 h-full">
                                                             <LazyLoadImage
                                                                 src={
                                                                     movie?.thumbnailPath

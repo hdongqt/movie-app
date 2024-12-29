@@ -27,6 +27,7 @@ const convertLinkToWebp = async (url) => {
   try {
     const uploadResponse = await cloudinary.uploader.upload(url, {
       resource_type: "image",
+      folder: "movies",
       transformation: [{ quality: 80, fetch_format: "webp" }],
     });
     return uploadResponse.secure_url || null;
