@@ -167,7 +167,7 @@ const SlideMaker: React.FC = () => {
                                 <i className="icon-chevron-left"></i>
                             </button>
                             <button
-                                className="next bg-stone-300 dark:bg-stone-500 dark:text-gray-100 rounded-full w-10 h-10 text-xl text-gray-700 hover:bg-red-600 dark:hover:bg-red-700 hover:text-white dark:hover:text-gray-200 transition"
+                                className="next bg-stone-300 dark:bg-red-600 dark:text-gray-100 rounded-full w-10 h-10 text-xl text-gray-700 hover:bg-red-600 dark:hover:bg-red-700 hover:text-white dark:hover:text-gray-200 transition"
                                 onClick={(
                                     e: React.MouseEvent<HTMLButtonElement>
                                 ) => handleClickBtn(e, 'next')}

@@ -109,7 +109,7 @@ const MovieCarousel: React.FC<IMovieSwipper> = ({
                 >
                     {items}
                     <button
-                        className="prev-button text-xl text-gray-700 hover:text-white dark:bg-red-600 cursor-pointer dark:text-gray-100 bg-stone-200 hover:bg-red-600 dark:hover:bg-red-700 transition w-10 h-10 flex items-center justify-center rounded-full
+                        className="prev-button text-xl text-gray-700 hover:text-white dark:bg-red-600 cursor-pointer dark:text-gray-100 bg-stone-300 hover:bg-red-600 dark:hover:bg-red-700 transition w-10 h-10 flex items-center justify-center rounded-full
                     absolute left-0 top-1/2 z-50 -translate-y-1/2
                     "
                     >
