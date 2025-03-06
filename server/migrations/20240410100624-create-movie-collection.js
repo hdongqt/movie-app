@@ -7,6 +7,8 @@ import User from "../src/models/user.model.js";
 import Comment from "../src/models/comment.model.js";
 
 export const seedData = async () => {
+  const isExistUser = await User.findOne({ email: process.env.ADMIN_EMAIL });
+  if (isExistUser) return;
   const user = new User({
     email: process.env.ADMIN_EMAIL,
     displayName: "Admin",
