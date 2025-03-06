@@ -6,13 +6,13 @@ import Genre from "../src/models/genre.model.js";
 import User from "../src/models/user.model.js";
 import Comment from "../src/models/comment.model.js";
 
-const seedData = async () => {
+export const seedData = async () => {
   const user = new User({
-    email: "admin@gmail.com",
+    email: process.env.ADMIN_EMAIL,
     displayName: "Admin",
     role: "admin",
   });
-  user.setPassword("12345678");
+  user.setPassword(process.env.ADMIN_PASSWORD);
   await user.save();
 };
 

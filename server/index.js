@@ -7,6 +7,7 @@ import cron from "node-cron";
 import routes from "./src/routes/index.js";
 import ErrorMiddleware from "./src/middlewares/error.middleware.js";
 import CrawlController from "./src/controllers/crawl.controller.js";
+import { seedData } from "./migrations/20240410100624-create-movie-collection.js";
 
 const app = express();
 
@@ -57,6 +58,7 @@ mongoose
   .then(() => {
     console.log("mongodb connect");
     server.listen(port, () => {
+      seedData()
       console.log(`Server started on port ${port}`);
       cronCrawl.start();
     });
