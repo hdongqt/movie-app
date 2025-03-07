@@ -21,7 +21,7 @@ const UserRouters = {
             element: <UserContainer.MovieDetail />
         },
         {
-            path: `${ROUTERS.FILM}/:id/watch`,
+            path: `${ROUTERS.FILM}/:slug/watch`,
             element: <UserContainer.MovieDetail />
         },
         {

@@ -182,7 +182,6 @@ const MediaDetail: React.FC = () => {
         dispatch(terminatedComment({ id, parentId }));
         setConfirmDeleteComment(DEFAULT_CONFIRM_DIALOG);
     };
-
     useEffect(() => {
         if (slug) {
             dispatch(getMovie(slug));
@@ -208,6 +207,8 @@ const MediaDetail: React.FC = () => {
     }, [movieDetail]);
 
     useEffect(() => {
+        if (isWatch && !movieDetail?.episodes?.length)
+            history(`${ROUTERS.FILM}/${slug}`);
         if (isWatch && movieDetail && !videoPlay) {
             const videoFirstUrl = _.get(movieDetail, 'episodes[0]');
             setVideoPlay(videoFirstUrl);
@@ -572,7 +573,17 @@ const MediaDetail: React.FC = () => {
                                             <div className="flex justify-center md:justify-end gap-3 mt-4 md:mt-8 py-3">
                                                 <Link
                                                     to={'watch'}
-                                                    className="outline-none flex px-3 py-6 items-center gap-3 rounded-full bg-red-600 hover:bg-red-700 transition h-10 relative"
+                                                    onClick={(e) =>
+                                                        !movieDetail?.episodes
+                                                            ?.length &&
+                                                        e.preventDefault()
+                                                    }
+                                                    className={`outline-none flex px-3 py-6 items-center gap-3 rounded-full bg-red-600 hover:bg-red-700 transition h-10 relative ${
+                                                        !movieDetail?.episodes
+                                                            ?.length
+                                                            ? 'pointer-events-none !bg-gray-800 !text-gray-600'
+                                                            : ''
+                                                    }`}
                                                 >
                                                     <span className="text-2xl">
                                                         <i className="icon-play"></i>
@@ -699,7 +710,7 @@ const MediaDetail: React.FC = () => {
                                     )}
                                     {!isGetLoading && (
                                         <div className="flex gap-4 my-4 flex-wrap w-full max-h-40 overflow-y-auto">
-                                            {movieDetail?.episodes &&
+                                            {movieDetail?.episodes.length &&
                                                 movieDetail?.episodes.map(
                                                     (
                                                         item: any,
@@ -733,6 +744,11 @@ const MediaDetail: React.FC = () => {
                                                         </button>
                                                     )
                                                 )}
+                                            {!movieDetail?.episodes.length && (
+                                                <h5 className="text-red-500 cursor-default">
+                                                    Tập phim đang cập nhật...
+                                                </h5>
+                                            )}
                                         </div>
                                     )}
                                 </div>

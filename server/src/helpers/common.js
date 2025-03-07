@@ -148,11 +148,12 @@ const transformMovies = async (movie, isAdmin) => {
     }),
   };
   if (isAdmin) return movieHandler;
+  let epis = (movieHandler?.url && (await getDataEpisodes(movieHandler.url))) ||
+  movieHandler.episodes
+  epis = epis.filter((episode) =>  !episode.path.includes(""))
   return {
     ...movieHandler,
-    episodes:
-      (movieHandler?.url && (await getDataEpisodes(movieHandler.url))) ||
-      movieHandler.episodes,
+    episodes: epis,
   };
 };
 

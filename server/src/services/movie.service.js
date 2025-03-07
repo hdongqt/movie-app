@@ -265,7 +265,9 @@ MovieService.getMovieForUser = async (slug) => {
       path: "episodes",
       select: "-movies",
     });
-  return await COMMON_HELPERS.transformMovies(movie, false);
+  const result =  await COMMON_HELPERS.transformMovies(movie, false);
+  console.log(result.episodes)
+  return result;
 };
 
 MovieService.getMovieForAdmin = async (idMovie) => {
