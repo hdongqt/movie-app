@@ -207,13 +207,16 @@ const MediaDetail: React.FC = () => {
     }, [movieDetail]);
 
     useEffect(() => {
-        if (isWatch && !movieDetail?.episodes?.length)
-            history(`${ROUTERS.FILM}/${slug}`);
-        if (isWatch && movieDetail && !videoPlay) {
-            const videoFirstUrl = _.get(movieDetail, 'episodes[0]');
-            setVideoPlay(videoFirstUrl);
-            setUrlPlaying(videoFirstUrl?.path?.[0] || '');
+        if (isWatch && movieDetail) {
+            if (!movieDetail?.episodes?.length)
+                history(`${ROUTERS.FILM}/${slug}`);
+            else if (!videoPlay) {
+                const videoFirstUrl = _.get(movieDetail, 'episodes[0]');
+                setVideoPlay(videoFirstUrl);
+                setUrlPlaying(videoFirstUrl?.path?.[0] || '');
+            }
         }
+
         if (!isWatch && movieDetail) {
             setVideoPlay(null);
             setUrlPlaying('');
